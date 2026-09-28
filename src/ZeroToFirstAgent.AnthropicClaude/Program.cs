@@ -1,30 +1,31 @@
-﻿//YouTube video that cover this sample: https://youtu.be/GbyEQWwBMFk
-
-/* Steps:
+﻿/* Steps:
  * 1: Get an Anthropic API Key (https://docs.claude.com/en/api/admin-api/apikeys/get-api-key)
- * 2: Add Nuget Packages (Anthropic.SDK + Microsoft.Agents.AI)
- * 3: Create an AnthropicClient for an ChatClientAgent
- * 4: Call RunAsync or RunStreamingAsync (options needed for model select)
+ * 2: Add Nuget Packages (Microsoft.Agents.AI.Anthropic)
+ * 3: Create an AnthropicClient and use AsAIAgent
+ * * 4: Call RunAsync or RunStreamingAsync (options needed for model select)
  */
 
 using Anthropic;
-using Anthropic.Core;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 
 const string apiKey = "todo";
 const string model = "todo";
-AnthropicClient client = new AnthropicClient(new ClientOptions
+AnthropicClient client = new AnthropicClient
 {
     ApiKey = apiKey
-});
+};
 ChatClientAgent agent = client.AsAIAgent(new ChatClientAgentOptions
 {
-    ChatOptions = new ChatOptions { ModelId = model, MaxOutputTokens = 1000 }
+    ChatOptions = new ChatOptions
+    {
+        ModelId = model, 
+        MaxOutputTokens = 10_000
+    }
 });
 
 
-AgentResponse response = await agent.RunAsync("What is the Capital of Australia?");
+AgentResponse response = await agent.RunAsync("What is the capital of France?");
 Console.WriteLine(response);
 
 Console.WriteLine("---");
