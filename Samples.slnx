@@ -88,6 +88,7 @@
     <Project Path="src/OpenAIResponsesApi.ResumeConversation/OpenAIResponsesApi.ResumeConversation.csproj" Id="109fe4ed-2aaf-4373-b93b-b5a72fedc742" />
     <Project Path="src/OpenAIResponsesApi.SpecialModels/OpenAIResponsesApi.SpecialModels.csproj" Id="34ae1899-0fb6-41ca-85e4-e13d85196263" />
     <Project Path="src/OpenAIResponsesApi.WebSearch/OpenAIResponsesApi.WebSearch.csproj" Id="9dc49e05-421b-4e1d-9384-579ddefd2763" />
+    <Project Path="src/ResponsesUltraFastMode/OpenAIResponsesApi.UltraFastMode.csproj" Id="ac95f26f-2c0a-46c7-8b34-7ec64125808b" />
   </Folder>
   <Folder Name="/Other Topics/">
     <Project Path="src/AIAsDataFilter/AIAsDataFilter.csproj" Id="28c6ce71-c6d3-4575-9580-0c2a952e965c" />
