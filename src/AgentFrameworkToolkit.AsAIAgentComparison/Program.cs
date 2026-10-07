@@ -73,7 +73,6 @@ public static class AgentFrameworkToolkitExtensionMethod
 {
     public static async Task RunAsync(string prompt)
     {
-        // Keep the existing Azure OpenAI connection; only agent creation changes.
         OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
         AIAgent agent = client.AsAIAgent(new AgentOptions
