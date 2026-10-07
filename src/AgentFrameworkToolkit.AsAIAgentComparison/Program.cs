@@ -1,3 +1,4 @@
+using System.ClientModel;
 using AgentFrameworkToolkit.AzureOpenAI;
 using AgentFrameworkToolkit.OpenAI;
 using Microsoft.Agents.AI;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.AI;
 using OpenAI;
 using OpenAI.Responses;
 using Shared;
+
 #pragma warning disable OPENAI001
 
 Utils.Init("AFT: Extension Methods");
@@ -26,8 +28,13 @@ public static class AgentFrameworkAlone
 {
     public static async Task RunAsync(string prompt)
     {
-        OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
-        ChatClientAgent agent = client.GetResponsesClient().AsAIAgent(
+        Secrets secrets = SecretsManager.GetSecrets();
+        OpenAIClient client = new(new ApiKeyCredential(secrets.AzureOpenAiKey), new OpenAIClientOptions
+        {
+            Endpoint = new Uri($"{secrets.AzureOpenAiEndpoint}openai/v1")
+        });
+
+        AIAgent agent = client.GetResponsesClient().AsAIAgent(
             model: "gpt-6-luna",
             options: new ChatClientAgentOptions
             {
@@ -73,12 +80,15 @@ public static class AgentFrameworkToolkitExtensionMethod
 {
     public static async Task RunAsync(string prompt)
     {
-        OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
+        Secrets secrets = SecretsManager.GetSecrets();
+        OpenAIClient client = new(new ApiKeyCredential(secrets.AzureOpenAiKey), new OpenAIClientOptions
+        {
+            Endpoint = new Uri($"{secrets.AzureOpenAiEndpoint}openai/v1")
+        });
 
         AIAgent agent = client.AsAIAgent(new AgentOptions
         {
-            ClientType = ClientType.ResponsesApi,
-            Model = OpenAIChatModels.Gpt5Mini,
+            Model = OpenAIChatModels.Gpt6Luna,
             ReasoningEffort = OpenAIReasoningEffort.High,
             ReasoningSummaryVerbosity = OpenAIReasoningSummaryVerbosity.Detailed
         });
