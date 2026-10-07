@@ -23,6 +23,7 @@
     <Project Path="src/AgentFrameworkToolkit.EasierTools/AgentFrameworkToolkit.EasierTools.csproj" Id="79fbfdda-a4a6-4c73-b8ed-f0ad8d13e3bb" />
     <Project Path="src/AgentSkills/AgentSkills.csproj" Id="50e51e01-436d-4f24-9650-843054fb60d5" />
     <Project Path="src/CommonAITools/CommonAITools.csproj" Id="71d5b760-4ca3-4a8f-9535-9baef66d29c7" />
+    <Project Path="src/OpenAIDecisionApi/OpenAIDecisionApi.csproj" />
   </Folder>
   <Folder Name="/AIContextProvider/">
     <Project Path="src/AIContextProvider.AgentSkills/AIContextProvider.AgentSkills.csproj" Id="5c882c83-ff67-47a1-aa37-5d393fe05324" />
@@ -101,6 +102,7 @@
     <Project Path="src/NewOfficialGoogleNuget/NewOfficialGoogleNuget.csproj" />
     <Project Path="src/OpenAICachingTokens/OpenAICachingTokens.csproj" Id="eba2d4ee-af58-4670-aa78-64ab92ca8e13" />
     <Project Path="src/SettingsOnAiAgent/SettingsOnAiAgent.csproj" Id="86d8fd4d-bf34-488d-8f30-94e9b808419a" />
+    <Project Path="src/Speedtest/Speedtest.csproj" />
     <Project Path="src/TheDifferentAgents/TheDifferentAgents.csproj" Id="443e0db8-204b-403d-8145-7133496bf9c8" />
     <Project Path="src/TimeToSwitchToTheResponsesAPI/TimeToSwitchToTheResponsesAPI.csproj" Id="600a03fd-5a55-48a4-8326-c26215cb31c5" />
     <Project Path="src/ToolsVsMcpVsSkillsVsAIContextProviders/ToolsVsMcpVsSkillsVsAIContextProviders.csproj" Id="02549cd1-9d39-4822-8da1-a42e9575ee88" />

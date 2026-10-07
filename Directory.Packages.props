@@ -3,10 +3,18 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="AgentFrameworkToolkit.AmazonBedrock" Version="1.23.1" />
     <PackageVersion Include="AgentFrameworkToolkit.Anthropic" Version="1.23.1" />
     <PackageVersion Include="AgentFrameworkToolkit.AzureOpenAI" Version="1.23.1" />
+    <PackageVersion Include="AgentFrameworkToolkit.Cerebras" Version="1.23.1" />
+    <PackageVersion Include="AgentFrameworkToolkit.Cohere" Version="1.23.1" />
     <PackageVersion Include="AgentFrameworkToolkit.Google" Version="1.23.1" />
-    <PackageVersion Include="AgentFrameworkToolkit.OpenAI" Version="1.23.1" />
+    <PackageVersion Include="AgentFrameworkToolkit.Groq" Version="1.23.1" />
+    <PackageVersion Include="AgentFrameworkToolkit.MicrosoftFoundry" Version="1.23.1" />
+    <PackageVersion Include="AgentFrameworkToolkit.Mistral" Version="1.23.1" />
+    <PackageVersion Include="AgentFrameworkToolkit.OpenAI" Version="1.23.3" />
+    <PackageVersion Include="AgentFrameworkToolkit.OpenRouter" Version="1.23.1" />
+    <PackageVersion Include="AgentFrameworkToolkit.XAI" Version="1.23.1" />
     <PackageVersion Include="AgentFrameworkToolkit.Tools" Version="1.23.1" />
     <PackageVersion Include="AgentFrameworkToolkit.Tools.ModelContextProtocol" Version="1.23.1" />
     <PackageVersion Include="AgentSkillsDotNet" Version="1.23.1" />

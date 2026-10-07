@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AgentFrameworkToolkit.AmazonBedrock" />
+    <PackageReference Include="AgentFrameworkToolkit.Anthropic" />
+    <PackageReference Include="AgentFrameworkToolkit.AzureOpenAI" />
+    <PackageReference Include="AgentFrameworkToolkit.Cohere" />
+    <PackageReference Include="AgentFrameworkToolkit.Google" />
+    <PackageReference Include="AgentFrameworkToolkit.Groq" />
+    <PackageReference Include="AgentFrameworkToolkit.MicrosoftFoundry" />
+    <PackageReference Include="AgentFrameworkToolkit.Mistral" />
+    <PackageReference Include="AgentFrameworkToolkit.OpenAI" />
+    <PackageReference Include="AgentFrameworkToolkit.OpenRouter" />
+    <PackageReference Include="AgentFrameworkToolkit.XAI" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
+
+</Project>
