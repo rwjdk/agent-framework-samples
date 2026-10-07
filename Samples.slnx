@@ -126,6 +126,7 @@
   </Folder>
   <Folder Name="/Structured Output/">
     <Project Path="src/StructuredOutput/StructuredOutput.csproj" />
+    <Project Path="src/StructuredOutput.AnthropicClaude/StructuredOutput.AnthropicClaude.csproj" />
   </Folder>
   <Folder Name="/Structured Output/Pre-RC/">
     <Project Path="src/StructuredOutput.Pre-RC/StructuredOutput.Pre-RC.csproj" />

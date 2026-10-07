@@ -10,7 +10,7 @@ using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 
 const string apiKey = "todo";
-const string model = "todo";
+const string model = "claude-opus-5-5";
 AnthropicClient client = new AnthropicClient
 {
     ApiKey = apiKey
@@ -24,7 +24,6 @@ ChatClientAgent agent = client.AsAIAgent(new ChatClientAgentOptions
     }
 });
 
-
 AgentResponse response = await agent.RunAsync("What is the capital of France?");
 Console.WriteLine(response);
 
@@ -33,4 +32,16 @@ Console.WriteLine("---");
 await foreach (AgentResponseUpdate update in agent.RunStreamingAsync("How to make soup?"))
 {
     Console.Write(update);
+}
+
+Console.WriteLine("---");
+
+AgentResponse<Location> agentResponse = await agent.RunAsync<Location>("The Location with the Eiffel Tower");
+Console.WriteLine("Country: "+ agentResponse.Result.Country);
+Console.WriteLine("Capital: "+ agentResponse.Result.CapitalCity);
+
+public class Location
+{
+    public required string Country { get; set; }
+    public required string CapitalCity { get; set; }
 }
