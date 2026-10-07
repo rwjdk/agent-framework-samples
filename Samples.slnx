@@ -18,6 +18,7 @@
     <Project Path="src/AgentUserInteraction.Server/AgentUserInteraction.Server.csproj" Id="8e71efad-1080-45a1-b1e9-17c9496ba99c" />
   </Folder>
   <Folder Name="/AgentFrameworkToolkit/">
+    <Project Path="src/AgentFrameworkToolkit.AsAIAgentComparison/AgentFrameworkToolkit.AsAIAgentComparison.csproj" />
     <Project Path="src/AgentFrameworkToolkit.EasierAgents/AgentFrameworkToolkit.EasierAgents.csproj" Id="d0bdcd59-b811-4223-9b83-9b5e266f2dc2" />
     <Project Path="src/AgentFrameworkToolkit.EasierBatching/AgentFrameworkToolkit.EasierBatching.csproj" Id="e8a05677-5879-4f4b-bd85-ff7ec15d73da" />
     <Project Path="src/AgentFrameworkToolkit.EasierTools/AgentFrameworkToolkit.EasierTools.csproj" Id="79fbfdda-a4a6-4c73-b8ed-f0ad8d13e3bb" />
@@ -126,7 +127,6 @@
   </Folder>
   <Folder Name="/Structured Output/">
     <Project Path="src/StructuredOutput/StructuredOutput.csproj" />
-    <Project Path="src/StructuredOutput.AnthropicClaude/StructuredOutput.AnthropicClaude.csproj" />
   </Folder>
   <Folder Name="/Structured Output/Pre-RC/">
     <Project Path="src/StructuredOutput.Pre-RC/StructuredOutput.Pre-RC.csproj" />

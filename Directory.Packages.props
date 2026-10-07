@@ -3,21 +3,21 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="AgentFrameworkToolkit.AmazonBedrock" Version="1.23.1" />
-    <PackageVersion Include="AgentFrameworkToolkit.Anthropic" Version="1.23.1" />
-    <PackageVersion Include="AgentFrameworkToolkit.AzureOpenAI" Version="1.23.1" />
-    <PackageVersion Include="AgentFrameworkToolkit.Cerebras" Version="1.23.1" />
-    <PackageVersion Include="AgentFrameworkToolkit.Cohere" Version="1.23.1" />
-    <PackageVersion Include="AgentFrameworkToolkit.Google" Version="1.23.1" />
-    <PackageVersion Include="AgentFrameworkToolkit.Groq" Version="1.23.1" />
-    <PackageVersion Include="AgentFrameworkToolkit.MicrosoftFoundry" Version="1.23.1" />
-    <PackageVersion Include="AgentFrameworkToolkit.Mistral" Version="1.23.1" />
-    <PackageVersion Include="AgentFrameworkToolkit.OpenAI" Version="1.23.3" />
-    <PackageVersion Include="AgentFrameworkToolkit.OpenRouter" Version="1.23.1" />
-    <PackageVersion Include="AgentFrameworkToolkit.XAI" Version="1.23.1" />
-    <PackageVersion Include="AgentFrameworkToolkit.Tools" Version="1.23.1" />
-    <PackageVersion Include="AgentFrameworkToolkit.Tools.ModelContextProtocol" Version="1.23.1" />
-    <PackageVersion Include="AgentSkillsDotNet" Version="1.23.1" />
+    <PackageVersion Include="AgentFrameworkToolkit.AmazonBedrock" Version="1.24.0" />
+    <PackageVersion Include="AgentFrameworkToolkit.Anthropic" Version="1.24.0" />
+    <PackageVersion Include="AgentFrameworkToolkit.AzureOpenAI" Version="1.24.0" />
+    <PackageVersion Include="AgentFrameworkToolkit.Cerebras" Version="1.24.0" />
+    <PackageVersion Include="AgentFrameworkToolkit.Cohere" Version="1.24.0" />
+    <PackageVersion Include="AgentFrameworkToolkit.Google" Version="1.24.0" />
+    <PackageVersion Include="AgentFrameworkToolkit.Groq" Version="1.24.0" />
+    <PackageVersion Include="AgentFrameworkToolkit.MicrosoftFoundry" Version="1.24.0" />
+    <PackageVersion Include="AgentFrameworkToolkit.Mistral" Version="1.24.0" />
+    <PackageVersion Include="AgentFrameworkToolkit.OpenAI" Version="1.24.0" />
+    <PackageVersion Include="AgentFrameworkToolkit.OpenRouter" Version="1.24.0" />
+    <PackageVersion Include="AgentFrameworkToolkit.XAI" Version="1.24.0" />
+    <PackageVersion Include="AgentFrameworkToolkit.Tools" Version="1.24.0" />
+    <PackageVersion Include="AgentFrameworkToolkit.Tools.ModelContextProtocol" Version="1.24.0" />
+    <PackageVersion Include="AgentSkillsDotNet" Version="1.24.0" />
     <PackageVersion Include="Anthropic.SDK" Version="5.9.0" />
     <PackageVersion Include="Aspire.Hosting.AppHost" Version="13.5.3" />
     <PackageVersion Include="AWS.Bedrock.MEAI" Version="1.0.0" />
@@ -38,23 +38,23 @@
     <PackageVersion Include="JetBrains.Annotations" Version="2026.2.0" />
     <PackageVersion Include="JevDotNet" Version="0.9.3" />
     <PackageVersion Include="Mem0" Version="1.0.0" />
-    <PackageVersion Include="Microsoft.Agents.AI" Version="1.23.0" />
-    <PackageVersion Include="Microsoft.Agents.AI.A2A" Version="1.23.0-preview.260928.1" />
+    <PackageVersion Include="Microsoft.Agents.AI" Version="1.24.0" />
+    <PackageVersion Include="Microsoft.Agents.AI.A2A" Version="1.24.0-preview.261006.1" />
     <PackageVersion Include="Microsoft.Agents.AI.AGUI" Version="1.13.0-preview.260703.1" />
-    <PackageVersion Include="Microsoft.Agents.AI.Anthropic" Version="1.23.0-preview.260928.1" />
+    <PackageVersion Include="Microsoft.Agents.AI.Anthropic" Version="1.24.0" />
     <PackageVersion Include="Microsoft.Agents.AI.AzureAI" Version="1.0.0-rc5" />
-    <PackageVersion Include="Microsoft.Agents.AI.AzureAI.Persistent" Version="1.23.0-preview.260928.1" />
-    <PackageVersion Include="Microsoft.Agents.AI.CopilotStudio" Version="1.23.0-preview.260928.1" />
-    <PackageVersion Include="Microsoft.Agents.AI.DevUI" Version="1.23.0-preview.260928.1" />
-    <PackageVersion Include="Microsoft.Agents.AI.Foundry" Version="1.23.0-preview.260928.1" />
-    <PackageVersion Include="Microsoft.Agents.AI.Hosting" Version="1.23.0-preview.260928.1" />
-    <PackageVersion Include="Microsoft.Agents.AI.Hosting.A2A" Version="1.23.0-preview.260928.1" />
-    <PackageVersion Include="Microsoft.Agents.AI.Hosting.A2A.AspNetCore" Version="1.23.0-preview.260928.1" />
-    <PackageVersion Include="Microsoft.Agents.AI.Hosting.AGUI.AspNetCore" Version="1.23.0-preview.260928.1" />
+    <PackageVersion Include="Microsoft.Agents.AI.AzureAI.Persistent" Version="1.24.0-preview.261006.1" />
+    <PackageVersion Include="Microsoft.Agents.AI.CopilotStudio" Version="1.24.0-preview.261006.1" />
+    <PackageVersion Include="Microsoft.Agents.AI.DevUI" Version="1.24.0-preview.261006.1" />
+    <PackageVersion Include="Microsoft.Agents.AI.Foundry" Version="1.24.0-preview.261006.1" />
+    <PackageVersion Include="Microsoft.Agents.AI.Hosting" Version="1.24.0-preview.261006.1" />
+    <PackageVersion Include="Microsoft.Agents.AI.Hosting.A2A" Version="1.24.0-preview.261006.1" />
+    <PackageVersion Include="Microsoft.Agents.AI.Hosting.A2A.AspNetCore" Version="1.24.0-preview.261006.1" />
+    <PackageVersion Include="Microsoft.Agents.AI.Hosting.AGUI.AspNetCore" Version="1.24.0-preview.261006.1" />
     <PackageVersion Include="Microsoft.Agents.AI.Hosting.AzureFunctions" Version="1.16.0-preview.260922.1" />
-    <PackageVersion Include="Microsoft.Agents.AI.Hyperlight" Version="1.23.0-preview.260928.1" />
-    <PackageVersion Include="Microsoft.Agents.AI.OpenAI" Version="1.23.0" />
-    <PackageVersion Include="Microsoft.Agents.AI.Workflows" Version="1.23.0" />
+    <PackageVersion Include="Microsoft.Agents.AI.Hyperlight" Version="1.24.0-preview.261006.1" />
+    <PackageVersion Include="Microsoft.Agents.AI.OpenAI" Version="1.24.0" />
+    <PackageVersion Include="Microsoft.Agents.AI.Workflows" Version="1.24.0" />
     <PackageVersion Include="Microsoft.AI.Foundry.Local" Version="1.0.0" />
     <PackageVersion Include="Microsoft.AI.Foundry.Local.WinML" Version="1.2.4" />
     <PackageVersion Include="Microsoft.ApplicationInsights.WorkerService" Version="3.1.2" />
