@@ -155,6 +155,7 @@
   <Folder Name="/Tool Calling &amp; MCP/">
     <Project Path="src/ToolCalling.Advanced/ToolCalling.Advanced.csproj" Id="c8428d24-c838-4a61-ab71-ecffcde4b8d9" />
     <Project Path="src/ToolCalling.Basics/ToolCalling.Basics.csproj" Id="0157ef69-5a6c-4470-9a9d-43bca4ea9649" />
+    <Project Path="src/Toolcalling.ParallelSearch/Toolcalling.ParallelSearch.csproj" />
     <Project Path="src/Toolcalling.FromAnMcpServer/Toolcalling.FromAnMcpServer.csproj" Id="427477f9-a17e-4284-a66f-fea0f9411701" />
     <Project Path="src/ToolCalling.ServiceInjection/ToolCalling.ServiceInjection.csproj" Id="57fb73e9-36e2-4164-991a-594c0aa48918" />
   </Folder>
