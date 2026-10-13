@@ -14,8 +14,8 @@ AzureOpenAIConnection connection = new AzureOpenAIConnection
 
 AzureOpenAIAgentFactory agentFactory = new AzureOpenAIAgentFactory(connection);
 
-//await SkillsImplementation.Run(agentFactory);
-await ToolsImplementation.Run(agentFactory);
+await SkillsImplementation.Run(agentFactory);
+//await ToolsImplementation.Run(agentFactory);
 
 
 public static class WeatherStuff

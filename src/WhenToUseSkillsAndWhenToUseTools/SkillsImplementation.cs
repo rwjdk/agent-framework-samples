@@ -9,19 +9,26 @@ public static class SkillsImplementation
 {
     public static async Task Run(AzureOpenAIAgentFactory agentFactory)
     {
-        AgentInlineSkill skill = new(
-            name: "weather-skills",
-            description: "Use for weather-related stuff",
-            instructions: """
-                          Use 'get-weather-for-city' to get the weather
-                          Use resource 'how-we-predict-weather' to tell user how weather is predicted
-                          Use resource 'who-is-in-charge-of-the-weather' to tell who is in charge
-                          """);
-        skill.AddScript("get-weather-for-city", WeatherStuff.GetWeatherForCity);
-        skill.AddResource("how-we-predict-weather", "We look out the window and see it it rain or is sunny");
-        skill.AddResource("who-is-in-charge-of-the-weather", "Some odd guy in an orange sweater");
+        List<AgentSkill> agentSkills = [];
 
-        AgentSkillsProvider provider = new([skill], options: new AgentSkillsProviderOptions
+        int multiplier = 100;
+        for (int i = 0; i < multiplier; i++)
+        {
+            AgentInlineSkill skill = new(
+                name: $"weather-skills-{i}",
+                description: $"Use for weather-related stuff-{i}",
+                instructions: $"""
+                               Use 'get-weather-for-city' to get the weather-{i}
+                               Use resource 'how-we-predict-weather' to tell user how weather is predicted-{i}
+                               Use resource 'who-is-in-charge-of-the-weather' to tell who is in charge-{i}
+                               """);
+            skill.AddScript($"get-weather-for-city-{i}", WeatherStuff.GetWeatherForCity);
+            skill.AddResource($"how-we-predict-weather-{i}", $"We look out the window and see it it rain or is sunny-{i}");
+            skill.AddResource($"who-is-in-charge-of-the-weather-{i}", $"Some odd guy in an orange sweater-{i}");
+            agentSkills.Add(skill);
+        }
+
+        AgentSkillsProvider provider = new(agentSkills, options: new AgentSkillsProviderOptions
         {
             DisableLoadSkillApproval = true,
             DisableReadSkillResourceApproval = true,
@@ -32,7 +39,7 @@ public static class SkillsImplementation
         {
             Model = "gpt-6-luna",
             AIContextProviders = [provider],
-            RawHttpCallDetails = details => { Console.WriteLine(details.RequestData); },
+            //RawHttpCallDetails = details => { Console.WriteLine(details.RequestData); },
             RawToolCallDetails = Console.WriteLine
         });
 

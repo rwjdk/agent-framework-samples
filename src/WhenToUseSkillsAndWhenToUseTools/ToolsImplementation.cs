@@ -11,14 +11,20 @@ public static class ToolsImplementation
 {
     public static async Task Run(AzureOpenAIAgentFactory agentFactory)
     {
+        List<AITool> tools = [];
+
+        int multiplier = 10;
+        for (int i = 0; i < multiplier; i++)
+        {
+            tools.Add(AIFunctionFactory.Create(WeatherStuff.GetWeatherForCity, $"get-weather-for-city-{i}", "Get the weather for a given city"));
+            tools.Add(AIFunctionFactory.Create(HowToPredictWeather, $"how-we-predict-weather-{i}", "How we predict the Weather"));
+            tools.Add(AIFunctionFactory.Create(WhoIsInCharge, $"who-is-in-charge-of-the-weather-{i}", "Who is in charge of the weather"));
+        }
+
         AIAgent agent = agentFactory.CreateAgent(new AgentOptions
         {
             Model = "gpt-6-luna",
-            Tools = [
-                AIFunctionFactory.Create(WeatherStuff.GetWeatherForCity, "get-weather-for-city", "Get the weather for a given city"),
-                AIFunctionFactory.Create(HowToPredictWeather, "how-we-predict-weather", "How we predict the Weather"),
-                AIFunctionFactory.Create(WhoIsInCharge, "who-is-in-charge-of-the-weather", "Who is in charge of the weather"),
-            ],
+            Tools = tools,
             //RawHttpCallDetails = details => { Console.WriteLine(details.RequestData); },
             RawToolCallDetails = Console.WriteLine
         });
