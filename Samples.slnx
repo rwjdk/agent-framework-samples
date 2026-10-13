@@ -107,6 +107,7 @@
     <Project Path="src/TheDifferentAgents/TheDifferentAgents.csproj" Id="443e0db8-204b-403d-8145-7133496bf9c8" />
     <Project Path="src/TimeToSwitchToTheResponsesAPI/TimeToSwitchToTheResponsesAPI.csproj" Id="600a03fd-5a55-48a4-8326-c26215cb31c5" />
     <Project Path="src/ToolsVsMcpVsSkillsVsAIContextProviders/ToolsVsMcpVsSkillsVsAIContextProviders.csproj" Id="02549cd1-9d39-4822-8da1-a42e9575ee88" />
+    <Project Path="src/WhenToUseSkillsAndWhenToUseTools/WhenToUseSkillsAndWhenToUseTools.csproj" Id="d3205ccd-2c09-4fe0-8f37-70509494612b" />
   </Folder>
   <Folder Name="/RAG/">
     <Project Path="src/AdvancedRAGTechniques/AdvancedRAGTechniques.csproj" Id="222d4527-f7ca-4e02-a3ef-2f65d7f5014a" />
