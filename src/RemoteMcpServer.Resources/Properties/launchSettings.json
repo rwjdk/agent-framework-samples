@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "RemoteMcpServer.Resources": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:53472;http://localhost:53473"
+    }
+  }
+}

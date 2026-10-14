@@ -164,6 +164,7 @@
     <Project Path="src/ExposeYourAgentsAsMcp/ExposeYourAgentsAsRemoteMcp.csproj" Id="9129a0a9-8819-411a-8591-6c1cdeb3d2d4" />
     <Project Path="src/RemoteMcpServer.DynamicTexts/RemoteMcpServer.DynamicTexts.csproj" Id="9e188f13-3c43-4f2b-86d4-64a9849efde4" />
     <Project Path="src/RemoteMcpServer.DynamicTools/RemoteMcpServer.DynamicTools.csproj" />
+    <Project Path="src/RemoteMcpServer.Resources/RemoteMcpServer.Resources.csproj" />
   </Folder>
   <Folder Name="/Tool Calling &amp; MCP/MCP Servers/Auth/">
     <Project Path="src/McpAuthApiKey/McpAuthApiKey.csproj" Id="df5f2528-37c9-4c38-a093-6b28973cf707" />
