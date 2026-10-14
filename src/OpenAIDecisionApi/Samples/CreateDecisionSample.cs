@@ -1,6 +1,6 @@
 using System.ComponentModel;
 using AgentFrameworkToolkit.OpenAI;
-using AgentFrameworkToolkit.OpenAI.Decisions;
+using AgentFrameworkToolkit.Decisions;
 
 namespace OpenAIDecisionApi.Samples;
 
@@ -9,7 +9,7 @@ public static class CreateDecisionSample
     public static async Task RunAsync(string apiKey, string input)
     {
         OpenAIDecisionFactory decisionFactory = new(apiKey, "gpt-6-luna");
-        OpenAIDecisionResponse<CustomerSupportDecision> response =
+        DecisionResponse<CustomerSupportDecision> response =
             await decisionFactory.CreateDecisionAsync<CustomerSupportDecision>(new DecisionRequest
             {
                 Input = input

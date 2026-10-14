@@ -1,6 +1,6 @@
 using System.ComponentModel;
 using AgentFrameworkToolkit.OpenAI;
-using AgentFrameworkToolkit.OpenAI.Decisions;
+using AgentFrameworkToolkit.Decisions;
 using Microsoft.Extensions.AI;
 
 namespace OpenAIDecisionApi.Samples;
