@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculator</title>
+  <style>
+    :root { color-scheme: light dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 12px; font-family: var(--font-sans, system-ui, sans-serif); color: var(--color-text-primary, light-dark(#202020, #eeeeee)); background: var(--color-background-primary, light-dark(#ffffff, #202020)); }
+    main { max-width: 320px; margin: auto; padding: 4px; border: 1px solid var(--color-border-primary, light-dark(#cccccc, #444444)); border-radius: 8px; }
+    #expression { min-height: 24px; padding: 8px 12px 0; text-align: right; font-size: 13px; opacity: .7; overflow-wrap: anywhere; }
+    output { display: block; padding: 8px 12px 16px; text-align: right; font-size: 32px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+    #keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+    button { min-height: 52px; border: 0; border-radius: 5px; font: inherit; font-size: 20px; color: inherit; background: var(--color-background-secondary, light-dark(#eeeeee, #383b3c)); cursor: pointer; }
+    button:hover { filter: brightness(1.15); }
+    button:focus-visible { outline: 2px solid #44bfff; outline-offset: -3px; }
+    button:disabled { opacity: .5; cursor: wait; }
+    .operator { background: light-dark(#dddddd, #303334); }
+    .equals { background: #44bfff; color: #102030; }
+    .clear { grid-column: span 2; }
+    #status { min-height: 20px; margin: 8px 4px 0; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <main aria-label="Calculator">
+    <div id="expression"></div>
+    <output id="display" aria-live="polite">0</output>
+    <div id="keys">
+      <button class="clear" data-key="clear">C</button><button data-key="backspace" aria-label="Delete last digit">⌫</button><button class="operator" data-key="/" aria-label="Divide">÷</button>
+      <button data-key="7">7</button><button data-key="8">8</button><button data-key="9">9</button><button class="operator" data-key="*" aria-label="Multiply">×</button>
+      <button data-key="4">4</button><button data-key="5">5</button><button data-key="6">6</button><button class="operator" data-key="-" aria-label="Subtract">−</button>
+      <button data-key="1">1</button><button data-key="2">2</button><button data-key="3">3</button><button class="operator" data-key="+" aria-label="Add">+</button>
+      <button data-key="sign" aria-label="Change sign">+/−</button><button data-key="0">0</button><button data-key="." aria-label="Decimal point">.</button><button class="equals" data-key="=">=</button>
+    </div>
+    <div id="status" role="status"></div>
+  </main>
+  <script>
+    const display = document.getElementById("display");
+    const expression = document.getElementById("expression");
+    const status = document.getElementById("status");
+    let entry = "0", first = null, operation = null, replace = true, ready = false;
+    let nextId = 2;
+    const pending = new Map();
+
+    function send(message) {
+      window.parent.postMessage({ jsonrpc: "2.0", ...message }, "*");
+    }
+
+    function request(method, params) {
+      return new Promise((resolve, reject) => {
+        const id = nextId++;
+        const timer = setTimeout(() => { pending.delete(id); reject(new Error("Server request timed out.")); }, 15000);
+        pending.set(id, { resolve, reject, timer });
+        send({ id, method, params });
+      });
+    }
+
+    function showResult(response) {
+      if (response.isError) throw new Error(response.content?.find(item => item.type === "text")?.text ?? "Calculation failed.");
+      const data = response.structuredContent;
+      if (!data || data.result === undefined) return;
+      expression.textContent = data.first + " " + data.operation + " " + data.second + " =";
+      entry = String(data.result);
+      display.textContent = entry;
+      first = null;
+      operation = null;
+      replace = true;
+      status.textContent = "";
+      request("ui/update-model-context", {
+        content: [{ type: "text", text: "Calculator: " + data.first + " " + data.operation + " " + data.second + " = " + data.result }],
+        structuredContent: data
+      }).catch(error => { status.textContent = "Result calculated, but context update failed: " + error.message; });
+    }
+
+    async function calculate() {
+      if (first === null || operation === null || replace) return false;
+      if (!ready) { status.textContent = "Open this app in an MCP Apps-compatible host."; return false; }
+      const buttons = document.querySelectorAll("button");
+      buttons.forEach(button => button.disabled = true);
+      status.textContent = "Calculating…";
+      try {
+        showResult(await request("tools/call", { name: "Calculate", arguments: { first: Number(first), operation, second: Number(entry) } }));
+        return true;
+      } catch (error) {
+        status.textContent = error.message;
+        return false;
+      } finally {
+        buttons.forEach(button => button.disabled = false);
+      }
+    }
+
+    document.getElementById("keys").addEventListener("click", async event => {
+      const key = event.target.closest("button")?.dataset.key;
+      if (!key) return;
+      status.textContent = "";
+      if (/^[0-9.]$/.test(key)) {
+        if (replace) { entry = "0"; replace = false; }
+        if (key === ".") { if (!entry.includes(".")) entry += "."; }
+        else entry = entry === "0" ? key : entry === "-0" ? "-" + key : entry + key;
+      } else if (key === "clear") {
+        entry = "0"; first = null; operation = null; replace = true; expression.textContent = "";
+      } else if (key === "backspace") {
+        entry = entry.length > 1 ? entry.slice(0, -1) : "0";
+        if (entry === "-") entry = "0";
+      } else if (key === "sign") {
+        if (entry !== "0") entry = entry.startsWith("-") ? entry.slice(1) : "-" + entry;
+      } else if (key === "=") {
+        await calculate();
+      } else {
+        if (first !== null && !replace && !await calculate()) return;
+        first = entry; operation = key; replace = true;
+        expression.textContent = first + " " + operation;
+      }
+      display.textContent = entry;
+    });
+
+    function applyTheme(context) {
+      if (context?.theme === "light" || context?.theme === "dark") document.documentElement.style.colorScheme = context.theme;
+      for (const [name, value] of Object.entries(context?.styles?.variables ?? {})) {
+        if (name.startsWith("--") && typeof value === "string") document.documentElement.style.setProperty(name, value);
+      }
+    }
+
+    window.addEventListener("message", event => {
+      if (event.source !== window.parent || event.data?.jsonrpc !== "2.0") return;
+      const message = event.data;
+      if (message.id === 1 && message.result) {
+        ready = Boolean(message.result.hostCapabilities?.serverTools);
+        applyTheme(message.result.hostContext);
+        send({ method: "ui/notifications/initialized", params: {} });
+        send({ method: "ui/notifications/size-changed", params: { width: document.documentElement.scrollWidth, height: document.documentElement.scrollHeight } });
+        if (!ready) status.textContent = "This host does not support server tool calls.";
+      }
+      const call = pending.get(message.id);
+      if (call && !message.method) {
+        clearTimeout(call.timer);
+        pending.delete(message.id);
+        if (message.error) call.reject(new Error(message.error.message));
+        else call.resolve(message.result);
+      }
+      if (message.method === "ui/notifications/tool-result") {
+        try { showResult(message.params); } catch (error) { status.textContent = error.message; }
+      }
+      if (message.method === "ui/notifications/host-context-changed") applyTheme(message.params);
+      if (message.id === 1 && message.error) status.textContent = message.error.message;
+      if (message.id !== undefined && (message.method === "ping" || message.method === "ui/resource-teardown")) send({ id: message.id, result: {} });
+    });
+
+    if (window.parent !== window) {
+      send({ id: 1, method: "ui/initialize", params: {
+        protocolVersion: "2026-01-26", appInfo: { name: "Mini Calculator", version: "1.0.0" }, appCapabilities: { availableDisplayModes: ["inline"] }
+      } });
+    } else status.textContent = "Open this app in an MCP Apps-compatible host.";
+  </script>
+</body>
+</html>

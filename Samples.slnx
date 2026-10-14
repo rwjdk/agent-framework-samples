@@ -161,6 +161,7 @@
     <Project Path="src/ToolCalling.ServiceInjection/ToolCalling.ServiceInjection.csproj" Id="57fb73e9-36e2-4164-991a-594c0aa48918" />
   </Folder>
   <Folder Name="/Tool Calling &amp; MCP/MCP Servers/">
+    <Project Path="src/McpApp.Calculator/McpApp.Calculator.csproj" />
     <Project Path="src/ExposeYourAgentsAsMcp/ExposeYourAgentsAsRemoteMcp.csproj" Id="9129a0a9-8819-411a-8591-6c1cdeb3d2d4" />
     <Project Path="src/RemoteMcpServer.DynamicTexts/RemoteMcpServer.DynamicTexts.csproj" Id="9e188f13-3c43-4f2b-86d4-64a9849efde4" />
     <Project Path="src/RemoteMcpServer.DynamicTools/RemoteMcpServer.DynamicTools.csproj" />
