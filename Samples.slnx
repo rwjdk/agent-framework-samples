@@ -70,6 +70,7 @@
     <Project Path="src/AgentInputData/AgentInputData.csproj" Id="56751bff-8f82-4754-9d16-6f46b0b82fe1" />
   </Folder>
   <Folder Name="/Microsoft Foundry (AI Foundry)/">
+    <Project Path="src/MicrosoftFoundry.Toolbox/MicrosoftFoundry.Toolbox.csproj" />
     <Project Path="src/MicrosofFoundry.Agents.Basic/MicrosofFoundry.Agents.Basic.csproj" Id="05b4bf60-39b8-47ad-895f-d32de63038ff" />
   </Folder>
   <Folder Name="/Microsoft Foundry (AI Foundry)/Classic Agents (Legacy AI Foundry, do not use anymore)/">
