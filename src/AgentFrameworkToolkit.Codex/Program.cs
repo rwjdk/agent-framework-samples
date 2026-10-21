@@ -24,6 +24,7 @@ CodexAgent agent = factory.CreateAgent(new CodexAgentOptions
     WorkingDirectory = workPath, //Choose any local folder... Will pick up Agents.md and Skills in that folder
     Model = "gpt-6.1-sol",
     ReasoningEffort = CodexReasoningEffort.Low,
+    ServiceTier = CodexServiceTier.Normal,
     Permissions = CodexPermissions.WorkspaceWrite, //What type of access should Codex Have
     ApprovalPolicy = CodexApprovalPolicy.OnRequest, //Set to Never if you never want approval requests
     Instructions = "You are a nice AI", //Additional instructions beyond Agents.md file
