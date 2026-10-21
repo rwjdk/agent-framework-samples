@@ -19,6 +19,7 @@
   </Folder>
   <Folder Name="/AgentFrameworkToolkit/">
     <Project Path="src/AgentFrameworkToolkit.AsAIAgentComparison/AgentFrameworkToolkit.AsAIAgentComparison.csproj" />
+    <Project Path="src/AgentFrameworkToolkit.Codex/AgentFrameworkToolkit.CodexForMAF.csproj" Id="b5518657-bc5a-49e3-b24f-f4bc42acbfda" />
     <Project Path="src/AgentFrameworkToolkit.EasierAgents/AgentFrameworkToolkit.EasierAgents.csproj" Id="d0bdcd59-b811-4223-9b83-9b5e266f2dc2" />
     <Project Path="src/AgentFrameworkToolkit.EasierBatching/AgentFrameworkToolkit.EasierBatching.csproj" Id="e8a05677-5879-4f4b-bd85-ff7ec15d73da" />
     <Project Path="src/AgentFrameworkToolkit.EasierTools/AgentFrameworkToolkit.EasierTools.csproj" Id="79fbfdda-a4a6-4c73-b8ed-f0ad8d13e3bb" />
@@ -194,6 +195,9 @@
     <Project Path="src/ZeroToFirstAgent.GitHubModels/ZeroToFirstAgent.GitHubModels.csproj" Id="7b3f5942-8fc7-4f7b-94b3-fd21f32ebb44" />
     <Project Path="src/ZeroToFirstAgent.GoogleGemini/ZeroToFirstAgent.GoogleGemini.csproj" Id="eb32963b-fc60-4285-8d93-df88ed73e247" />
     <Project Path="src/ZeroToFirstAgent.Mistral/ZeroToFirstAgent.Mistral.csproj" Id="bd8b351f-7e5b-47b8-9c89-4d472ad49dd5" />
+  </Folder>
+  <Folder Name="/ZeroToFirstAgent/Non-OpenAI Based/Harness/">
+    <Project Path="src/ZeroToFirstAgent.Codex/ZeroToFirstAgent.Codex.csproj" Id="7fe09d17-83d2-48da-85ec-245f8ed0477d" />
   </Folder>
   <Folder Name="/ZeroToFirstAgent/Non-OpenAI Based/Offline/">
     <Project Path="src/Onnx/Onnx.csproj" Id="5c212820-cea3-4cc6-8aae-d7418b304a11" />
