@@ -12,7 +12,7 @@ using Shared;
 
 Utils.Init("Zero To FirstAgent - GitHub Copilot (Local)");
 
-string gitHubToken = "";
+string gitHubToken = SecretsManager.GetSecrets().GitHubPatToken;
 await using CopilotClient client = new(new CopilotClientOptions
 {
     UseLoggedInUser = false,
