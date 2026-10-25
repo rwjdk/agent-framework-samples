@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 
-namespace ComputerUse;
+namespace OpenAIResponsesApi.ComputerUse.PC;
 
 internal static class ProcessTools
 {

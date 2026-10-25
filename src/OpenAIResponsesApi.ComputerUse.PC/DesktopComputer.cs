@@ -2,24 +2,26 @@ using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Text.Json;
+using Shared;
 
-namespace ComputerUse;
+namespace OpenAIResponsesApi.ComputerUse.PC;
 
 internal sealed class DesktopComputer
 {
-    private readonly Rectangle desktopBounds;
+    private readonly Rectangle _desktopBounds;
 
     public DesktopComputer()
     {
         Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
-        desktopBounds = SystemInformation.VirtualScreen;
+        _desktopBounds = SystemInformation.VirtualScreen;
     }
 
     public Task<byte[]> ScreenshotAsync()
     {
-        using Bitmap bitmap = new(desktopBounds.Width, desktopBounds.Height);
+        Utils.Red("Take Screenshot");
+        using Bitmap bitmap = new(_desktopBounds.Width, _desktopBounds.Height);
         using (Graphics graphics = Graphics.FromImage(bitmap))
-            graphics.CopyFromScreen(desktopBounds.Location, Point.Empty, desktopBounds.Size);
+            graphics.CopyFromScreen(_desktopBounds.Location, Point.Empty, _desktopBounds.Size);
         using MemoryStream stream = new();
         bitmap.Save(stream, ImageFormat.Png);
         return Task.FromResult(stream.ToArray());
@@ -133,7 +135,7 @@ internal sealed class DesktopComputer
 
     private void Move(int x, int y)
     {
-        if (!SetCursorPos(desktopBounds.Left + x, desktopBounds.Top + y))
+        if (!SetCursorPos(_desktopBounds.Left + x, _desktopBounds.Top + y))
             throw new Win32Exception(Marshal.GetLastWin32Error());
     }
 
