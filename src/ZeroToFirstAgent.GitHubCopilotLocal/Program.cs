@@ -1,9 +1,8 @@
 /* Steps:
- * 1: Install Copilot CLI: winget install GitHub.Copilot
- * 2: Run copilot and enter /login to sign in with your Copilot account.
- * 3: Add NuGet package Microsoft.Agents.AI.GitHub.Copilot.
- * 4: Create and start a CopilotClient, then call AsAIAgent with your model.
- * 5: Call RunAsync or RunStreamingAsync.
+ * 1: Login into GH or get a Token
+ * 2: Add NuGet package Microsoft.Agents.AI.GitHub.Copilot.
+ * 3: Create and start a CopilotClient, then call AsAIAgent with your model.
+ * 4: Call RunAsync or RunStreamingAsync.
  */
 
 using GitHub.Copilot;
@@ -13,7 +12,7 @@ using Shared;
 
 Utils.Init("Zero To FirstAgent - GitHub Copilot (Local)");
 
-string gitHubToken = SecretsManager.GetSecrets().GitHubPatToken;
+string gitHubToken = "";
 await using CopilotClient client = new(new CopilotClientOptions
 {
     UseLoggedInUser = false,
