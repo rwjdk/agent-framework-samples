@@ -1,43 +1,43 @@
-using System.ComponentModel;
 using Microsoft.Playwright;
+using Shared;
+using System.ComponentModel;
 
-namespace ComputerUse;
+namespace BrowserAutomation.Playwright;
 
 internal sealed class BrowserTools(IPage page)
 {
-    [Description("Navigate to a URL and return the loaded page's structure.")]
+    [Description("Navigate to a URL and return the loaded page")]
     public async Task<string> Navigate(string url)
     {
-        Console.WriteLine($"Navigate to {url}");
+        Utils.Gray($"Navigate to {url}");
         await page.GotoAsync(url, new() { WaitUntil = WaitUntilState.DOMContentLoaded, Timeout = 30000 });
         return await ReadPage();
     }
 
-    [Description("Read the current page's accessibility tree, including headings, labeled fields, buttons, and status text. Use this to discover controls and verify results.")]
+    [Description("Read the current page. Use this to discover controls and verify results.")]
     public async Task<string> ReadPage()
     {
         string snapshot = await page.Locator("body").AriaSnapshotAsync();
-        Console.WriteLine($"Page structure:{Environment.NewLine}{snapshot}");
         return $"URL: {page.Url}{Environment.NewLine}{snapshot}";
     }
 
-    [Description("Fill a text field using its exact accessible label from the current page structure. Returns the updated page structure.")]
+    [Description("Fill a text field. Returns the updated page structure.")]
     public async Task<string> FillField(
         [Description("The exact label of the field, as observed on the page.")] string label,
         [Description("The text to enter into the field.")] string value)
     {
-        Console.WriteLine($"Fill field '{label}' with '{value}'");
+        Utils.Gray($"Fill field '{label}' with value '{value}'");
         ILocator field = page.GetByLabel(label, new() { Exact = true });
         await ShowCursorAsync(field);
         await field.FillAsync(value);
         return await ReadPage();
     }
 
-    [Description("Click a button using its exact accessible name from the current page structure. Returns the updated page structure.")]
+    [Description("Click a button. Returns the updated page structure.")]
     public async Task<string> ClickButton(
-        [Description("The exact accessible name of the button, as observed on the page.")] string name)
+        [Description("The accessible name of the button, as observed on the page.")] string name)
     {
-        Console.WriteLine($"Click button '{name}'");
+        Utils.Gray($"Click button '{name}'");
         ILocator button = page.GetByRole(AriaRole.Button, new() { Name = name, Exact = true });
         await ShowCursorAsync(button);
         await button.ClickAsync();
@@ -46,9 +46,10 @@ internal sealed class BrowserTools(IPage page)
 
     [Description("Press a key in a field identified by its exact accessible label. Use Enter to submit a search. Returns the updated page structure.")]
     public async Task<string> PressKey(
-        [Description("The exact accessible label of the field, as observed on the page.")] string label,
+        [Description("The accessible label of the field, as observed on the page.")] string label,
         [Description("The Playwright key name, for example Enter.")] string key)
     {
+        Utils.Gray($"Press key {key} in field '{label}'");
         ILocator field = page.GetByLabel(label, new() { Exact = true });
         await ShowCursorAsync(field);
         await field.PressAsync(key);

@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Computer use demo</title>
+<style>
+body{font:24px system-ui;max-width:650px;margin:60px auto}input,button{font:inherit;padding:12px}label{display:block;margin:20px 0}
+#agent-cursor{position:fixed;left:24px;top:24px;z-index:2147483647;pointer-events:none;color:#7c3aed;filter:drop-shadow(0 2px 3px #0005)}
+#agent-cursor span{position:absolute;left:22px;top:24px;background:#7c3aed;color:white;border-radius:5px;padding:3px 7px;font:13px system-ui;white-space:nowrap}
+</style>
+<div id="agent-cursor" aria-hidden="true">
+<svg width="28" height="34" viewBox="0 0 28 34"><path d="M2 2 L2 26 L9 20 L15 32 L21 29 L15 18 L25 18 Z" fill="currentColor" stroke="white" stroke-width="2"/></svg><span>AI agent</span>
+</div>
+<h1>Local newsletter demo</h1>
+<form onsubmit="event.preventDefault();document.querySelector('#result').textContent='Subscribed: '+document.querySelector('#name').value+' — '+document.querySelector('#email').value">
+<label>Name <input id="name" required></label>
+<label>Email <input id="email" type="email" required></label>
+<button>Subscribe</button></form><p id="result" role="status"></p></html>

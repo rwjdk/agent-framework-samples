@@ -45,6 +45,9 @@
   <Folder Name="/CodeAct (Hyperlight)/">
     <Project Path="src/Hyperlight/Hyperlight.Intro.csproj" Id="d564a0d3-b27d-4235-9e00-afbfedc5f0d1" />
   </Folder>
+  <Folder Name="/Computer Use/">
+    <Project Path="src/BrowserAutomation.Playwright/BrowserAutomation.Playwright.csproj" />
+  </Folder>
   <Folder Name="/Conversations (AgentSession)/">
     <Project Path="src/ChatHistoryReducer.Custom/ChatHistoryReducer.Custom.csproj" Id="3e587209-939e-4a10-b3d1-11890a5d90a2" />
     <Project Path="src/ChatHistoryReducer/ChatHistoryReducer.csproj" Id="96cb4db1-2675-4f7d-a5d8-960f07b7e0fd" />
@@ -83,7 +86,6 @@
     <Project Path="src/AzureAiFoundry.WebSearch/AzureAiFoundry.WebSearch.csproj" Id="70bb89f4-0795-4b8e-ad3f-858f035901b3" />
   </Folder>
   <Folder Name="/OpenAi ResponesApi/">
-    <Project Path="src/OpenAIResponsesApi.ComputerUse.Browser/OpenAIResponsesApi.ComputerUse.Browser.csproj" />
     <Project Path="src/OpenAIResponsesApi.ComputerUse.PC/OpenAIResponsesApi.ComputerUse.PC.csproj" />
     <File Path="ResponsesAPIFeatureMatrixSupport.png" />
     <Project Path="src/AllowBackgroundResponses/AllowBackgroundResponses.csproj" Id="816a1755-2efb-42d2-af96-408282ee50ea" />
