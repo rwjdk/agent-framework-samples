@@ -83,6 +83,8 @@
     <Project Path="src/AzureAiFoundry.WebSearch/AzureAiFoundry.WebSearch.csproj" Id="70bb89f4-0795-4b8e-ad3f-858f035901b3" />
   </Folder>
   <Folder Name="/OpenAi ResponesApi/">
+    <Project Path="src/OpenAIResponsesApi.ComputerUse.Browser/OpenAIResponsesApi.ComputerUse.Browser.csproj" />
+    <Project Path="src/OpenAIResponsesApi.ComputerUse.PC/OpenAIResponsesApi.ComputerUse.PC.csproj" />
     <File Path="ResponsesAPIFeatureMatrixSupport.png" />
     <Project Path="src/AllowBackgroundResponses/AllowBackgroundResponses.csproj" Id="816a1755-2efb-42d2-af96-408282ee50ea" />
     <Project Path="src/OpenAIResponsesApi.CodeInterpreter/OpenAIResponsesApi.CodeInterpreter.csproj" Id="1d0ae3d5-3cb0-439c-acf2-311d15621421" />
@@ -197,6 +199,7 @@
     <Project Path="src/ZeroToFirstAgent.Mistral/ZeroToFirstAgent.Mistral.csproj" Id="bd8b351f-7e5b-47b8-9c89-4d472ad49dd5" />
   </Folder>
   <Folder Name="/ZeroToFirstAgent/Non-OpenAI Based/Harness/">
+    <Project Path="src/ZeroToFirstAgent.GitHubCopilotLocal/ZeroToFirstAgent.GitHubCopilotLocal.csproj" />
     <Project Path="src/ZeroToFirstAgent.Codex/ZeroToFirstAgent.Codex.csproj" Id="7fe09d17-83d2-48da-85ec-245f8ed0477d" />
   </Folder>
   <Folder Name="/ZeroToFirstAgent/Non-OpenAI Based/Offline/">
