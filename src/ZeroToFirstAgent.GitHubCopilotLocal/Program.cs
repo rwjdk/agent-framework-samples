@@ -13,7 +13,12 @@ using Shared;
 
 Utils.Init("Zero To FirstAgent - GitHub Copilot (Local)");
 
-await using CopilotClient client = new();
+string gitHubToken = SecretsManager.GetSecrets().GitHubPatToken;
+await using CopilotClient client = new(new CopilotClientOptions
+{
+    UseLoggedInUser = false,
+    GitHubToken = gitHubToken
+});
 await client.StartAsync();
 
 AIAgent agent = client.AsAIAgent(new SessionConfig
