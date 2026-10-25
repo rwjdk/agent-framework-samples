@@ -8,7 +8,7 @@ namespace Shared;
 
 public static class ClientHelper
 {
-    public static OpenAIClient GetOpenAIClient(bool showRawCall, RawCallOptions? rawCall = null)
+    public static OpenAIClient GetOpenAIClient(bool showRawCall = false, RawCallOptions? rawCall = null)
     {
         string apiKey = SecretsManager.GetOpenAICredentials();
         if (!showRawCall)

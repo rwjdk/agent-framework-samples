@@ -12,7 +12,11 @@ using System.ClientModel;
 using System.Text;
 using ModelContextProtocol.Client;
 using OpenAI.Chat;
+using OpenAI.Responses;
+using Shared.Extensions;
 using ChatMessage = Microsoft.Extensions.AI.ChatMessage;
+#pragma warning disable MEAI001
+#pragma warning disable OPENAI001
 
 Secrets secrets = SecretsManager.GetSecrets();
 
@@ -30,12 +34,21 @@ await using McpClient gitHubMcpClient = await McpClient.CreateAsync(new HttpClie
 
 IList<McpClientTool> toolsInGitHubMcp = await gitHubMcpClient.ListToolsAsync();
 
+IEnumerable<AITool> aiTools = toolsInGitHubMcp.Cast<AITool>();
+HostedToolSearchTool searchTool = new HostedToolSearchTool
+{
+    Namespace = "github",
+    NamespaceDescription =
+        "GitHub tools for searching repositories and code, reading files, " +
+        "managing issues and pull requests, reviewing changes, " +
+        "and inspecting branches, commits, and workflow runs."
+};
 AIAgent agent = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient()
     .AsAIAgent(
         instructions: "You are a GitHub Expert",
-        tools: toolsInGitHubMcp.Cast<AITool>().ToList()
-    )
+        tools: [..aiTools.ToList(),searchTool]
+    , model: "gpt-6-luna")
     .AsBuilder()
     .Use(FunctionCallMiddleware) //Middleware
     .Build();
@@ -50,6 +63,7 @@ while (true)
     AgentResponse response = await agent.RunAsync(message, session);
 
     Console.WriteLine(response);
+    response.Usage.OutputAsInformation();
 
     Utils.Separator();
 }

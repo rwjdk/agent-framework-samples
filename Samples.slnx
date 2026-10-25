@@ -75,8 +75,8 @@
     <Project Path="src/AgentInputData/AgentInputData.csproj" Id="56751bff-8f82-4754-9d16-6f46b0b82fe1" />
   </Folder>
   <Folder Name="/Microsoft Foundry (AI Foundry)/">
-    <Project Path="src/MicrosoftFoundry.Toolbox/MicrosoftFoundry.Toolbox.csproj" />
     <Project Path="src/MicrosofFoundry.Agents.Basic/MicrosofFoundry.Agents.Basic.csproj" Id="05b4bf60-39b8-47ad-895f-d32de63038ff" />
+    <Project Path="src/MicrosoftFoundry.Toolbox/MicrosoftFoundry.Toolbox.csproj" />
   </Folder>
   <Folder Name="/Microsoft Foundry (AI Foundry)/Classic Agents (Legacy AI Foundry, do not use anymore)/">
     <Project Path="src/AzureAiFoundry.Administration/AzureAiFoundry.Administration.csproj" Id="968b00b8-e6a9-4891-95d9-adc89a34ae2a" />
@@ -160,14 +160,15 @@
     <Project Path="src/UseToonToSaveTokens/UseToonToSaveTokens.csproj" Id="a84ca59e-b13d-4c0f-aaed-ff183d09d198" />
   </Folder>
   <Folder Name="/Tool Calling &amp; MCP/">
+    <Project Path="src/ResponsesApi.ToolSearch/ToolSearch.csproj" Id="0fefbbe8-2ed9-41a9-a8c1-370b134f34b0" />
     <Project Path="src/ToolCalling.Advanced/ToolCalling.Advanced.csproj" Id="c8428d24-c838-4a61-ab71-ecffcde4b8d9" />
     <Project Path="src/ToolCalling.Basics/ToolCalling.Basics.csproj" Id="0157ef69-5a6c-4470-9a9d-43bca4ea9649" />
     <Project Path="src/Toolcalling.FromAnMcpServer/Toolcalling.FromAnMcpServer.csproj" Id="427477f9-a17e-4284-a66f-fea0f9411701" />
     <Project Path="src/ToolCalling.ServiceInjection/ToolCalling.ServiceInjection.csproj" Id="57fb73e9-36e2-4164-991a-594c0aa48918" />
   </Folder>
   <Folder Name="/Tool Calling &amp; MCP/MCP Servers/">
-    <Project Path="src/McpApp.Calculator/McpApp.Calculator.csproj" />
     <Project Path="src/ExposeYourAgentsAsMcp/ExposeYourAgentsAsRemoteMcp.csproj" Id="9129a0a9-8819-411a-8591-6c1cdeb3d2d4" />
+    <Project Path="src/McpApp.Calculator/McpApp.Calculator.csproj" />
     <Project Path="src/RemoteMcpServer.DynamicTexts/RemoteMcpServer.DynamicTexts.csproj" Id="9e188f13-3c43-4f2b-86d4-64a9849efde4" />
     <Project Path="src/RemoteMcpServer.DynamicTools/RemoteMcpServer.DynamicTools.csproj" />
     <Project Path="src/RemoteMcpServer.Resources/RemoteMcpServer.Resources.csproj" />
@@ -201,8 +202,8 @@
     <Project Path="src/ZeroToFirstAgent.Mistral/ZeroToFirstAgent.Mistral.csproj" Id="bd8b351f-7e5b-47b8-9c89-4d472ad49dd5" />
   </Folder>
   <Folder Name="/ZeroToFirstAgent/Non-OpenAI Based/Harness/">
-    <Project Path="src/ZeroToFirstAgent.GitHubCopilotLocal/ZeroToFirstAgent.GitHubCopilotLocal.csproj" />
     <Project Path="src/ZeroToFirstAgent.Codex/ZeroToFirstAgent.Codex.csproj" Id="7fe09d17-83d2-48da-85ec-245f8ed0477d" />
+    <Project Path="src/ZeroToFirstAgent.GitHubCopilotLocal/ZeroToFirstAgent.GitHubCopilotLocal.csproj" />
   </Folder>
   <Folder Name="/ZeroToFirstAgent/Non-OpenAI Based/Offline/">
     <Project Path="src/Onnx/Onnx.csproj" Id="5c212820-cea3-4cc6-8aae-d7418b304a11" />
