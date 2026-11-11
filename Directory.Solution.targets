@@ -1,0 +1,8 @@
+<Project>
+  <Target Name="_RecursiveGenerateFunctionsExtensionProject" AfterTargets="Restore">
+    <MSBuild Projects="@(ProjectReference)" Targets="_RecursiveGenerateFunctionsExtensionProject"
+             SkipNonexistentProjects="true" SkipNonexistentTargets="true" />
+    <MSBuild Projects="@(ProjectReference)" Targets="GenerateFunctionsExtensionProject"
+             SkipNonexistentProjects="true" SkipNonexistentTargets="true" />
+  </Target>
+</Project>

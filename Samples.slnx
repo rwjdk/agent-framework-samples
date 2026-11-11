@@ -57,10 +57,6 @@
   <Folder Name="/DevUI/">
     <Project Path="src/DevUI/DevUI.csproj" />
   </Folder>
-  <Folder Name="/DurableAgentFramework/">
-    <Project Path="src/DurableAgentFramework.Console/DurableAgentFramework.ConsoleApp.csproj" />
-    <Project Path="src/DurableAgentFramework.Functions/DurableAgentFramework.Functions.csproj" />
-  </Folder>
   <Folder Name="/DurableAgentFramework/Legacy/">
     <Project Path="src/FunctionApp.HelloAI/FunctionApp.HelloAI.csproj" Id="967397ed-0e3d-4a50-ac57-076a6b077b7f" />
   </Folder>
@@ -71,6 +67,7 @@
   </Folder>
   <Folder Name="/Image Generation (Not using Agent Framework)/">
     <File Path="Anthropic-Claude.txt" />
+    <Project Path="src/ImageGeneration.AnimatedGif/ImageGeneration.AnimatedGif.csproj" />
     <Project Path="src/ImageGeneration.GoogleGemini/ImageGeneration.GoogleGemini.csproj" Id="f83c1270-a47d-462b-92c2-af748589af38" />
     <Project Path="src/ImageGeneration.XAiGrok/ImageGeneration.XAiGrok.csproj" Id="c03ed37b-f16b-450f-a0cf-bdc4ebfb77f0" />
     <Project Path="src/ImageGeneration/ImageGeneration.OpenAi.csproj" Id="89214eeb-354b-4726-a3c1-39766ef219e7" />

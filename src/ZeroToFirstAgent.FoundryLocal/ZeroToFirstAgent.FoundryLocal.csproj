@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
-    <TargetFramework>net10.0-windows10.0.26100</TargetFramework>
+    <TargetFramework>net11.0-windows10.0.26100</TargetFramework>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <PropertyGroup Condition="!$([MSBuild]::IsOSPlatform('Windows'))">
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
   </PropertyGroup>
 
 	<ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
