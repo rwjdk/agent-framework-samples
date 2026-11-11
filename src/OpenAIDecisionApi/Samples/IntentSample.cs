@@ -10,6 +10,7 @@ public static class IntentSample
     public static async Task RunAsync(string apiKey, string input)
     {
         OpenAIAgentFactory agentFactory = new(apiKey);
+        agentFactory.Connection.DefaultClientType = global::AgentFrameworkToolkit.OpenAI.ClientType.ResponsesApi;
 
         OpenAIDecisionFactory decisionFactory = new(apiKey, "gpt-6-luna");
 

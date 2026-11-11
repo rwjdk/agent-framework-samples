@@ -39,7 +39,7 @@ AIToolsFactory aiToolsFactory = new(); //Dependency Injection version: builder.S
 
 tools = aiToolsFactory.GetTools(typeof(FileSystemToolsAfter));
 
-//or 
+//or
 
 FileSystemToolsAfter instance = new();
 tools = aiToolsFactory.GetTools(instance); //If you do not have an empty constructor
@@ -57,6 +57,7 @@ McpClientTools toolsFromLocalMcp = await aiToolsFactory.GetToolsFromLocalMcpAsyn
 
 AzureOpenAIAgentFactory agentFactory = new(new AzureOpenAIConnection
 {
+    DefaultClientType = ClientType.ResponsesApi,
     Endpoint = secrets.AzureOpenAiEndpoint,
     ApiKey = secrets.AzureOpenAiKey,
     NetworkTimeout = TimeSpan.FromMinutes(5)
@@ -64,7 +65,7 @@ AzureOpenAIAgentFactory agentFactory = new(new AzureOpenAIConnection
 
 AzureOpenAIAgent agent = agentFactory.CreateAgent(new AgentOptions
 {
-    Model = OpenAIChatModels.Gpt5Mini,
+    Model = OpenAIChatModels.Gpt6Luna,
     Instructions = "You are a File Expert. When working with files you need to provide the full path; not just the filename",
     ReasoningEffort = OpenAIReasoningEffort.Low,
     Tools = tools,

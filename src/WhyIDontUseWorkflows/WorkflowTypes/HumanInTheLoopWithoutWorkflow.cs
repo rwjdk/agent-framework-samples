@@ -1,4 +1,7 @@
-﻿using Microsoft.Agents.AI;
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+using Microsoft.Agents.AI;
 using OpenAI;
 using OpenAI.Chat;
 using Shared;
@@ -12,7 +15,7 @@ public static class HumanInTheLoopWithoutWorkflow
     {
         Console.Clear();
         OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
-        ChatClient chatClient = client.GetChatClient("gpt-4.1");
+        IChatClient chatClient = client.GetResponsesClient().AsIChatClient("gpt-6-luna");
         ChatClientAgent agent = chatClient.AsAIAgent(instructions: "You are the judge in a guessing game where it is about guessing animals. " +
                                                                    "Each hint should only give one fact");
 

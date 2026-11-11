@@ -1,88 +1,69 @@
-﻿//YouTube video that cover this sample: https://youtu.be/OeAqD7lCSGg
-
-using Azure;
-using Azure.AI.Agents.Persistent;
+﻿using Azure.AI.Projects;
 using Azure.Identity;
+
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
+using OpenAI;
+using OpenAI.Files;
+using OpenAI.VectorStores;
 using Shared;
+using Shared.Extensions;
+using System.ClientModel;
+using OpenAI.Responses;
 
+#pragma warning disable OPENAI001
 Console.Clear();
-
 Secrets secrets = SecretsManager.GetSecrets();
-PersistentAgentsClient client = new(secrets.MicrosoftFoundryEndpoint, new AzureCliCredential());
+AIProjectClient projectClient = new(new Uri(secrets.MicrosoftFoundryEndpoint), new AzureCliCredential());
+OpenAIClient client = projectClient.ProjectOpenAIClient;
 
-Response<PersistentAgent>? aiFoundryAgent = null;
-ChatClientAgentSession? chatClientAgentSession = null;
+OpenAIFileClient fileClient = client.GetOpenAIFileClient();
+VectorStoreClient vectorStoreClient = client.GetVectorStoreClient();
+
+string? fileId = null;
 string? vectorStoreId = null;
 try
 {
     string filename = "secretData.pdf";
-    Response<PersistentAgentFileInfo> file = await client.Files.UploadFileAsync(Path.Combine("Data", filename), PersistentAgentFilePurpose.Agents);
+    byte[] fileBytes = await File.ReadAllBytesAsync(Path.Combine("Data", filename));
+    ClientResult<OpenAIFile> uploadedFile = await fileClient.UploadFileAsync(new BinaryData(fileBytes), filename, FileUploadPurpose.UserData);
+    fileId = uploadedFile.Value.Id;
 
-    Response<PersistentAgentsVectorStore> vectorStore = await client.VectorStores.CreateVectorStoreAsync(name: "MyVectorStore");
-    vectorStoreId = vectorStore.Value.Id;
-    await client.VectorStores.CreateVectorStoreFileAsync(vectorStore.Value.Id, file.Value.Id);
-
-    aiFoundryAgent = await client.Administration.CreateAgentAsync(
-        "gpt-4.1",
-        "FileAgent",
-        "",
-        "You are a File-expert. ALWAYS use tools to answer all questions (do not use you world-knowledge)",
-        toolResources: new ToolResources
-        {
-            FileSearch = new FileSearchToolResource
-            {
-                VectorStoreIds = { vectorStore.Value.Id },
-            }
-        },
-        tools: new List<ToolDefinition>
-        {
-            new FileSearchToolDefinition
-            {
-                FileSearch = new FileSearchToolDefinitionDetails
-                {
-                    MaxNumResults = 10
-                }
-            }
-        });
-
-    AIAgent agent = (await client.GetAIAgentAsync(aiFoundryAgent.Value.Id));
-
-    AgentSession session = await agent.CreateSessionAsync();
-
-    AgentResponse response = await agent.RunAsync("What is word of the day?", session);
-    Console.WriteLine(response);
-    foreach (ChatMessage message in response.Messages)
+    ClientResult<VectorStore> vectorStore = await vectorStoreClient.CreateVectorStoreAsync(options: new VectorStoreCreationOptions
     {
-        foreach (AIContent content in message.Contents)
-        {
-            foreach (AIAnnotation annotation in content.Annotations ?? [])
-            {
-                if (annotation is CitationAnnotation citationAnnotation)
+        Name = "MyVectorStore"
+    });
+    vectorStoreId = vectorStore.Value.Id;
+
+    await vectorStoreClient.AddFileToVectorStoreAsync(vectorStore.Value.Id, uploadedFile.Value.Id);
+
+
+    AIAgent agent = client
+        .GetResponsesClient()
+        .AsAIAgent(
+            model: "gpt-6-luna",
+            instructions: "Only use tools. Never your world-knowledge",
+            tools:
+            [
+                new HostedFileSearchTool
                 {
-                    string? fileId = citationAnnotation.FileId;
-                    Response<PersistentAgentFileInfo> fileReferenced = await client.Files.GetFileAsync(fileId);
-                    Utils.Yellow("File referenced: " + fileReferenced.Value.Filename);
+                    Inputs = [new HostedFileContent(uploadedFile.Value.Id), new HostedVectorStoreContent(vectorStore.Value.Id)]
                 }
-            }
-        }
-    }
+            ]);
+
+    AgentResponse response = await agent.RunAsync("What is word of the day?");
+    Console.Write(response);
+    response.Usage.OutputAsInformation();
 }
 finally
 {
     if (vectorStoreId != null)
     {
-        await client.VectorStores.DeleteVectorStoreAsync(vectorStoreId);
+        await vectorStoreClient.DeleteVectorStoreAsync(vectorStoreId);
     }
 
-    if (chatClientAgentSession != null)
+    if (fileId != null)
     {
-        await client.Threads.DeleteThreadAsync(chatClientAgentSession.ConversationId);
-    }
-
-    if (aiFoundryAgent != null)
-    {
-        await client.Administration.DeleteAgentAsync(aiFoundryAgent.Value.Id);
+        await fileClient.DeleteFileAsync(fileId);
     }
 }

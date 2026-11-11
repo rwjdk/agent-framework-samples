@@ -14,7 +14,7 @@ using Microsoft.Agents.AI.Foundry;
 #pragma warning disable OPENAI001
 
 string url = "todo";
-string modelToUse = "gpt-5.6-luna";
+string modelToUse = "gpt-6-luna";
 
 AzureCliCredential credential = new AzureCliCredential();
 AIProjectClient client = new AIProjectClient(new Uri(url), credential);

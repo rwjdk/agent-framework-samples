@@ -1,4 +1,7 @@
-﻿//YouTube video that cover this sample: https://youtu.be/jeVQo75KcCw
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+//YouTube video that cover this sample: https://youtu.be/jeVQo75KcCw
 
 
 using Microsoft.Agents.AI;
@@ -27,7 +30,7 @@ using TracerProvider tracerProvider = tracerProviderBuilder.Build();
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
 AIAgent agent = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(
         name: "MyObservedAgent",
         instructions: "You are a Friendly AI Bot, answering questions")

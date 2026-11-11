@@ -18,7 +18,7 @@ ResponsesClient responseClient = client
 
 AIAgent agent = responseClient
     .AsAIAgent(
-        model: "gpt-4.1",
+        model: "gpt-6-luna",
         instructions: "You are a Nice AI"
     );
 

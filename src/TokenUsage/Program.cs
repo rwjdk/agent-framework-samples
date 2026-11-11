@@ -1,4 +1,7 @@
-﻿//YouTube video that cover this sample: https://youtu.be/ghND74Hj6Fs
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+//YouTube video that cover this sample: https://youtu.be/ghND74Hj6Fs
 
 
 using Microsoft.Agents.AI;
@@ -13,7 +16,7 @@ Secrets secrets = SecretsManager.GetSecrets();
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
 ChatClientAgent agent = client
-    .GetChatClient("gpt-5-mini")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(instructions: "You are a Friendly AI Bot, answering questions");
 
 string question = "What is the capital of France and how many people live there?";

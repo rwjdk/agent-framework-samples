@@ -41,7 +41,7 @@ try
     AIAgent agent = client
         .GetResponsesClient()
         .AsAIAgent(
-            model: "gpt-4.1",
+            model: "gpt-6-luna",
             instructions: "Only use tools. Never your world-knowledge",
             tools:
             [

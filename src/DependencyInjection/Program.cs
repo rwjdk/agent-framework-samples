@@ -1,3 +1,6 @@
+#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
 //YouTube video that cover this sample: https://youtu.be/q-mHdd6iJJo
 
 
@@ -17,11 +20,11 @@ builder.Services.AddRazorComponents()
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 builder.Services.AddSingleton(client);
 
-ChatClient chatClient = client.GetChatClient("gpt-4.1");
-builder.Services.AddKeyedSingleton("gpt-4.1", chatClient);
+IChatClient chatClient = client.GetResponsesClient().AsIChatClient("gpt-6-luna");
+builder.Services.AddKeyedSingleton("gpt-6-luna", chatClient);
 
 ChatClientAgent agent = chatClient.AsAIAgent();
-builder.Services.AddKeyedSingleton("gpt-4.1", agent);
+builder.Services.AddKeyedSingleton("gpt-6-luna", agent);
 
 WebApplication app = builder.Build();
 // Configure the HTTP request pipeline.

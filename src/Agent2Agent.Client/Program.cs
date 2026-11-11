@@ -1,4 +1,7 @@
-﻿//YouTube video that cover this sample: https://youtu.be/g72ks3rY9qQ
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+//YouTube video that cover this sample: https://youtu.be/g72ks3rY9qQ
 
 using A2A;
 
@@ -24,7 +27,7 @@ Utils.Gray("Ready for questions");
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
 ChatClientAgent agent = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(
         name: "ClientAgent",
         instructions: "You specialize in handling queries for users and using your tools to provide answers.",

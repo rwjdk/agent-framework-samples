@@ -1,4 +1,6 @@
-﻿//YouTube video that cover this sample: https://youtu.be/wL4V78s_wI4
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+//YouTube video that cover this sample: https://youtu.be/wL4V78s_wI4
 
 
 using Microsoft.Agents.AI;
@@ -16,7 +18,7 @@ Secrets secrets = SecretsManager.GetSecrets();
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
 AIAgent stringAgent = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(
         name: "StringAgent",
         instructions: "You are string manipulator",
@@ -31,7 +33,7 @@ AIAgent stringAgent = client
     .Build();
 
 AIAgent numberAgent = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(
         name: "NumberAgent",
         instructions: "You are a number expert",
@@ -47,7 +49,7 @@ AIAgent numberAgent = client
 Utils.Green("DELEGATE AGENT");
 
 AIAgent delegationAgent = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(
         name: "DelegateAgent",
         instructions: "Are a Delegator of String and Number Tasks. Never does such work yourself",
@@ -76,7 +78,7 @@ Utils.Separator();
 Utils.Green("JACK OF ALL TRADE AGENT");
 
 AIAgent jackOfAllTradesAgent = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(
         name: "JackOfAllTradesAgent",
         instructions: "Are a Agent that can answer questions on strings and numbers",

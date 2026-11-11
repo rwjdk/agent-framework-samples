@@ -1,3 +1,8 @@
+#pragma warning disable OPENAI001, SKEXP0001
+using System.ClientModel;
+using OpenAI.Responses;
+using OpenAI;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.VectorData;
@@ -27,7 +32,7 @@ WebApplication app = builder.Build();
 
 app.MapPost("/chat", async Task<IResult> ([FromBody] ChatRequest chatRequest, MyKernelFactory kernelFactory) =>
 {
-    Kernel kernel = kernelFactory.GetKernel("gpt-4.1-mini");
+    Kernel kernel = kernelFactory.GetKernel("gpt-6-luna");
     string? answer = await kernel.InvokePromptAsync<string>(chatRequest.Question);
     return Results.Ok(new ChatResponse(answer!));
 });
@@ -35,7 +40,7 @@ app.MapPost("/chat", async Task<IResult> ([FromBody] ChatRequest chatRequest, My
 app.MapPost("/chatWithStreaming", async Task<IResult> ([FromBody] ChatRequest chatRequest, MyKernelFactory kernelFactory) =>
 {
     //Not really streaming, but simulating it
-    Kernel kernel = kernelFactory.GetKernel("gpt-4.1-mini");
+    Kernel kernel = kernelFactory.GetKernel("gpt-6-luna");
 
     ChatCompletionAgent agent = new()
     {
@@ -53,7 +58,7 @@ app.MapPost("/chatWithStreaming", async Task<IResult> ([FromBody] ChatRequest ch
 
 app.MapPost("/chatHistory", async Task<IResult> ([FromBody] ChatRequest chatRequest, MyKernelFactory kernelFactory) =>
 {
-    Kernel kernel = kernelFactory.GetKernel("gpt-4.1-mini");
+    Kernel kernel = kernelFactory.GetKernel("gpt-6-luna");
     ChatCompletionAgent agent = new()
     {
         Kernel = kernel,
@@ -84,7 +89,7 @@ app.MapPost("/chatHistory", async Task<IResult> ([FromBody] ChatRequest chatRequ
 
 app.MapPost("/toolCalling", async Task<IResult> ([FromBody] ChatRequest chatRequest, MyKernelFactory kernelFactory) =>
 {
-    Kernel kernel = kernelFactory.GetKernel("gpt-4.1-mini");
+    Kernel kernel = kernelFactory.GetKernel("gpt-6-luna");
 
     kernel.ImportPluginFromObject(new MyTools());
 
@@ -110,7 +115,7 @@ app.MapPost("/toolCalling", async Task<IResult> ([FromBody] ChatRequest chatRequ
 
 app.MapPost("/structuredOutput", async Task<IResult> ([FromBody] ChatRequest chatRequest, MyKernelFactory kernelFactory) =>
 {
-    Kernel kernel = kernelFactory.GetKernel("gpt-4.1");
+    Kernel kernel = kernelFactory.GetKernel("gpt-6-luna");
 
     ChatCompletionAgent agent = new()
     {
@@ -166,7 +171,7 @@ app.MapPost("/rag", async Task<IResult> ([FromBody] ChatRequest chatRequest, IEm
         });
     }
 
-    Kernel kernel = kernelFactory.GetKernel("gpt-4.1");
+    Kernel kernel = kernelFactory.GetKernel("gpt-6-luna");
 
     ChatCompletionAgent agent = new ChatCompletionAgent
     {
@@ -204,7 +209,11 @@ class MyKernelFactory(string endpoint, string apiKey)
     public Kernel GetKernel(string model)
     {
         IKernelBuilder kernelBuilder = Kernel.CreateBuilder();
-        kernelBuilder.AddAzureOpenAIChatCompletion(model, endpoint, apiKey);
+        kernelBuilder.Services.AddSingleton<IChatCompletionService>(
+                    new OpenAIClient(new ApiKeyCredential(apiKey), new OpenAIClientOptions
+                    {
+                        Endpoint = new Uri(endpoint.TrimEnd('/') + "/openai/v1/")
+                    }).GetResponsesClient().AsIChatClient(model).AsChatCompletionService());
 
         //Middleware
         kernelBuilder.Services.AddSingleton<IAutoFunctionInvocationFilter, FunctionCallingFilter>();

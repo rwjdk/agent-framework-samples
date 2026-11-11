@@ -1,4 +1,7 @@
-﻿using System.ComponentModel;
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+using System.ComponentModel;
 
 using Microsoft.Agents.AI;
 using ModelContextProtocol.Server;
@@ -22,7 +25,7 @@ public class Tools(OpenAIClient OpenAIClient)
     public async Task<string> AskJohnThePirate(string question)
     {
         ChatClientAgent agent = OpenAIClient
-            .GetChatClient("gpt-4.1-mini")
+            .GetResponsesClient().AsIChatClient("gpt-6-luna")
             .AsAIAgent(instructions: "You are John the Pirate, answering children's questions about Pirates");
 
         AgentResponse response = await agent.RunAsync(question);

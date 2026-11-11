@@ -1,4 +1,6 @@
-﻿using System.ClientModel;
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using System.ClientModel;
 using System.Text.Json;
 
 using Microsoft.Agents.AI;
@@ -20,13 +22,13 @@ string instructions = "You answer questions about famous people. Always use tool
 string question = "Tell me about Hula Johnson";
 
 ChatClientAgent agentWithJsonTool = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(
         instructions: instructions,
         tools: [AIFunctionFactory.Create(GetFamousPeopleAsJson, name: "get_famous_people")]);
 
 ChatClientAgent agentWithToonTool = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(
         instructions: instructions,
         tools: [AIFunctionFactory.Create(GetFamousPeopleAsToon, name: "get_famous_people")]);

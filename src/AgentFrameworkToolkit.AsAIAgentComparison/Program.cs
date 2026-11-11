@@ -62,6 +62,7 @@ public static class AgentFrameworkToolkitFactory
     {
         Secrets secrets = SecretsManager.GetSecrets();
         AzureOpenAIAgentFactory factory = new(secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiKey);
+        factory.Connection.DefaultClientType = global::AgentFrameworkToolkit.OpenAI.ClientType.ResponsesApi;
 
         AzureOpenAIAgent agent = factory.CreateAgent(new AgentOptions
         {

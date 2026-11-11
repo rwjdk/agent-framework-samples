@@ -1,4 +1,6 @@
-﻿//YouTube video that cover this sample: https://youtu.be/BNB7zO3Uqwc
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+//YouTube video that cover this sample: https://youtu.be/BNB7zO3Uqwc
 
 
 using Microsoft.Agents.AI;
@@ -19,7 +21,7 @@ string question = "What are the top 10 Movies according to IMDB?";
 
 //Without Structured Output
 AIAgent agent1 = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(instructions: "You are an expert in IMDB Lists");
 
 AgentResponse response1 = await agent1.RunAsync(question);
@@ -29,7 +31,7 @@ Utils.Separator();
 
 //With Structured Output
 ChatClientAgent agent2 = client //<--- Notice that this is not an AIAgent but have it as baseclass!
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(instructions: "You are an expert in IMDB Lists");
 
 AgentResponse<MovieResult> response2 = await agent2.RunAsync<MovieResult>(question);
@@ -49,7 +51,7 @@ JsonSerializerOptions jsonSerializerOptions = new()
 };
 
 AIAgent agent3 = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(instructions: "You are an expert in IMDB Lists");
 
 ChatResponseFormatJson chatResponseFormatJson = ChatResponseFormat.ForJsonSchema<MovieResult>(jsonSerializerOptions);

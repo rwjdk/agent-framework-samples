@@ -1,4 +1,7 @@
-﻿using AIAsDataFilter.Models;
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+using AIAsDataFilter.Models;
 
 using Shared;
 using System.ClientModel;
@@ -17,11 +20,11 @@ Secrets secrets = SecretsManager.GetSecrets();
 
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
-string model = "gpt-4.1-mini";
-//string model = "gpt-5-mini";
+string model = "gpt-6-luna";
+//string model = "gpt-6-luna";
 
 ChatClientAgent agent = client
-    .GetChatClient(model)
+    .GetResponsesClient().AsIChatClient(model)
     .AsAIAgent(instructions: "You are librarian");
 
 string bookPromptData = $"In these books <books>{string.Join("", books)}</books>: ";
@@ -52,9 +55,9 @@ Utils.Green($"Q3: {question3}");
 AgentResponse response3 = await agent.RunAsync(bookPromptData + question3);
 Console.WriteLine("A3: " + response3);
 response3.Usage.OutputAsInformation();
-int q3RealAnswer = books.Count(x => x.Author.EndsWith("s") && 
-                                    x.YearOfRelease >= 1800 && 
-                                    x.YearOfRelease <= 1900 && 
+int q3RealAnswer = books.Count(x => x.Author.EndsWith("s") &&
+                                    x.YearOfRelease >= 1800 &&
+                                    x.YearOfRelease <= 1900 &&
                                     x.Genre != Genre.Fantasy);
 Utils.Yellow($"Real Answer: {q3RealAnswer}");
 

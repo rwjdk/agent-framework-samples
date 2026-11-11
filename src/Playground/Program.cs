@@ -1,3 +1,4 @@
+#pragma warning disable OPENAI001
 //WARNING: This is a playground area for the creator of the Repo to test and tinker. Nothing in this project is as such educational and might not even execute properly
 #pragma warning disable OPENAI002
 using System.ClientModel;
@@ -19,19 +20,19 @@ Secrets secrets = SecretsManager.GetSecrets();
 
 OpenAIClient azureOpenAIClient = ClientHelper.GetAzureOpenAIClient();
 
-string model = "gpt-5.6-sol";
+string model = "gpt-6-luna";
 string question = "What is the Weather like in Paris?";
 AIFunction tool = AIFunctionFactory.Create(GetWeather, "get_weather_for_city");
 
-AIAgent chatClientAgent = azureOpenAIClient.GetChatClient(model).AsAIAgent(new ChatClientAgentOptions
+AIAgent chatClientAgent = azureOpenAIClient.GetResponsesClient().AsIChatClient(model).AsAIAgent(new ChatClientAgentOptions
 {
     ChatOptions = new ChatOptions
     {
         Tools = [tool],
-        RawRepresentationFactory = chatClient => new ChatCompletionOptions
+        RawRepresentationFactory = chatClient => new CreateResponseOptions
         {
-            ReasoningEffortLevel = ChatReasoningEffortLevel.Low
-        }
+            ReasoningOptions = new ResponseReasoningOptions { ReasoningEffortLevel = ResponseReasoningEffortLevel.Low },
+            }
     }
 });
 AgentResponse chatClientAgentResponse = await chatClientAgent.RunAsync(question);
@@ -64,7 +65,7 @@ OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 AIAgent agent = client
     .GetResponsesClient()
     .AsAIAgent(
-        model: "gpt-5"
+        model: "gpt-6-luna"
         //tools: [AIFunctionFactory.Create(agentBuilderTool.RunSubAgent, "call_sub_agent")]
         );
 

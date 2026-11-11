@@ -16,7 +16,7 @@ OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
 ChatClientAgent agent = client
     .GetResponsesClient()
-    .AsAIAgent(model: "gpt-5-mini", options: new ChatClientAgentOptions
+    .AsAIAgent(model: "gpt-6-luna", options: new ChatClientAgentOptions
     {
         ChatOptions = new ChatOptions
         {

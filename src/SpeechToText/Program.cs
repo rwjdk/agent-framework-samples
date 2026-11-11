@@ -1,4 +1,7 @@
-﻿
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+
 using NAudio.Wave;
 using OpenAI.Audio;
 using Shared;
@@ -14,7 +17,7 @@ OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 AudioClient audioClient = client.GetAudioClient("whisper");
 
 ChatClientAgent agent = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(instructions: "You are a Friendly AI Bot, answering questions");
 
 AgentSession agentSession = await agent.CreateSessionAsync();

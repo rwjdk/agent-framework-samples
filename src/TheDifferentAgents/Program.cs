@@ -1,6 +1,7 @@
-﻿//YouTube video that cover this sample: https://youtu.be/pN-WV5FD_-Y
+﻿#pragma warning disable OPENAI001
+//YouTube video that cover this sample: https://youtu.be/pN-WV5FD_-Y
 
-using Azure.AI.Agents.Persistent;
+using Azure.AI.Projects;
 
 using Azure.Identity;
 using Microsoft.Agents.AI;
@@ -15,7 +16,7 @@ using OpenAI.Responses;
 
 #pragma warning disable OPENAI001
 Secrets secrets = SecretsManager.GetSecrets();
-string model = "gpt-4.1";
+string model = "gpt-6-luna";
 
 //The Raw client (OpenAIClient and OpenAIClient works that same)
 OpenAIClient rawOpenAiClient = new(secrets.OpenAiApiKey);
@@ -23,28 +24,28 @@ OpenAIClient rawAzureOpenAIClient = ClientHelper.GetAzureOpenAIClient();
 
 //--------------------------------------------------------------------------
 
-//Azure AI Foundry's PersistentAgentsClient is unique to that service
-PersistentAgentsClient persistentAgentsClient = new(secrets.MicrosoftFoundryEndpoint, new AzureCliCredential());
+//Foundry exposes a project-scoped Responses client
+AIProjectClient projectClient = new(new Uri(secrets.MicrosoftFoundryEndpoint), new AzureCliCredential());
 
 //--------------------------------------------------------------------------
 
 //IChatClient is Microsoft.Extension.AI's "version of AIAgent" [This is what other non-OpenAI Providers implement to be compatible]
-IChatClient iChatClient = rawOpenAiClient.GetChatClient(model).AsIChatClient();
+IChatClient iChatClient = rawOpenAiClient.GetResponsesClient().AsIChatClient(model);
 
 //--------------------------------------------------------------------------
 
 //All Agents are AI Agents (which is an abstract class)
-AIAgent aiAgentFromChatClient = rawOpenAiClient.GetChatClient(model).AsAIAgent();
+AIAgent aiAgentFromChatClient = rawOpenAiClient.GetResponsesClient().AsIChatClient(model).AsAIAgent();
 AIAgent aiAgentFromResponsesClient = rawOpenAiClient.GetResponsesClient().AsAIAgent(model: model);
-AIAgent aiAgentFromPersistentClient = await persistentAgentsClient.GetAIAgentAsync(persistentAgentsClient.Administration.CreateAgent(model).Value.Id);
+AIAgent aiAgentFromProjectResponsesClient = projectClient.ProjectOpenAIClient.GetResponsesClient().AsAIAgent(model: model);
 AIAgent aiAgentFromIChatClient = new ChatClientAgent(iChatClient);
 
 //--------------------------------------------------------------------------
 
 //Most is however a ChatClientAgent behind the scenes
-ChatClientAgent chatClientAgentFromChatClient = rawOpenAiClient.GetChatClient(model).AsAIAgent();
+ChatClientAgent chatClientAgentFromChatClient = rawOpenAiClient.GetResponsesClient().AsIChatClient(model).AsAIAgent();
 ChatClientAgent chatClientAgentFromResponsesClient = rawOpenAiClient.GetResponsesClient().AsAIAgent(model);
-ChatClientAgent chatClientAgentFromPersistentClient = await persistentAgentsClient.GetAIAgentAsync(persistentAgentsClient.Administration.CreateAgent(model).Value.Id);
+ChatClientAgent chatClientAgentFromProjectResponsesClient = projectClient.ProjectOpenAIClient.GetResponsesClient().AsAIAgent(model: model);
 ChatClientAgent chatClientAgentFromIChatClient = new ChatClientAgent(iChatClient);
 
 //This is good, since that is the only AgentType that support ".RunAsync<>" (Structured output)
@@ -53,21 +54,21 @@ ChatClientAgent chatClientAgentFromIChatClient = new ChatClientAgent(iChatClient
 
 //Middleware Builder can only produce an AI Agent :-(
 AIAgent aiAgentWithOpenTelemetryMiddleware = rawOpenAiClient
-    .GetChatClient(model)
+    .GetResponsesClient().AsIChatClient(model)
     .AsAIAgent()
     .AsBuilder()
     .UseOpenTelemetry("test")
     .Build(); //<< Always AIAgent
 
 AIAgent aiAgentWithFunctionCallingMiddleware = rawOpenAiClient
-    .GetChatClient(model)
+    .GetResponsesClient().AsIChatClient(model)
     .AsAIAgent()
     .AsBuilder()
     .Use(FunctionCallMiddleware)
     .Build(); //<< Always AIAgent
 
 AIAgent aiAgentWithOpenTelemetryAndFunctionCallingMiddleware = rawOpenAiClient
-    .GetChatClient(model)
+    .GetResponsesClient().AsIChatClient(model)
     .AsAIAgent()
     .AsBuilder()
     .Use(FunctionCallMiddleware)

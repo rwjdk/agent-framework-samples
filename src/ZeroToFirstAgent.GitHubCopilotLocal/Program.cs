@@ -25,7 +25,7 @@ await client.StartAsync();
 AIAgent agent = client.AsAIAgent(new SessionConfig
 {
     WorkingDirectory = Environment.CurrentDirectory,
-    Model = "gpt-6.1-sol",
+    Model = "gpt-6-luna",
     OnPermissionRequest = PermissionHandler.ApproveAll,
     Tools = [AIFunctionFactory.Create(GetWeather, "get_weather")]
 });

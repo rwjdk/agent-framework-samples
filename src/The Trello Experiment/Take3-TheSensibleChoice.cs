@@ -21,9 +21,9 @@ public static class Take3TheSensibleChoice
         AIAgent agent = OpenAIClient
             .GetResponsesClient()
             .AsAIAgent(
-                model: "gpt-4.1-mini",
+                model: "gpt-6-luna",
                 instructions: """
-                              You are a Trello Expert 
+                              You are a Trello Expert
 
                               Use the various tools to get Trello Information and do Actions
                               """,

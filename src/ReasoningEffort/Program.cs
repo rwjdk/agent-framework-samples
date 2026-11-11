@@ -1,4 +1,5 @@
-﻿
+﻿#pragma warning disable OPENAI001
+
 using AgentFrameworkToolkit;
 using AgentFrameworkToolkit.AzureOpenAI;
 using AgentFrameworkToolkit.OpenAI;
@@ -22,7 +23,7 @@ string question = "What is the Capital of France and how many people live there?
  - o1 models
  - o3 models
  - o4 models
- - gpt-5 models
+ - gpt-6-luna models
  (expect all future model can do reasoning)
  */
 
@@ -44,7 +45,7 @@ await AgentFrameworkToolkitResponseApi();
 
 /* Notes on various OpenAI-Based Models:
    - xAI (Grok) seems unable to use this (Throw an exception if set).
-   - DeepSeek (via example OpenRouter) allow this to be set, but it seems to ignore it. 
+   - DeepSeek (via example OpenRouter) allow this to be set, but it seems to ignore it.
  */
 
 return;
@@ -53,7 +54,7 @@ async Task Baseline()
 {
     OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
     ChatClientAgent agent = client
-        .GetChatClient("gpt-5-mini")
+        .GetResponsesClient().AsIChatClient("gpt-6-luna")
         .AsAIAgent();
     AgentResponse response = await agent.RunAsync(question);
     response.Usage.OutputAsInformation();
@@ -64,21 +65,21 @@ async Task RawChatClient()
 {
     OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
     ChatClientAgent agent = client
-        .GetChatClient("gpt-5-mini")
+        .GetResponsesClient().AsIChatClient("gpt-6-luna")
         .AsAIAgent(
             options: new ChatClientAgentOptions
             {
                 ChatOptions = new ChatOptions
                 {
-                    RawRepresentationFactory = _ => new ChatCompletionOptions
+                    RawRepresentationFactory = _ => new CreateResponseOptions
                     {
-                        ReasoningEffortLevel = ChatReasoningEffortLevel.Minimal
-                    },
+                        ReasoningOptions = new ResponseReasoningOptions { ReasoningEffortLevel = ResponseReasoningEffortLevel.Low },
+                        },
                 }
             });
 
     AgentResponse response = await agent.RunAsync(question);
-    //Note that the reasoning summary is not possible to get with ChatClient
+    //Note that the reasoning summary is not possible to get with IChatClient
     Console.WriteLine(response);
     response.Usage.OutputAsInformation();
 }
@@ -89,7 +90,7 @@ async Task RawResponsesApi()
     ChatClientAgent agent = client
         .GetResponsesClient()
         .AsAIAgent(
-            model: "gpt-5-mini",
+            model: "gpt-6-luna",
             options: new ChatClientAgentOptions
             {
                 ChatOptions = new ChatOptions
@@ -125,10 +126,11 @@ async Task RawResponsesApi()
 async Task AgentFrameworkToolkitChatClient()
 {
     AzureOpenAIAgentFactory agentFactory = new(endpoint, apiKey);
+    agentFactory.Connection.DefaultClientType = global::AgentFrameworkToolkit.OpenAI.ClientType.ResponsesApi;
 
     AzureOpenAIAgent agent = agentFactory.CreateAgent(new AgentOptions
     {
-        Model = OpenAIChatModels.Gpt5Mini,
+        Model = OpenAIChatModels.Gpt6Luna,
         ReasoningEffort = OpenAIReasoningEffort.Minimal
     });
 
@@ -140,11 +142,12 @@ async Task AgentFrameworkToolkitChatClient()
 async Task AgentFrameworkToolkitResponseApi()
 {
     AzureOpenAIAgentFactory agentFactory = new(endpoint, apiKey);
+    agentFactory.Connection.DefaultClientType = global::AgentFrameworkToolkit.OpenAI.ClientType.ResponsesApi;
 
     AzureOpenAIAgent agent = agentFactory.CreateAgent(new AgentOptions
     {
         ClientType = ClientType.ResponsesApi,
-        Model = OpenAIChatModels.Gpt5Mini,
+        Model = OpenAIChatModels.Gpt6Luna,
         ReasoningEffort = OpenAIReasoningEffort.High,
         ReasoningSummaryVerbosity = OpenAIReasoningSummaryVerbosity.Detailed
     });

@@ -57,6 +57,7 @@ tools.AddRange(toolsFactory.GetTimeTools(new GetTimeToolsOptions
 
 //Agent Part
 AzureOpenAIAgentFactory factory = new AzureOpenAIAgentFactory(secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiKey);
+factory.Connection.DefaultClientType = global::AgentFrameworkToolkit.OpenAI.ClientType.ResponsesApi;
 AIAgent agent = factory.CreateAgent(new AgentOptions
 {
     Instructions = $"""
@@ -66,7 +67,7 @@ AIAgent agent = factory.CreateAgent(new AgentOptions
                    - When working with time Report it back in Denmark Time
                    - When working with Weather report back in metric units
                    """,
-    Model = OpenAIChatModels.Gpt41Nano,
+    Model = OpenAIChatModels.Gpt6Luna,
     //Tools = tools,
     RawToolCallDetails = Console.WriteLine
 });

@@ -78,12 +78,12 @@ public class RagQuestion
 
         AIAgent agentWithTool = client
             .GetResponsesClient()
-            .AsAIAgent("gpt-5.6-luna", 
+            .AsAIAgent("gpt-6-luna",
                 instructions: "Always your 'SearchRag' tool to answer question",
                 tools: [AIFunctionFactory.Create(SearchRag)]) //Add Tool
             .AsBuilder()
-            .Use(ToolCallingMiddleware).Build(); 
-        
+            .Use(ToolCallingMiddleware).Build();
+
         AgentResponse responseWithTool = await agentWithTool.RunAsync("What is the Wifi password?");
         Console.WriteLine(responseWithTool);
 
@@ -100,15 +100,15 @@ public class RagQuestion
                     //Additional settings
                     FunctionToolName = "SearchRag",
                     SearchTime = TextSearchProviderOptions.TextSearchBehavior.OnDemandFunctionCalling
-                    
+
                 })]
-            }, model: "gpt-5.6-luna")
+            }, model: "gpt-6-luna")
             .AsBuilder()
             .Use(ToolCallingMiddleware).Build(); ;
 
         AgentResponse responseWithTextSearch = await agentWithTextSearch.RunAsync("What is the Wifi password?");
         Console.WriteLine(responseWithTextSearch);
-        
+
         async Task<IEnumerable<TextSearchProvider.TextSearchResult>> SearchAsync(string input, CancellationToken cancellationToken)
         {
             List<TextSearchProvider.TextSearchResult> results = [];

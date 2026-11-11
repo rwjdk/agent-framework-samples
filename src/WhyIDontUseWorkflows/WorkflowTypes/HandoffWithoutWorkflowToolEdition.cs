@@ -1,4 +1,6 @@
-﻿
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 using OpenAI;
@@ -15,14 +17,14 @@ public static class HandoffWithoutWorkflowToolEdition
     {
         OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
-        ChatClientAgent movieNerd = client.GetChatClient("gpt-4.1").AsAIAgent(name: "MovieNerd", instructions: "You are a Movie Nerd");
-        ChatClientAgent musicNerd = client.GetChatClient("gpt-4.1").AsAIAgent(name: "MusicNerd", instructions: "You are a Music Nerd");
+        ChatClientAgent movieNerd = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(name: "MovieNerd", instructions: "You are a Movie Nerd");
+        ChatClientAgent musicNerd = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(name: "MusicNerd", instructions: "You are a Music Nerd");
 
-        AIAgent intentAgent = client.GetChatClient("gpt-4.1-mini")
-            .AsAIAgent(name: "IntentAgent", 
+        AIAgent intentAgent = client.GetResponsesClient().AsIChatClient("gpt-6-luna")
+            .AsAIAgent(name: "IntentAgent",
                 instructions: "Determine what type of question was asked and use tool. Never answer yourself",
                 tools: [movieNerd.AsAIFunction(), musicNerd.AsAIFunction()]).AsBuilder().Use(FunctionCallMiddleware).Build();
-        
+
         Console.Write("> ");
         string input = Console.ReadLine()!;
 

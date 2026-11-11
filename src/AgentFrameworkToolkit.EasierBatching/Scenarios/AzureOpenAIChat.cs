@@ -17,11 +17,11 @@ public static class AzureOpenAIChat
             {
                 WaitUntilCompleted = true,
                 ClientType = ChatBatchClientType.ResponsesApi,
-                Model = "gpt-4.1-nano-batch",
+                Model = "gpt-6-luna",
                 Instructions = "You are a Capital Expert",
                 //ReasoningEffort = OpenAIReasoningEffort.Low,
                 //ReasoningSummaryVerbosity = OpenAIReasoningSummaryVerbosity.Detailed
-        }, 
+        },
             [
                 ChatBatchRequest.Create("What is the Capital of France?"),
                 ChatBatchRequest.Create("What is the Capital of Australia?")

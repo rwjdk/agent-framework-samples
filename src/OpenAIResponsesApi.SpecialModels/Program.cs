@@ -17,7 +17,7 @@ OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 AIAgent agent = client
     .GetResponsesClient()
     .AsAIAgent(
-        model: "gpt-5-codex", 
+        model: "gpt-6-luna",
         instructions: "You are a C# Developer"
     );
 

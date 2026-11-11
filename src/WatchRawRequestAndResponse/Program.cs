@@ -1,4 +1,7 @@
-﻿//YouTube video that cover this sample: https://youtu.be/Gr3S1Q9eZrc
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+//YouTube video that cover this sample: https://youtu.be/Gr3S1Q9eZrc
 
 
 using OpenAI;
@@ -29,7 +32,7 @@ OpenAIClient client = new(new ApiKeyCredential(secrets.AzureOpenAiKey), new Open
 });
 
 
-ChatClientAgent agent = client.GetChatClient("gpt-4.1").AsAIAgent(
+ChatClientAgent agent = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(
     instructions: "You are a Raw Agent"
 );
 

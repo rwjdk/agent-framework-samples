@@ -4,7 +4,7 @@
 
 import os
 import asyncio
-from agent_framework.azure import AzureOpenAIChatClient
+from agent_framework.azure import AzureOpenAIResponsesClient
 
 #Needed for structured Output
 from typing import List
@@ -12,11 +12,11 @@ from pydantic import BaseModel
 
 os.system("cls") #Clear the screeen
 
-def get_client() -> AzureOpenAIChatClient :
-    return AzureOpenAIChatClient(
-        endpoint="https://sensum365ai.openai.azure.com/",        
+def get_client() -> AzureOpenAIResponsesClient :
+    return AzureOpenAIResponsesClient(
+        endpoint="https://sensum365ai.openai.azure.com/",
         #api_key=os.environ["AZURE_OPENAI_API_KEY"],
-        deployment_name="gpt-4.1-mini",         
+        deployment_name="gpt-6-luna",
     )
 
 async def chat():
@@ -53,7 +53,7 @@ async def chat_with_tool():
     while(True) :
         myInput = input("> ")
         response = await agent.run(myInput, thread=myThread)
-        print(response)    
+        print(response)
 
 class Movie(BaseModel):
     title: str
@@ -61,7 +61,7 @@ class Movie(BaseModel):
     director: str
 
 class MovieCollection(BaseModel):
-    movies: List[Movie]   
+    movies: List[Movie]
 
 async def chat_with_structrured_output():
     client = get_client()
@@ -73,7 +73,7 @@ async def chat_with_structrured_output():
     while(True) :
         myInput = input("> ")
         response = await agent.run(myInput, thread=myThread)
-        print(response)               
+        print(response)
 
 #asyncio.run(chat())
 #asyncio.run(chat_streaming())

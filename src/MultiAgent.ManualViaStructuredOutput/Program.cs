@@ -1,4 +1,7 @@
-﻿//YouTube video that cover this sample: https://youtu.be/2YzjRZTZxUo
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+//YouTube video that cover this sample: https://youtu.be/2YzjRZTZxUo
 
 using System.ClientModel;
 using System.ComponentModel;
@@ -12,8 +15,8 @@ Secrets secrets = SecretsManager.GetSecrets();
 
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
-ChatClient chatClientMini = client.GetChatClient("gpt-4.1-mini");
-ChatClient chatClient = client.GetChatClient("gpt-4.1");
+IChatClient chatClientMini = client.GetResponsesClient().AsIChatClient("gpt-6-luna");
+IChatClient chatClient = client.GetResponsesClient().AsIChatClient("gpt-6-luna");
 
 Console.Write("> ");
 string question = Console.ReadLine()!;

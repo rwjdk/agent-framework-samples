@@ -1,4 +1,7 @@
-﻿
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+
 using Microsoft.Agents.AI;
 using OpenAI.Chat;
 using Shared;
@@ -11,9 +14,9 @@ OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
 const string question = "What are the top 10 Movies according to IMDB?";
 const string instructions = "You are an expert in IMDB Lists";
-const string model = "gpt-4.1";
+const string model = "gpt-6-luna";
 
-AIAgent agent = client.GetChatClient(model).AsAIAgent(instructions);
+AIAgent agent = client.GetResponsesClient().AsIChatClient(model).AsAIAgent(instructions);
 
 Utils.Red("Without Structured Output 👎");
 AgentResponse unstructuredResponse = await agent.RunAsync(question);

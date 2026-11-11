@@ -1,4 +1,6 @@
-﻿
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 using OpenAI.Chat;
@@ -18,20 +20,20 @@ public class Before
 {
     public static async Task RunAsync()
     {
-        //Weather-Task: With GPT-5-Mini in low Reasoning, Call Tool with middleware and return as structured Output
+        //Weather-Task: With gpt-6-luna in low Reasoning, Call Tool with middleware and return as structured Output
         OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
         AIAgent agent = client
-            .GetChatClient("gpt-5-mini")
+            .GetResponsesClient().AsIChatClient("gpt-6-luna")
             .AsAIAgent(
                 options: new ChatClientAgentOptions
                 {
                     ChatOptions = new ChatOptions
                     {
-                        RawRepresentationFactory = _ => new ChatCompletionOptions
+                        RawRepresentationFactory = _ => new CreateResponseOptions
                         {
 #pragma warning disable OPENAI001
-                            ReasoningEffortLevel = "low"
+                            ReasoningOptions = new ResponseReasoningOptions { ReasoningEffortLevel = ResponseReasoningEffortLevel.Low },
 #pragma warning restore OPENAI001
                         },
                         Tools = [AIFunctionFactory.Create(WeatherTool.GetWeather)]

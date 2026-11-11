@@ -17,11 +17,11 @@ public static class Take2CSharpCodeRunner
         ChatClientAgent agent = OpenAIClient
             .GetResponsesClient()
             .AsAIAgent(
-                model: "gpt-4.1-mini",
+                model: "gpt-6-luna",
                 instructions: $"""
                                You are a Trello Expert with access to the Trello and the API
 
-                               Here is the credentials: 
+                               Here is the credentials:
                                - API Key: {trelloApiKey}
                                - Token: {trelloToken}
 

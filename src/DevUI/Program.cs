@@ -1,3 +1,5 @@
+#pragma warning disable OPENAI001
+using OpenAI.Responses;
 //YouTube video that cover this sample: https://youtu.be/y4k200pcMRY
 
 
@@ -19,7 +21,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
 // Register Services needed to run DevUI
-builder.Services.AddChatClient(client.GetChatClient("gpt-4.1").AsIChatClient()); //You need to register a chat client for the dummy agents to use
+builder.Services.AddChatClient(client.GetResponsesClient().AsIChatClient("gpt-6-luna")); //You need to register a chat client for the dummy agents to use
 builder.Services.AddOpenAIResponses();
 builder.Services.AddOpenAIConversations();
 
@@ -30,7 +32,7 @@ builder.AddAIAgent("Comic Book Guy", "You are comic-book guy from The Simpsons")
 //Build a "normal" Agent
 string realAgentName = "Real Agent";
 AIAgent myAgent = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(name: realAgentName, instructions: "Speak like a pirate", tools: [AIFunctionFactory.Create(GetWeather)]);
 
 builder.AddAIAgent(realAgentName, (serviceProvider, key) => myAgent); //Get registered as a keyed singleton so name on real agent and key must match
@@ -86,7 +88,7 @@ WebApplication app = builder.Build();
 
 if (builder.Environment.IsDevelopment())
 {
-    //Needed for DevUI to function 
+    //Needed for DevUI to function
     app.MapOpenAIResponses();
     app.MapOpenAIConversations();
     app.MapDevUI();

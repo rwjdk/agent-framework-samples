@@ -1,4 +1,6 @@
-﻿using AdvancedRAGTechniques.EmbeddingOptions;
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using AdvancedRAGTechniques.EmbeddingOptions;
 using AdvancedRAGTechniques.SearchOptions;
 
 using CommunityToolkit.VectorData.SqlServer;
@@ -22,7 +24,7 @@ public static class Option2EnhanceEmbeddings
         }
 
         EnhancedSearchTool searchTool = new(collection);
-        AIAgent agent = client.GetChatClient("gpt-4.1")
+        AIAgent agent = client.GetResponsesClient().AsIChatClient("gpt-6-luna")
             .AsAIAgent(
                 instructions: """
                               You are an expert a set of made up movies given to you (aka don't consider movies from your world-knowledge)

@@ -1,10 +1,13 @@
-﻿//YouTube video that cover this sample: https://youtu.be/GbyEQWwBMFk
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+//YouTube video that cover this sample: https://youtu.be/GbyEQWwBMFk
 
 /* Steps:
  * 1: Get a Grok API Key (https://x.ai/api)
  * 2: Add Nuget Packages (OpenAI + Microsoft.Agents.AI.OpenAI)
  * 3: Create an OpenAIClient with endpoint https://api.x.ai/v1
- * 4: Get a ChatClient and Create an AI Agent from it
+ * 4: Get a IChatClient and Create an AI Agent from it
  * 5: Call RunAsync or RunStreamingAsync
  */
 
@@ -20,7 +23,7 @@ OpenAIClient client = new(new ApiKeyCredential(apiKey), new OpenAIClientOptions
 {
     Endpoint = new Uri("https://api.x.ai/v1")
 });
-ChatClientAgent agent = client.GetChatClient(model).AsAIAgent();
+ChatClientAgent agent = client.GetResponsesClient().AsIChatClient(model).AsAIAgent();
 
 AgentResponse response = await agent.RunAsync("What is the Capital of Germany?");
 Console.WriteLine(response);

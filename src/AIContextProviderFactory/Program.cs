@@ -1,4 +1,6 @@
-﻿
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 using Shared;
@@ -16,12 +18,12 @@ string userId = "rwj1234";
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
 ChatClientAgent memoryExtractorAgent = client
-    .GetChatClient("gpt-4.1-nano")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(
         instructions: "Look at the user's message and extract any memory that we do not already know (or non if there aren't any memories to store)"
     );
 
-ChatClientAgent agentWithCustomMemory = client.GetChatClient("gpt-4.1").AsIChatClient()
+ChatClientAgent agentWithCustomMemory = client.GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(new ChatClientAgentOptions
     {
         ChatOptions = new()
@@ -66,7 +68,7 @@ class CustomContextProvider : AIContextProvider
             _userFacts.AddRange(File.ReadAllLines(_userMemoryFilePath));
         }
     }
-    
+
     protected override ValueTask<AIContext> ProvideAIContextAsync(InvokingContext context, CancellationToken cancellationToken = new CancellationToken())
     {
         return ValueTask.FromResult(new AIContext

@@ -19,7 +19,7 @@ try
     ClientResult<AgentVersion> foundryAgent = await client.Agents.CreateAgentVersionAsync( // <-- Reveal that version history is coming
         agentName: "MyNewTypeOfAgent",
         options: new AgentVersionCreationOptions(
-            new PromptAgentDefinition("gpt-5-mini")
+            new PromptAgentDefinition("gpt-6-luna")
             {
                 Instructions = "You are a nice Agent",
                 /* <-- Not working for now, but the fact that this is here indicate either "bad design" or Agents will stay on OpenAI forever

@@ -70,7 +70,7 @@ async Task<string> SearchRag(string input)
     return searchResult.ToString();
 }
 
-ChatClientAgent agent = client.GetResponsesClient().AsAIAgent("gpt-5.6-luna", tools: [AIFunctionFactory.Create(SearchRag)]);
+ChatClientAgent agent = client.GetResponsesClient().AsAIAgent("gpt-6-luna", tools: [AIFunctionFactory.Create(SearchRag)]);
 
 AgentResponse response = await agent.RunAsync("What is the Wifi password?");
 Console.WriteLine(response);

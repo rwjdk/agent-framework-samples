@@ -13,7 +13,7 @@ Utils.Init("Codex in MAF - Full Demo");
 
 CodexAgentFactory factory = new CodexAgentFactory(new CodexConnection
 {
-    //Various Advanced options (if you installed Codex in a special way) or use tokens instead 
+    //Various Advanced options (if you installed Codex in a special way) or use tokens instead
 });
 
 string workPath = Path.Combine(Path.GetTempPath(), "My-Codex-Demo");
@@ -22,7 +22,7 @@ Directory.CreateDirectory(workPath);
 CodexAgent agent = factory.CreateAgent(new CodexAgentOptions
 {
     WorkingDirectory = workPath, //Choose any local folder... Will pick up Agents.md and Skills in that folder
-    Model = "gpt-6.1-sol",
+    Model = "gpt-6-luna",
     ReasoningEffort = CodexReasoningEffort.Low,
     ServiceTier = CodexServiceTier.Normal,
     Permissions = CodexPermissions.WorkspaceWrite, //What type of access should Codex Have

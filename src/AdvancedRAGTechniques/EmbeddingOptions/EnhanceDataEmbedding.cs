@@ -1,4 +1,7 @@
-﻿
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+
 using CommunityToolkit.VectorData.SqlServer;
 using Microsoft.Agents.AI;
 using OpenAI;
@@ -12,7 +15,7 @@ public static class EnhanceDataEmbedding
     public static async Task Embed(OpenAIClient client, SqlServerCollection<Guid, MovieVectorStoreRecord> collection, Movie[] movieDataForRag)
     {
         ChatClientAgent genreAgent = client
-            .GetChatClient("gpt-4.1") //You might get away with a cheaper model here as task is easy for AI
+            .GetResponsesClient().AsIChatClient("gpt-6-luna") //You might get away with a cheaper model here as task is easy for AI
             .AsAIAgent("""
                            You are an expert in finding the Genre of a movie based on it's title and plot
                            Pick a single genre based on the following:

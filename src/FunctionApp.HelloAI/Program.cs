@@ -1,3 +1,6 @@
+#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
 using Microsoft.Agents.AI;
 using Microsoft.Agents.AI.Hosting.AzureFunctions;
 using Microsoft.Azure.Functions.Worker.Builder;
@@ -13,7 +16,7 @@ builder.ConfigureFunctionsWebApplication();
 
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 ChatClientAgent myAgent = client
-    .GetChatClient("gpt-4.1-mini")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(name: "MyAgent");
 
 //From nuget: Microsoft.Agents.AI.Hosting.AzureFunctions

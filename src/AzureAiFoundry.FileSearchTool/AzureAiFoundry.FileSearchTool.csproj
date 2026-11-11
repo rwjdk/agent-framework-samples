@@ -8,7 +8,7 @@
   </PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Azure.Identity" />
-		<PackageReference Include="Microsoft.Agents.AI.AzureAI.Persistent" />
+		<PackageReference Include="Microsoft.Agents.AI.Foundry" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Shared\Shared.csproj" />

@@ -1,4 +1,6 @@
-﻿using AgentFrameworkToolkit.Tools.Common;
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using AgentFrameworkToolkit.Tools.Common;
 using JetBrains.Annotations;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
@@ -45,7 +47,7 @@ async Task NormalAgentWithTools()
     }));
 
     OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
-    AIAgent mainAgent = client.GetChatClient("gpt-4.1").AsAIAgent(tools: tools).AsBuilder().Use(FunctionCallMiddleware).Build();
+    AIAgent mainAgent = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(tools: tools).AsBuilder().Use(FunctionCallMiddleware).Build();
 
     Utils.Gray($"This agent have: {tools.Count} tools");
     foreach (AITool tool in tools)
@@ -68,11 +70,11 @@ async Task ToolInjection()
 {
     OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
-    ChatClientAgent toolInjectionAgent = client.GetChatClient("gpt-4.1-nano").AsAIAgent(
+    ChatClientAgent toolInjectionAgent = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(
         instructions: "You job is to tell if any given message is a request to use specific tools"
     );
 
-    AIAgent mainAgent = client.GetChatClient("gpt-4.1").AsAIAgent(new ChatClientAgentOptions
+    AIAgent mainAgent = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(new ChatClientAgentOptions
     {
         AIContextProviders = [new OnTheFlyToolInjectionContext(toolInjectionAgent, secrets)]
     }).AsBuilder().Use(FunctionCallMiddleware).Build();

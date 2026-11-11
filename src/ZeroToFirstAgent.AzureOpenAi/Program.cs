@@ -1,4 +1,4 @@
-﻿//YouTube video that cover this sample: 
+﻿//YouTube video that cover this sample:
 
 /* Steps:
  * 1: Create an 'Azure AI Foundry' Resource (or legacy 'Azure OpenAI Resource') + Deploy Model
@@ -17,7 +17,7 @@ using OpenAI.Responses;
 
 const string endpoint = "todo";
 const string apiKey = "todo";
-const string model = "gpt-5.6-luna";
+const string model = "gpt-6-luna";
 OpenAIClient client = new OpenAIClient(new ApiKeyCredential(apiKey), new OpenAIClientOptions
 {
     Endpoint = new Uri(endpoint) // Endpoint need to end in /openai/v1

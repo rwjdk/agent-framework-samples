@@ -11,15 +11,16 @@ public class After
 {
     public static async Task RunAsync()
     {
-        //Weather-Task: With GPT-5-Mini in low Reasoning, Call Tool with middleware and return as structured Output
+        //Weather-Task: With gpt-6-luna in low Reasoning, Call Tool with middleware and return as structured Output
 
         Secrets secrets = SecretsManager.GetSecrets();
 
         AzureOpenAIAgentFactory agentFactory = new(secrets.AzureOpenAiEndpoint, secrets.AzureOpenAiKey);
+        agentFactory.Connection.DefaultClientType = global::AgentFrameworkToolkit.OpenAI.ClientType.ResponsesApi;
 
         AzureOpenAIAgent agent = agentFactory.CreateAgent(new AgentOptions
         {
-            Model = OpenAIChatModels.Gpt5Mini,
+            Model = OpenAIChatModels.Gpt6Luna,
             ReasoningEffort = OpenAIReasoningEffort.Low,
             Tools = [AIFunctionFactory.Create(WeatherTool.GetWeather)],
             RawToolCallDetails = details => { Utils.Gray(details.ToString()); }

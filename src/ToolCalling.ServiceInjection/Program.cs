@@ -1,4 +1,6 @@
-﻿using System.ClientModel;
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using System.ClientModel;
 
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
@@ -23,7 +25,7 @@ ToolClass2 toolClass2Instance = serviceProvider.GetRequiredService<ToolClass2>()
 #region Agent Part
 
 ChatClientAgent agent = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(
         tools:
         [

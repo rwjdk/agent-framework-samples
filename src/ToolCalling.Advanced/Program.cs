@@ -1,4 +1,6 @@
-﻿//YouTube video that cover this sample
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+//YouTube video that cover this sample
 //- Basic: https://youtu.be/gJTodKpv8Ik
 //- Advanced: https://youtu.be/dCtojrK8bKk
 //- MCP: https://youtu.be/Y5IKdt9vdJM
@@ -29,7 +31,7 @@ List<AITool> listOfTools = methods.Select(x => AIFunctionFactory.Create(x, targe
 listOfTools.Add(new ApprovalRequiredAIFunction(AIFunctionFactory.Create(DangerousTools.SomethingDangerous)));
 
 AIAgent agent = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(
         instructions: "You are a File Expert. When working with files you need to provide the full path; not just the filename",
         tools: listOfTools
@@ -88,7 +90,7 @@ var services = new ServiceCollection()
    .BuildServiceProvider();
 
 AIAgent agent = client
-    .GetChatClient(configuration.ChatDeploymentName)
+    .GetResponsesClient().AsIChatClient(configuration.ChatDeploymentName)
     .AsAIAgent(
         instructions: "You are a File Expert. When working with files you need to provide the full path; not just the filename",
         tools: listOfTools

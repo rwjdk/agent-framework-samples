@@ -1,4 +1,6 @@
-﻿//YouTube video that cover this sample: https://youtu.be/Gr3S1Q9eZrc
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+//YouTube video that cover this sample: https://youtu.be/Gr3S1Q9eZrc
 
 
 using LifeOfAnLLMCall;
@@ -23,12 +25,12 @@ OpenAIClient client = new(new ApiKeyCredential(secrets.AzureOpenAiKey), new Open
 {
     Endpoint = new Uri($"{secrets.AzureOpenAiEndpoint.TrimEnd('/')}/openai/v1/"),
     Transport = new HttpClientPipelineTransport(httpClient)
-    
+
 });
 
 
 ChatClientAgent agent = client
-    .GetChatClient("gpt-5")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(
         instructions: "Speak like a pirate!",
         tools: [AIFunctionFactory.Create(Tools.GetWeather)]

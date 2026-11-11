@@ -17,7 +17,7 @@ Secrets secrets = SecretsManager.GetSecrets();
 
 AIProjectClient client = new AIProjectClient(new Uri(secrets.MicrosoftFoundryEndpoint), new AzureCliCredential());
 
-string modelDeploymentName = "gpt-4.1-mini";
+string modelDeploymentName = "gpt-6-luna";
 string myAgentName = "myAgent4";
 string myInstructions = "You are a nice AI";
 

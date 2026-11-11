@@ -17,7 +17,7 @@ public class Skills
     {
         using CustomClientHttpHandler handler = new CustomClientHttpHandler();
         using HttpClient httpClient = new HttpClient(handler);
-        
+
         Secrets secrets = SecretsManager.GetSecrets();
 
         OpenAIClient client = ClientHelper.GetAzureOpenAIClient(false); //set to true to see raw calls
@@ -29,7 +29,7 @@ public class Skills
             DisableReadSkillResourceApproval = true,
             DisableRunSkillScriptApproval = true
         });
-        
+
         AIAgent agentWithSkills = client
             .GetResponsesClient()
             .AsAIAgent(new ChatClientAgentOptions
@@ -39,14 +39,14 @@ public class Skills
                     Instructions = "You are a nice AI"
                 },
                 AIContextProviders = [agentSkillsProvider]
-            }, model: "gpt-5.6-luna")
+            }, model: "gpt-6-luna")
             .AsBuilder()
             .Use(ToolCallingMiddleware)
             .Build(); ;
 
         AgentResponse response = await agentWithSkills.RunAsync("What are the Company values?");
         Console.WriteLine(response);
-        
+
         async ValueTask<object?> ToolCallingMiddleware(AIAgent callingAgent, FunctionInvocationContext context, Func<FunctionInvocationContext, CancellationToken, ValueTask<object?>> next, CancellationToken cancellationToken)
         {
             StringBuilder functionCallDetails = new();

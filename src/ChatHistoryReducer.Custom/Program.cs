@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using System.Text;
 
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
@@ -13,7 +15,7 @@ OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
 //Built-in reducers (covered in previous video)
 IChatReducer messageCountingChatReducer = new MessageCountingChatReducer(5);
-IChatReducer summarizingChatReducer = new SummarizingChatReducer(client.GetChatClient("gpt-4.1-mini").AsIChatClient(), targetCount: 1, threshold: 4);
+IChatReducer summarizingChatReducer = new SummarizingChatReducer(client.GetResponsesClient().AsIChatClient("gpt-6-luna"), targetCount: 1, threshold: 4);
 
 //Custom reducers
 IChatReducer alwaysRemoveToolCallsReducer = new AlwaysRemoveToolCallsReducer();
@@ -21,17 +23,17 @@ IChatReducer alwaysRemoveToolCallsReducer = new AlwaysRemoveToolCallsReducer();
 IChatReducer messagesWithWordReducer = new MessagesWithWordReducer("Sunny");
 
 ChatClientAgent pirateSummaryReducerAgent = client
-    .GetChatClient("gpt-4.1-mini")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(instructions: "Given the input messages make a summary of them in the voice of a pirate!");
 AIDrivenPirateSummaryReducer aiDrivenSummaryReducer = new AIDrivenPirateSummaryReducer(pirateSummaryReducerAgent, 4);
 
 
 ChatClientAgent cityReducerAgent = client
-    .GetChatClient("gpt-4.1-mini")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(instructions: "Given the input numbered messages, return the numbers of the messages that contain a city name");
 AIDrivenCityReducer aiDrivenCityReducer = new AIDrivenCityReducer(cityReducerAgent);
 
-ChatClientAgent agent = client.GetChatClient("gpt-4.1-mini")
+ChatClientAgent agent = client.GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(new ChatClientAgentOptions
     {
         ChatOptions = new ChatOptions
@@ -156,7 +158,7 @@ class AIDrivenCityReducer(AIAgent agent) : IChatReducer
 
         AlwaysRemoveToolCallsReducer alwaysRemoveToolCallsReducer = new();
         List<ChatMessage> normalMessages = (await alwaysRemoveToolCallsReducer.ReduceAsync(messages, cancellationToken)).ToList();
-        
+
         StringBuilder messagesAsString = new();
         for (int i = 0; i < normalMessages.Count; i++)
         {

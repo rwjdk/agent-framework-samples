@@ -20,7 +20,7 @@ OpenAIConnection openAIConnection = new()
 //Agent Framework Toolkit
 OpenAIAgent openAIAgent = new OpenAIAgentFactory(openAIConnection).CreateAgent(new AgentOptions
 {
-    Model = "gpt-6-astra",
+    Model = "gpt-6-luna",
     ServiceTier = OpenAIServiceTier.Ultrafast
 });
 
@@ -52,6 +52,6 @@ ChatClientAgent agent = client.GetResponsesClient().AsAIAgent(
             }
         }
     }
-    , model: "gpt-6-astra");
+    , model: "gpt-6-luna");
 
 #endregion

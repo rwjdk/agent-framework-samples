@@ -1,4 +1,6 @@
-﻿//YouTube video that cover this sample: https://youtu.be/Vpi5aZJRJmA
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+//YouTube video that cover this sample: https://youtu.be/Vpi5aZJRJmA
 
 
 using CommunityToolkit.VectorData.InMemory;
@@ -24,7 +26,7 @@ ChatMessage question = new(ChatRole.User, "What is the 3 highest rated adventure
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
 ChatClientAgent agent = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(instructions: "You are an expert a set of made up movies given to you (aka don't consider movies from your world-knowledge)");
 
 #region Let's give the model all data upfront
@@ -130,7 +132,7 @@ Utils.Green("Sample 3 RAG via Tool Call");
 SearchTool searchTool = new(collection);
 
 AIAgent agentWithTools = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(
         instructions: "You are an expert a set of made up movies given to you (aka don't consider movies from your world-knowledge)",
         tools: [AIFunctionFactory.Create(searchTool.SearchVectorStore)]

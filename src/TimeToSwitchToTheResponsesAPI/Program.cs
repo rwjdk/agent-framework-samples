@@ -1,4 +1,5 @@
-﻿using AgentFrameworkToolkit.AzureOpenAI;
+﻿#pragma warning disable OPENAI001
+using AgentFrameworkToolkit.AzureOpenAI;
 using AgentFrameworkToolkit.OpenAI;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
@@ -17,6 +18,7 @@ OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
 AzureOpenAIAgentFactory azureOpenAIAgentFactory = new(new AzureOpenAIConnection
 {
+    DefaultClientType = ClientType.ResponsesApi,
     Endpoint = secrets.AzureOpenAiEndpoint,
     ApiKey = secrets.AzureOpenAiKey
 });
@@ -24,14 +26,14 @@ AzureOpenAIAgentFactory azureOpenAIAgentFactory = new(new AzureOpenAIConnection
 string question = "What is the Weather like in Paris?";
 AIFunction tool = AIFunctionFactory.Create(GetWeather, "get_weather_for_city");
 
-//string modelToUse = "gpt-5.4-mini";
-const string modelToUse = "gpt-5.6-luna";
+//string modelToUse = "gpt-6-luna";
+const string modelToUse = "gpt-6-luna";
 
-await ChatClientWithTool(modelToUse);
+await ResponsesClientWithTool(modelToUse);
 
-await ChatClientWithLowReasoning(modelToUse);
+await ResponsesClientWithLowReasoning(modelToUse);
 
-await ChatClientWithToolAndLowReasoning(modelToUse);
+await ResponsesClientWithToolAndLowReasoning(modelToUse);
 
 await ResponsesApiWithToolAndLowReasoning(modelToUse);
 
@@ -44,12 +46,12 @@ static string GetWeather(string city)
     return "It is sunny and 19 degrees";
 }
 
-async Task ChatClientWithTool(string model)
+async Task ResponsesClientWithTool(string model)
 {
     try
     {
-        Utils.Yellow($"ChatClient with Tool answering Question: '{question}' with model: {model}");
-        AIAgent agent = client.GetChatClient(model).AsAIAgent(tools: [tool]);
+        Utils.Yellow($"IResponses client with Tool answering Question: '{question}' with model: {model}");
+        AIAgent agent = client.GetResponsesClient().AsIChatClient(model).AsAIAgent(tools: [tool]);
         AgentResponse response = await agent.RunAsync(question);
         Console.WriteLine(response);
     }
@@ -63,19 +65,19 @@ async Task ChatClientWithTool(string model)
     }
 }
 
-async Task ChatClientWithLowReasoning(string model)
+async Task ResponsesClientWithLowReasoning(string model)
 {
     try
     {
-        Utils.Yellow($"ChatClient with Reasoning answering Question: '{question}' with model: {model}");
-        AIAgent agent = client.GetChatClient(model).AsAIAgent(new ChatClientAgentOptions
+        Utils.Yellow($"IResponses client with Reasoning answering Question: '{question}' with model: {model}");
+        AIAgent agent = client.GetResponsesClient().AsIChatClient(model).AsAIAgent(new ChatClientAgentOptions
         {
             ChatOptions = new ChatOptions
             {
-                RawRepresentationFactory = _ => new ChatCompletionOptions
+                RawRepresentationFactory = _ => new CreateResponseOptions
                 {
-                    ReasoningEffortLevel = ChatReasoningEffortLevel.Low
-                }
+                    ReasoningOptions = new ResponseReasoningOptions { ReasoningEffortLevel = ResponseReasoningEffortLevel.Low },
+                    }
             }
         });
         AgentResponse response = await agent.RunAsync(question);
@@ -91,20 +93,20 @@ async Task ChatClientWithLowReasoning(string model)
     }
 }
 
-async Task ChatClientWithToolAndLowReasoning(string model)
+async Task ResponsesClientWithToolAndLowReasoning(string model)
 {
     try
     {
-        Utils.Yellow($"ChatClient with Tool and Reasoning answering Question: '{question}' with model: {model}");
-        AIAgent agent = client.GetChatClient(model).AsAIAgent(new ChatClientAgentOptions
+        Utils.Yellow($"IResponses client with Tool and Reasoning answering Question: '{question}' with model: {model}");
+        AIAgent agent = client.GetResponsesClient().AsIChatClient(model).AsAIAgent(new ChatClientAgentOptions
         {
             ChatOptions = new ChatOptions
             {
                 Tools = [tool],
-                RawRepresentationFactory = _ => new ChatCompletionOptions
+                RawRepresentationFactory = _ => new CreateResponseOptions
                 {
-                    ReasoningEffortLevel = ChatReasoningEffortLevel.Low
-                }
+                    ReasoningOptions = new ResponseReasoningOptions { ReasoningEffortLevel = ResponseReasoningEffortLevel.Low },
+                    }
             }
         });
         AgentResponse response = await agent.RunAsync(question);

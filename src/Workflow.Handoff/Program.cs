@@ -1,4 +1,6 @@
-﻿//YouTube video that cover this sample: https://youtu.be/VInKZ45YKAM
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+//YouTube video that cover this sample: https://youtu.be/VInKZ45YKAM
 
 
 using Microsoft.Agents.AI;
@@ -16,10 +18,10 @@ Secrets secrets = SecretsManager.GetSecrets();
 
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
-ChatClientAgent intentAgent = client.GetChatClient("gpt-4.1-mini").AsAIAgent(name: "IntentAgent", instructions: "Determine what type of question was asked. Never answer yourself");
+ChatClientAgent intentAgent = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(name: "IntentAgent", instructions: "Determine what type of question was asked. Never answer yourself");
 
-ChatClientAgent movieNerd = client.GetChatClient("gpt-4.1").AsAIAgent(name: "MovieNerd", instructions: "You are a Movie Nerd");
-ChatClientAgent musicNerd = client.GetChatClient("gpt-4.1").AsAIAgent(name: "MusicNerd", instructions: "You are a Music Nerd");
+ChatClientAgent movieNerd = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(name: "MovieNerd", instructions: "You are a Movie Nerd");
+ChatClientAgent musicNerd = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(name: "MusicNerd", instructions: "You are a Music Nerd");
 
 
 while (true)

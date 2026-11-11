@@ -8,7 +8,7 @@ Console.WriteLine("Sample: Azure OpenAI with HTTP Client");
 string endpoint = EnvironmentVariableHelper.GetValueOrAsk("myEndpoint");
 string apiKey = EnvironmentVariableHelper.GetValueOrAsk("myApiKey", secret: true);
 
-Provider provider = new(endpoint, apiKey, "gpt-5.6-luna");
+Provider provider = new(endpoint, apiKey, "gpt-6-luna");
 MyAgent agent = provider.AsAgent(instructions: "You are a nice AI!");
 
 Console.WriteLine("----------");

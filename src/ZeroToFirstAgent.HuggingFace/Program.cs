@@ -1,8 +1,11 @@
-﻿/* Steps:
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+/* Steps:
  * 1: Create a 'HuggingFace Account' and generate an API Key (Access Token): https://huggingface.co/settings/tokens
  * 2: Add Nuget Packages (OpenAI + Microsoft.Agents.AI.OpenAI)
  * 3: Create an OpenAIClient with endpoint https://router.huggingface.co/v1
- * 4: Get a ChatClient and Create an AI Agent from it
+ * 4: Get a IChatClient and Create an AI Agent from it
  * 5: Call RunAsync or RunStreamingAsync
  */
 
@@ -18,7 +21,7 @@ OpenAIClient client = new(new ApiKeyCredential(apiKey), new OpenAIClientOptions(
 {
     Endpoint = new Uri("https://router.huggingface.co/v1")
 });
-ChatClientAgent agent = client.GetChatClient(model).AsAIAgent();
+ChatClientAgent agent = client.GetResponsesClient().AsIChatClient(model).AsAIAgent();
 
 AgentResponse response = await agent.RunAsync("What is the Capital of Peru?");
 Console.WriteLine(response);

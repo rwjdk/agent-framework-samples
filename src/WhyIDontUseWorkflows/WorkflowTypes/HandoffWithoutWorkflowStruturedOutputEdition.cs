@@ -1,4 +1,7 @@
-﻿
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+
 using Microsoft.Agents.AI;
 using OpenAI;
 using OpenAI.Chat;
@@ -13,10 +16,10 @@ public static class HandoffWithoutWorkflowStructuredOutputEdition
     {
         OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
-        ChatClientAgent intentAgent = client.GetChatClient("gpt-4.1-mini").AsAIAgent(name: "IntentAgent", instructions: "Determine what type of question was asked. Never answer yourself");
+        ChatClientAgent intentAgent = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(name: "IntentAgent", instructions: "Determine what type of question was asked. Never answer yourself");
 
-        ChatClientAgent movieNerd = client.GetChatClient("gpt-4.1").AsAIAgent(name: "MovieNerd", instructions: "You are a Movie Nerd");
-        ChatClientAgent musicNerd = client.GetChatClient("gpt-4.1").AsAIAgent(name: "MusicNerd", instructions: "You are a Music Nerd");
+        ChatClientAgent movieNerd = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(name: "MovieNerd", instructions: "You are a Movie Nerd");
+        ChatClientAgent musicNerd = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(name: "MusicNerd", instructions: "You are a Music Nerd");
 
         Console.Write("> ");
         string input = Console.ReadLine()!;

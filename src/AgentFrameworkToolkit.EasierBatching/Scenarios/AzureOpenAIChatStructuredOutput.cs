@@ -23,7 +23,7 @@ public static class AzureOpenAIChatStructuredOutput
         ChatBatchRun<CityInfo> run = await batchRunner.RunChatBatchAsync<CityInfo>(new ChatBatchOptions
             {
                 ClientType = ChatBatchClientType.ResponsesApi,
-                Model = "gpt-4.1-nano-batch",
+                Model = "gpt-6-luna",
                 Instructions = "You are a Capital Expert",
                 //ReasoningEffort = OpenAIReasoningEffort.Low,
                 //ReasoningSummaryVerbosity = OpenAIReasoningSummaryVerbosity.Detailed

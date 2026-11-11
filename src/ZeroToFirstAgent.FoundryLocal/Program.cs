@@ -1,4 +1,7 @@
-﻿using System.ClientModel;
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+using System.ClientModel;
 using Microsoft.Agents.AI;
 using Microsoft.AI.Foundry.Local;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -65,7 +68,7 @@ try
     {
         Endpoint = new Uri($"{serviceUrl}/v1")
     });
-    ChatClientAgent agent = client.GetChatClient(model.Id).AsAIAgent();
+    ChatClientAgent agent = client.GetResponsesClient().AsIChatClient(model.Id).AsAIAgent();
 
     //Normal
     const string question1 = "What is the Capital of Sweden?";

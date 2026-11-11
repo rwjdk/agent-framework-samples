@@ -36,7 +36,7 @@ public class McpScenario
         AIAgent agent = client
             .GetResponsesClient()
             .AsAIAgent(
-                model: "gpt-5.6-luna",
+                model: "gpt-6-luna",
                 instructions: "You are a GitHub Expert",
                 tools: toolsInGitHubMcp.Cast<AITool>().ToList()
             )

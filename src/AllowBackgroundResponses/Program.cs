@@ -18,7 +18,7 @@ OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
 AIAgent agent = client
     .GetResponsesClient()
-    .AsAIAgent(model: "gpt-5");
+    .AsAIAgent(model: "gpt-6-luna");
 
 Utils.Green("SimpleQuestion-BEGIN");
 AgentResponse response1 = await agent.RunAsync("What is the capital of France?");

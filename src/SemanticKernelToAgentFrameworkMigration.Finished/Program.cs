@@ -1,3 +1,5 @@
+#pragma warning disable OPENAI001
+using OpenAI.Responses;
 
 using Microsoft.Agents.AI;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +29,7 @@ WebApplication app = builder.Build();
 
 app.MapPost("/chat", async Task<IResult> ([FromBody] ChatRequest chatRequest, OpenAIClient client) =>
 {
-    ChatClientAgent agent = client.GetChatClient("gpt-4.1-mini").AsAIAgent();
+    ChatClientAgent agent = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent();
     AgentResponse response = await agent.RunAsync(chatRequest.Question);
     return Results.Ok(new ChatResponse(response.Text));
 });
@@ -35,7 +37,7 @@ app.MapPost("/chat", async Task<IResult> ([FromBody] ChatRequest chatRequest, Op
 app.MapPost("/chatWithStreaming", async Task<IResult> ([FromBody] ChatRequest chatRequest, OpenAIClient client) =>
 {
     //Not really streaming, but simulating it
-    ChatClientAgent agent = client.GetChatClient("gpt-4.1-mini").AsAIAgent(
+    ChatClientAgent agent = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(
         instructions: "You are a nice AI");
 
     string answer = string.Empty;
@@ -49,7 +51,7 @@ app.MapPost("/chatWithStreaming", async Task<IResult> ([FromBody] ChatRequest ch
 
 app.MapPost("/chatHistory", async Task<IResult> ([FromBody] ChatRequest chatRequest, OpenAIClient client) =>
 {
-    ChatClientAgent agent = client.GetChatClient("gpt-4.1-mini").AsAIAgent(
+    ChatClientAgent agent = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(
         instructions: "You answer questions about People");
 
     AgentSession session = await agent.CreateSessionAsync();
@@ -66,7 +68,7 @@ app.MapPost("/toolCalling", async Task<IResult> ([FromBody] ChatRequest chatRequ
 {
     MyTools myTools = new();
 
-    AIAgent agent = client.GetChatClient("gpt-4.1-mini").AsAIAgent(
+    AIAgent agent = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(
         instructions: "You answer questions about Weather and Time (use your tools to do so)",
         tools:
         [
@@ -80,7 +82,7 @@ app.MapPost("/toolCalling", async Task<IResult> ([FromBody] ChatRequest chatRequ
 
 app.MapPost("/structuredOutput", async Task<IResult> ([FromBody] ChatRequest chatRequest, OpenAIClient client) =>
 {
-    ChatClientAgent agent = client.GetChatClient("gpt-4.1-mini").AsAIAgent(
+    ChatClientAgent agent = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(
         instructions: "You answer Movie Questions"
     );
     AgentResponse<MovieResult> response = await agent.RunAsync<MovieResult>();
@@ -122,7 +124,7 @@ app.MapPost("/rag", async Task<IResult> ([FromBody] ChatRequest chatRequest, IEm
         });
     }
 
-    ChatClientAgent agent = client.GetChatClient("gpt-4.1-mini").AsAIAgent(
+    ChatClientAgent agent = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(
         instructions: "You answer Knowledge Base Questions"
     );
 

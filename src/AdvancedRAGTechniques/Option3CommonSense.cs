@@ -1,4 +1,6 @@
-﻿using AdvancedRAGTechniques.EmbeddingOptions;
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using AdvancedRAGTechniques.EmbeddingOptions;
 using AdvancedRAGTechniques.SearchOptions;
 
 using CommunityToolkit.VectorData.SqlServer;
@@ -22,7 +24,7 @@ public static class Option3CommonSense
         }
 
         ChatClientAgent intentAgent = client
-            .GetChatClient("gpt-4.1")
+            .GetResponsesClient().AsIChatClient("gpt-6-luna")
             .AsAIAgent(instructions: "You are good at inferring the intent of the user");
 
         AgentResponse<IntentResponse> intentResponse = await intentAgent.RunAsync<IntentResponse>(question);
@@ -39,7 +41,7 @@ public static class Option3CommonSense
 
                 MovieVectorStoreRecord[] topMovies = matchingMovies.OrderByDescending(x => x.Rating).Take(intent.NumberOfResults).ToArray();
 
-                AIAgent agent = client.GetChatClient("gpt-4.1")
+                AIAgent agent = client.GetResponsesClient().AsIChatClient("gpt-6-luna")
                     .AsAIAgent(
                         instructions: $"""
                                        You are an expert a set of made up movies given to you (aka don't consider movies from your world-knowledge)
@@ -54,7 +56,7 @@ public static class Option3CommonSense
             case TypeOfQuestion.MovieGenreSearch:
             {
                 EnhancedSearchTool searchTool = new(collection);
-                AIAgent agent = client.GetChatClient("gpt-4.1")
+                AIAgent agent = client.GetResponsesClient().AsIChatClient("gpt-6-luna")
                     .AsAIAgent(
                         instructions: """
                                       You are an expert a set of made up movies given to you (aka don't consider movies from your world-knowledge)
@@ -74,7 +76,7 @@ public static class Option3CommonSense
             case TypeOfQuestion.GenericMovieQuestion:
             {
                 OriginalSearchTool searchTool = new(collection);
-                AIAgent agent = client.GetChatClient("gpt-4.1")
+                AIAgent agent = client.GetResponsesClient().AsIChatClient("gpt-6-luna")
                     .AsAIAgent(
                         instructions: """
                                       You are an expert a set of made up movies given to you (aka don't consider movies from your world-knowledge)

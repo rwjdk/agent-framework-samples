@@ -1,4 +1,6 @@
-﻿//YouTube video that cover this sample: https://youtu.be/p5AvoMbgPtI
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+//YouTube video that cover this sample: https://youtu.be/p5AvoMbgPtI
 // ReSharper disable HeuristicUnreachableCode
 
 #pragma warning disable CS0162 // Unreachable code detected
@@ -17,7 +19,7 @@ Secrets secrets = SecretsManager.GetSecrets();
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
 ChatClientAgent agent = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(new ChatClientAgentOptions
     {
         ChatOptions = new ChatOptions

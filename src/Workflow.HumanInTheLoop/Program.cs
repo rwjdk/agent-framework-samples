@@ -1,4 +1,7 @@
-﻿
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+
 using Microsoft.Agents.AI;
 using Microsoft.Agents.AI.Workflows;
 using OpenAI;
@@ -9,7 +12,7 @@ using System.ClientModel;
 Console.Clear();
 Secrets secrets = SecretsManager.GetSecrets();
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
-ChatClient chatClient = client.GetChatClient("gpt-4.1");
+IChatClient chatClient = client.GetResponsesClient().AsIChatClient("gpt-6-luna");
 ChatClientAgent agent = chatClient.AsAIAgent(instructions: "You are the judge in a guessing game where it is about guessing animals. " +
                                                            "Each hint should only give one fact");
 
@@ -38,8 +41,8 @@ await foreach (WorkflowEvent evt in handle.WatchStreamAsync())
             if (externalRequest.IsDataOfType<FeedbackToUser>())
             {
                 FeedbackToUser feedbackToUser = externalRequest.Data.As<FeedbackToUser>()!;
-                Utils.Gray(feedbackToUser.Init ? 
-                    "Guess what animal I'm thinking of" : 
+                Utils.Gray(feedbackToUser.Init ?
+                    "Guess what animal I'm thinking of" :
                     "That is not the animal I'm thinking of");
                 Console.WriteLine($"Hint: {feedbackToUser.Hint}");
                 Utils.Separator();

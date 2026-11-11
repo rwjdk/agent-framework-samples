@@ -1,60 +1,34 @@
-﻿//YouTube video that cover this sample: https://youtu.be/tTChhtkFk3M
-
-using Azure;
-using Azure.AI.Agents.Persistent;
+﻿using Azure.AI.Projects;
 using Azure.Identity;
+#pragma warning disable OPENAI001
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
+using OpenAI;
+using OpenAI.Responses;
 using Shared;
 using Shared.Extensions;
 
 Console.Clear();
-
 Secrets secrets = SecretsManager.GetSecrets();
-PersistentAgentsClient client = new(secrets.MicrosoftFoundryEndpoint, new AzureCliCredential());
+AIProjectClient projectClient = new(new Uri(secrets.MicrosoftFoundryEndpoint), new AzureCliCredential());
+OpenAIClient client = projectClient.ProjectOpenAIClient;
+#pragma warning disable OPENAI001
+AIAgent agent = client
+    .GetResponsesClient()
+#pragma warning restore OPENAI001
+    .AsAIAgent(
+        model: "gpt-6-luna",
+        instructions: "You are a Space News AI Reporter",
+        tools: [new HostedWebSearchTool()]
+    );
 
-BingGroundingSearchConfiguration bingToolConfiguration = new(secrets.BingApiKey);
-BingGroundingSearchToolParameters bingToolParameters = new([bingToolConfiguration]);
-
-Response<PersistentAgent>? aiFoundryAgent = null;
-ChatClientAgentSession? chatClientAgentSession = null;
-try
+List<AgentResponseUpdate> updates = [];
+string question = "What is today's news in Space Exploration (List today's date at the top)";
+await foreach (AgentResponseUpdate update in agent.RunStreamingAsync(question))
 {
-    aiFoundryAgent = await client.Administration.CreateAgentAsync(
-        "gpt-4.1",
-        "CurrentNewsAgent",
-        "",
-        "You report about Space News",
-        tools: new List<ToolDefinition>
-        {
-            new BingGroundingToolDefinition(bingToolParameters)
-        });
-
-    AIAgent agent = (await client.GetAIAgentAsync(aiFoundryAgent.Value.Id));
-
-    AgentSession session = await agent.CreateSessionAsync();
-
-    List<AgentResponseUpdate> updates = [];
-    await foreach (AgentResponseUpdate update in agent.RunStreamingAsync("What is today's news in Space Exploration (List today's date and List only top item)", session))
-    {
-        updates.Add(update);
-        Console.Write(update);
-    }
-
-    AgentResponse fullResponse = updates.ToAgentResponse();
-    fullResponse.Usage.OutputAsInformation();
-
-    //NB: Do not support citations like the Responses API
+    updates.Add(update);
+    Console.Write(update);
 }
-finally
-{
-    if (chatClientAgentSession != null)
-    {
-        await client.Threads.DeleteThreadAsync(chatClientAgentSession.ConversationId);
-    }
 
-    if (aiFoundryAgent != null)
-    {
-        await client.Administration.DeleteAgentAsync(aiFoundryAgent.Value.Id);
-    }
-}
+AgentResponse fullResponse = updates.ToAgentResponse();
+fullResponse.Usage.OutputAsInformation();

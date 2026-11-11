@@ -24,14 +24,15 @@ AzureOpenAIAgentFactory azureOpenAIAgentFactory = new(new AzureOpenAIConnection(
     DefaultClientType = ClientType.ResponsesApi
 });
 GoogleAgentFactory googleAgentFactory = new(secrets.GoogleGeminiApiKey);
-OpenAIAgentFactory openAIAgentFactory = new(new OpenAIConnection { ApiKey = secrets.OpenAiApiKey, DefaultClientType = ClientType.ResponsesApi });
+OpenAIAgentFactory openAIAgentFactory = new(new OpenAIConnection {
+    DefaultClientType = ClientType.ResponsesApi, ApiKey = secrets.OpenAiApiKey });
 XAIAgentFactory xaiAgentFactory = new(secrets.XAiGrokApiKey);
 MicrosoftFoundryAgentFactory microsoftFoundryAgentFactory = new(secrets.MicrosoftFoundryEndpoint, new AzureCliCredential());
 
 List<AgentTest> agentTests =
 [
     CreateAgentTest("Anthropic", AnthropicChatModels.ClaudeSonnet55, model => anthropicAgentFactory.CreateAgent(model, maxOutputTokens: 1000, tools: [weatherTool])),
-    CreateAgentTest("Microsoft Foundry", OpenAIChatModels.Gpt56Luna, model => microsoftFoundryAgentFactory.CreateAgent(model, tools: [weatherTool])),
+    CreateAgentTest("Microsoft Foundry", OpenAIChatModels.Gpt6Luna, model => microsoftFoundryAgentFactory.CreateAgent(model, tools: [weatherTool])),
     CreateAgentTest("Azure OpenAI", OpenAIChatModels.Gpt6Luna, model => azureOpenAIAgentFactory.CreateAgent(model, tools: [weatherTool])),
     CreateAgentTest("Google", GoogleChatModels.Gemini38Flash, model => googleAgentFactory.CreateAgent(model, tools: [weatherTool])),
     CreateAgentTest("OpenAI", OpenAIChatModels.Gpt6Luna, model => openAIAgentFactory.CreateAgent(model, tools: [weatherTool])),
@@ -50,10 +51,10 @@ foreach (AgentTest agentTest in agentTests)
     Utils.LineSeparator();
 }
 
-Utils.Gray("Summarizing results with GPT-6.1 Sol...");
+Utils.Gray("Summarizing results with gpt-6-luna Sol...");
 AIAgent summaryAgent = openAIAgentFactory.CreateAgent(new AgentOptions
 {
-    Model = OpenAIChatModels.Gpt61Sol,
+    Model = OpenAIChatModels.Gpt6Luna,
     ReasoningEffort = OpenAIReasoningEffort.Low,
     Instructions = $"""
         Summarize the supplied speed test results in plain text.

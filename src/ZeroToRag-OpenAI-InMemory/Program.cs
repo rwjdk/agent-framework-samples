@@ -29,7 +29,7 @@ List<MyDataEntry> data =
 
 string openAiApiKey = ""; //todo - store this securely and not in source code!
 string embeddingModelName = "text-embedding-3-small";
-string llmModelName = "gpt-5.6-luna";
+string llmModelName = "gpt-6-luna";
 
 #endregion
 
@@ -71,7 +71,7 @@ foreach (MyDataEntry entry in data)
     Console.WriteLine($"Embedding Q: {entry.Question}");
     VectorModel vectorModel = new VectorModel
     {
-        Id = Guid.NewGuid().ToString(), 
+        Id = Guid.NewGuid().ToString(),
         Question = entry.Question,
         Answer = entry.Answer
     };

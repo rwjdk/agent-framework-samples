@@ -2,17 +2,17 @@
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 
 namespace DoItYourselfAiCalling.Models;
 
-internal class MyAgent
+internal class MyAgent(HttpClient? client = null)
 {
+    private readonly HttpClient _httpClient = client ?? new HttpClient();
     public required Provider Provider { get; set; }
     public string? Instructions { get; set; }
     public JsonObject? ResponseFormat { get; set; }
     public IList<MyTool> Tools { get; set; } = [];
-    
+
     private readonly List<MyMessage> _messagesBackFromLastResponse = [];
 
     public async Task<MyResponse> RunAsync(string message)
@@ -47,23 +47,67 @@ internal class MyAgent
 
         string jsonResponse = await CallProvider(json);
 
-        InternalResponse internalResponse = JsonSerializer.Deserialize<InternalResponse>(jsonResponse)!;
-
-        InternalResponseChoice choice = internalResponse.Choices[0];
-
-        _messagesBackFromLastResponse.Add(choice.Message);
-        switch (choice.FinishReason)
+        while (true)
         {
-            case "stop":
-                //Finished!
+            using JsonDocument response = JsonDocument.Parse(jsonResponse);
+            JsonElement root = response.RootElement;
+            if (root.GetProperty("status").GetString() != "completed")
+            {
+                throw new InvalidOperationException($"Response did not complete: {jsonResponse}");
+            }
+
+            JsonArray toolOutputs = [];
+            foreach (JsonElement item in root.GetProperty("output").EnumerateArray())
+            {
+                string? type = item.GetProperty("type").GetString();
+                if (type == "message")
+                {
+                    string text = string.Concat(item.GetProperty("content").EnumerateArray()
+                        .Where(x => x.GetProperty("type").GetString() == "output_text")
+                        .Select(x => x.GetProperty("text").GetString()));
+                    _messagesBackFromLastResponse.Add(new MyMessage { Role = "assistant", Content = text });
+                }
+                else if (type == "function_call")
+                {
+                    string name = item.GetProperty("name").GetString()!;
+                    string callId = item.GetProperty("call_id").GetString()!;
+                    string arguments = item.GetProperty("arguments").GetString()!;
+                    MyTool tool = Tools.FirstOrDefault(x => x.Name == name)
+                        ?? throw new InvalidOperationException($"Unknown tool: {name}");
+                    using JsonDocument args = JsonDocument.Parse(arguments);
+                    object?[] values = tool.Delegate.Method.GetParameters()
+                        .Select(p => JsonSerializer.Deserialize(args.RootElement.GetProperty(p.Name!).GetRawText(), p.ParameterType))
+                        .ToArray();
+                    object? result = tool.Delegate.DynamicInvoke(values);
+                    if (result is Task task)
+                    {
+                        await task;
+                        result = task.GetType().GetProperty("Result")?.GetValue(task);
+                    }
+                    string output = result?.ToString() ?? string.Empty;
+                    _messagesBackFromLastResponse.Add(new MyMessage
+                    {
+                        Role = "assistant", Content = string.Empty,
+                        ToolCalls = [new MyMessageToolCallRequest
+                        {
+                            Id = callId, Type = "function",
+                            Function = new Function { Name = name, Arguments = arguments }
+                        }]
+                    });
+                    _messagesBackFromLastResponse.Add(new MyMessage { Role = "tool", Content = output, ToolCallId = callId });
+                    toolOutputs.Add(new JsonObject { ["type"] = "function_call_output", ["call_id"] = callId, ["output"] = output });
+                }
+            }
+            if (toolOutputs.Count == 0)
+            {
                 MyResponse finalResponse = new(new List<MyMessage>(_messagesBackFromLastResponse));
                 _messagesBackFromLastResponse.Clear();
                 return finalResponse;
-            case "tool_calls":
-                //Tool call
-                return await ReactToToolCallRequest(messagesToSend, choice.Message);
-            default:
-                throw new Exception($"Unexcepted finishReason: {choice.FinishReason}");
+            }
+            json = BuildPayload([]);
+            json["input"] = toolOutputs;
+            json["previous_response_id"] = root.GetProperty("id").GetString();
+            jsonResponse = await CallProvider(json);
         }
     }
 
@@ -73,61 +117,6 @@ internal class MyAgent
         MyResponse response = await RunAsync(messages);
         ResponseFormat = null;
         return new MyResponse<T>(response);
-    }
-
-    private async Task<MyResponse> ReactToToolCallRequest(IList<MyMessage> messagesToSend, MyMessage toolCallRequestMessageFromLlm)
-    {
-        foreach (MyMessageToolCallRequest toolCallRequest in toolCallRequestMessageFromLlm.ToolCalls ?? [])
-        {
-            MyTool? tool = Tools.FirstOrDefault(x => x.Name == toolCallRequest.Function.Name);
-            if (tool == null)
-            {
-                throw new Exception("Requested tool does not exist!");
-            }
-
-            messagesToSend.Add(toolCallRequestMessageFromLlm);
-
-            object? toolResult;
-            if (!string.IsNullOrWhiteSpace(toolCallRequest.Function.Arguments))
-            {
-                using JsonDocument json = JsonDocument.Parse(toolCallRequest.Function.Arguments);
-
-                ParameterInfo[] parameterInfos = tool.Delegate.Method.GetParameters();
-                List<object> args = [];
-                foreach (ParameterInfo parameterInfo in parameterInfos)
-                {
-                    JsonElement jsonElement = json.RootElement.GetProperty(parameterInfo.Name!);
-                    if (parameterInfo.ParameterType == typeof(string))
-                    {
-                        args.Add(jsonElement.GetString()!);
-                    }
-                    else if (parameterInfo.ParameterType == typeof(int))
-                    {
-                        args.Add(jsonElement.GetInt32());
-                    }
-                    else
-                    {
-                        throw new Exception("Not yet supported parameter");
-                    }
-                }
-
-                toolResult = tool.Delegate.DynamicInvoke(args.ToArray());
-            }
-            else
-            {
-                toolResult = tool.Delegate.DynamicInvoke();
-            }
-
-            MyMessage toolMessage = new()
-            {
-                Content = toolResult?.ToString()!,
-                Role = "tool",
-                ToolCallId = toolCallRequest.Id
-            };
-            _messagesBackFromLastResponse.Add(toolMessage);
-            messagesToSend.Add(toolMessage);
-        }
-        return await RunAsync(messagesToSend);
     }
 
     private JsonObject BuildResponseFormat<T>()
@@ -143,7 +132,7 @@ internal class MyAgent
                 {"type", CSharpTypeToSchemaType(propertyInfo.PropertyType)}
             });
         }
-        
+
         JsonObject root = new()
         {
             {"type", "json_schema"},
@@ -177,19 +166,20 @@ internal class MyAgent
 
     private async Task<string> CallProvider(JsonObject json)
     {
-        HttpClient httpClient = new();
-        httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {Provider.ApiKey}");
-
-        string urlToUse = Provider.Endpoint;
+        string urlToUse = Provider.Endpoint.TrimEnd('/');
         string suffix = "/openai/v1";
         if (urlToUse.EndsWith(suffix))
         {
             //strip off the default mentioned in Azure Portal if given
             urlToUse = urlToUse.Remove(urlToUse.Length - suffix.Length);
         }
-        urlToUse += $"/openai/deployments/{Provider.Model}/chat/completions?api-version=2025-04-01-preview";
+        urlToUse += "/openai/v1/responses";
 
-        HttpResponseMessage httpResponse = await httpClient.PostAsJsonAsync(new Uri(urlToUse), json);
+        using HttpRequestMessage request = new(HttpMethod.Post, new Uri(urlToUse));
+        request.Headers.Authorization = new("Bearer", Provider.ApiKey);
+        request.Content = JsonContent.Create(json);
+        using HttpResponseMessage httpResponse = await _httpClient.SendAsync(request);
+        httpResponse.EnsureSuccessStatusCode();
         return await httpResponse.Content.ReadAsStringAsync();
     }
 
@@ -215,24 +205,27 @@ internal class MyAgent
         JsonArray jsonMessages = [];
         foreach (MyMessage message in messagesToSend)
         {
+            if (message.Role == "tool")
+            {
+                jsonMessages.Add(new JsonObject { ["type"] = "function_call_output", ["call_id"] = message.ToolCallId, ["output"] = message.Content });
+                continue;
+            }
+            if (message.ToolCalls?.Count > 0)
+            {
+                foreach (MyMessageToolCallRequest call in message.ToolCalls)
+                {
+                    jsonMessages.Add(new JsonObject { ["type"] = "function_call", ["call_id"] = call.Id, ["name"] = call.Function.Name, ["arguments"] = call.Function.Arguments });
+                }
+                continue;
+            }
             JsonObject jsonMessage = new()
             {
                 {"role", message.Role},
-                
+
             };
             if (!string.IsNullOrWhiteSpace(message.Content))
             {
                 jsonMessage.Add("content", message.Content);
-            }
-
-            if (message.ToolCalls?.Count > 0)
-            {
-                jsonMessage.Add("tool_calls", JsonSerializer.SerializeToNode(message.ToolCalls));
-            }
-
-            if (!string.IsNullOrWhiteSpace(message.ToolCallId))
-            {
-                jsonMessage.Add("tool_call_id", message.ToolCallId);
             }
 
             jsonMessages.Add(jsonMessage);
@@ -240,13 +233,20 @@ internal class MyAgent
 
         JsonObject json = new()
         {
-            {"messages", jsonMessages}
+            {"model", Provider.Model},
+            {"input", jsonMessages}
         };
 
         //Structured Output?
         if (ResponseFormat != null)
         {
-            json.Add("response_format", ResponseFormat);
+            JsonObject format = (JsonObject)ResponseFormat["json_schema"]!.DeepClone();
+            format["type"] = "json_schema";
+            format["strict"] = true;
+            JsonObject schema = (JsonObject)format["schema"]!;
+            schema["additionalProperties"] = false;
+            schema["required"] = new JsonArray(((JsonObject)schema["properties"]!).Select(x => (JsonNode?)JsonValue.Create(x.Key)).ToArray());
+            json.Add("text", new JsonObject { ["format"] = format });
         }
 
         //Tools?
@@ -268,8 +268,7 @@ internal class MyAgent
                 tools.Add(new JsonObject
                 {
                     {"type", "function"},
-                    {"function", new JsonObject
-                    {
+                    {"strict", false},
                         {"description", tool.Description},
                         {"name", tool.Name},
                         {"parameters", new JsonObject
@@ -277,7 +276,6 @@ internal class MyAgent
                             {"type", "object"},
                             {"properties", JsonSerializer.SerializeToNode(parameters)}
                         }}
-                    }}
                 });
             }
 
@@ -287,21 +285,4 @@ internal class MyAgent
         return json;
     }
 
-    private class InternalResponse
-    {
-        [JsonPropertyName("id")]
-        public required string Id { get; set; }
-
-        [JsonPropertyName("choices")]
-        public required InternalResponseChoice[] Choices { get; set; }
-    }
-
-    private class InternalResponseChoice
-    {
-        [JsonPropertyName("finish_reason")]
-        public required string FinishReason { get; set; }
-
-        [JsonPropertyName("message")]
-        public required MyMessage Message { get; set; }
-    }
 }

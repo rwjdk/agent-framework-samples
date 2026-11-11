@@ -1,4 +1,7 @@
-﻿
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+
 using Microsoft.Agents.AI;
 using OpenAI.Chat;
 using Shared;
@@ -11,7 +14,7 @@ Console.Clear();
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
 ChatClientAgent agent = client
-    .GetChatClient("gpt-4.1-mini")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(
         new ChatClientAgentOptions
         {
@@ -29,7 +32,7 @@ string toStoreForTheUser = JsonSerializer.Serialize(sessionElement);
 
 Utils.Separator();
 
-//Some time passes.... 
+//Some time passes....
 Utils.Green("Some time passes, and we restore the session...");
 
 

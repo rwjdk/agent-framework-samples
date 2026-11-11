@@ -1,11 +1,14 @@
-﻿
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+
 using Microsoft.Agents.AI;
 using OpenAI;
 using OpenAI.Chat;
 
 namespace DependencyInjection.Components.Pages;
 
-public partial class Home(OpenAIClient OpenAIClient, [FromKeyedServices("gpt-4.1")] ChatClient chatClient, [FromKeyedServices("gpt-4.1")] ChatClientAgent agentInjected)
+public partial class Home(OpenAIClient OpenAIClient, [FromKeyedServices("gpt-6-luna")] IChatClient chatClient, [FromKeyedServices("gpt-6-luna")] ChatClientAgent agentInjected)
 {
     private string? _question;
     private string? _answer;
@@ -18,7 +21,7 @@ public partial class Home(OpenAIClient OpenAIClient, [FromKeyedServices("gpt-4.1
         }
 
         ChatClientAgent agent = OpenAIClient
-            .GetChatClient("gpt-4.1")
+            .GetResponsesClient().AsIChatClient("gpt-6-luna")
             .AsAIAgent();
 
         //Alternatives

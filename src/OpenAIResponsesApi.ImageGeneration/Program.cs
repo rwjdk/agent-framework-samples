@@ -17,10 +17,10 @@ using ImageGenerationOptions = Microsoft.Extensions.AI.ImageGenerationOptions;
 Utils.Init("Responses API - Image Generation");
 
 Secrets secrets = SecretsManager.GetSecrets();
-string model = "gpt-5.6-luna";
+string model = "gpt-6-luna";
 string imageModel = "gpt-image-2";
 
-#region OpenAI 
+#region OpenAI
 Utils.Green("OpenAI");
 OpenAIClient openAIClient = new OpenAIClient(new ApiKeyCredential(secrets.OpenAiApiKey));
 await Execute(openAIClient.GetResponsesClient());
@@ -44,7 +44,7 @@ await Execute(client.GetResponsesClient());
 #region Microsoft Foundry
 Utils.Green("Microsoft Foundry");
 AIProjectClient foundryProjectClient = new AIProjectClient(
-    new Uri(secrets.MicrosoftFoundryEndpoint), 
+    new Uri(secrets.MicrosoftFoundryEndpoint),
     new AzureCliCredential(),
     new AIProjectClientOptions
     {
@@ -77,7 +77,7 @@ async Task Execute(ResponsesClient responsesClient)
     Console.WriteLine(questionPrompt);
     AgentResponse response1 = await agent.RunAsync(questionPrompt);
     Console.WriteLine(response1);
-    
+
     //Image
     string imagePrompt = "Create an image of a cute dog";
     Console.WriteLine(imagePrompt);

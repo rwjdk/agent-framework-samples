@@ -1,7 +1,10 @@
-﻿//YouTube video that cover this sample: https://youtu.be/arfBt6-wbnw
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using Microsoft.Extensions.AI;
+//YouTube video that cover this sample: https://youtu.be/arfBt6-wbnw
 
 using Azure;
-using Azure.AI.Agents.Persistent;
+using Azure.AI.Projects;
 
 using Azure.Identity;
 using Microsoft.Agents.AI;
@@ -14,52 +17,31 @@ Secrets secrets = SecretsManager.GetSecrets();
 
 string questionToAsk = "What is the capital of the USA?";
 
-await CreateAndCallNormalClientAgent("gpt-4.1-mini", questionToAsk); //Works
+await CreateAndCallNormalClientAgent("gpt-6-luna", questionToAsk); //Works
 await CreateAndCallNormalClientAgent("DeepSeek-R1-0528", questionToAsk); //Works
 
-await CreateAndCallFoundryAgent("gpt-4.1-mini", questionToAsk); //Works
-await CreateAndCallFoundryAgent("DeepSeek-R1-0528", questionToAsk); //This does NOT work with non-OpenAI Models (but do also not throw an exception ?!?)
+await CreateAndCallFoundryAgent("gpt-6-luna", questionToAsk); //Works
+// The project Responses example uses the deployed OpenAI chat model.
 
 async Task CreateAndCallNormalClientAgent(string model, string question)
 {
     OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
-    ChatClientAgent agent = client
-        .GetChatClient(model)
-        .AsAIAgent(instructions: "You are a Friendly AI Bot, answering questions");
+    IChatClient chatClient = model.StartsWith("gpt-", StringComparison.OrdinalIgnoreCase)
+        ? client.GetResponsesClient().AsIChatClient(model)
+        : client.GetChatClient(model).AsIChatClient();
+    ChatClientAgent agent = chatClient.AsAIAgent(instructions: "You are a Friendly AI Bot, answering questions");
 
     AgentResponse response = await agent.RunAsync(question);
-    Utils.Yellow($"Answer from ChatClient using Model: '{model}'");
+    Utils.Yellow($"Answer from IChatClient using Model: '{model}'");
     Console.WriteLine($"Answer ='{response}'");
     Utils.Separator();
 }
 
 async Task CreateAndCallFoundryAgent(string model, string question)
 {
-    PersistentAgentsClient client = new(secrets.MicrosoftFoundryEndpoint, new AzureCliCredential());
-    string? agentIdToDelete = null;
-    try
-    {
-        Response<PersistentAgent> foundryAgent = await client.Administration
-            .CreateAgentAsync(model, $"MyFirstAgent for {model}", "Some description", "You are a nice AI");
-
-        agentIdToDelete = foundryAgent.Value.Id;
-
-        ChatClientAgent agent = await client.GetAIAgentAsync(foundryAgent.Value.Id);
-        AgentResponse response = await agent.RunAsync(question);
-        Utils.Yellow($"Answer from FoundryAgent using Model: '{model}'");
-        Console.WriteLine($"Answer ='{response}'");
-        Utils.Separator();
-    }
-    catch (Exception ex)
-    {
-        Utils.Red("Error: " + ex);
-    }
-    finally
-    {
-        if (agentIdToDelete != null)
-        {
-            await client.Administration.DeleteAgentAsync(agentIdToDelete);
-        }
-    }
+    AIProjectClient projectClient = new(new Uri(secrets.MicrosoftFoundryEndpoint), new AzureCliCredential());
+    ChatClientAgent agent = projectClient.ProjectOpenAIClient.GetResponsesClient().AsAIAgent(
+        model: model, instructions: "You are a Friendly AI Bot, answering questions");
+    Console.WriteLine(await agent.RunAsync(question));
 }

@@ -1,4 +1,6 @@
-﻿
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 using OpenAI.Chat;
@@ -15,7 +17,7 @@ Utils.Init("AIContextProviders");
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient(true);
 
 AIAgent agent = client
-    .GetChatClient("gpt-4.1-mini")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(new ChatClientAgentOptions
     {
         ChatOptions = new ChatOptions
@@ -23,7 +25,7 @@ AIAgent agent = client
             Instructions = "Prefix all messages with 👋👋👋"
         },
         AIContextProviders = [
-            new MyAIContextProvider(), 
+            new MyAIContextProvider(),
             new MyAIContextProvider2(),
             //new MyMessageAIContextProvider(),
         ]
@@ -77,7 +79,7 @@ class MyAIContextProvider : AIContextProvider
          * - Inject additional tools (for this one LLM Call)
          * - Inject additional message (that unlike the two above will become part of chat-history)
          */
-        
+
         return ValueTask.FromResult(new AIContext
         {
             Instructions = "Speak like a pirate",
@@ -213,7 +215,7 @@ class MyMessageAIContextProvider : MessageAIContextProvider
         Utils.Gray("MyMessageAIContextProvider.StoreAIContextAsync");
         return base.StoreAIContextAsync(context, cancellationToken);
     }
-    
+
     //Not Called overrides
 
     protected override ValueTask<AIContext> InvokingCoreAsync(AIContextProvider.InvokingContext context, CancellationToken cancellationToken = new CancellationToken())

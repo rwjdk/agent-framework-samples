@@ -12,7 +12,7 @@ AgentInlineSkill employeeHandBookSkill = new AgentInlineSkill(
     description: "Use when user ask HR Questions",
     instructions: """
                   # Various Human Relationship things
-                  
+
                   - leave resource
                   - holidays resource
                   - remaining-vacation-in-days
@@ -39,7 +39,7 @@ AIAgent agent = client.GetResponsesClient().AsAIAgent(new ChatClientAgentOptions
     ChatOptions = new ChatOptions
     {
         /*
-        Tools = 
+        Tools =
         [
             AIFunctionFactory.Create(Leave, "leave-info", "HR Info about Leave"),
             AIFunctionFactory.Create(Holidays, "holiday-info", "HR Info about Holidays"),
@@ -47,7 +47,7 @@ AIAgent agent = client.GetResponsesClient().AsAIAgent(new ChatClientAgentOptions
         ]*/
     },
     AIContextProviders = [skillsProvider],
-}, model: "gpt-5.6-luna").AsBuilder().Use(Utils.ToolCallingMiddleware).Build();
+}, model: "gpt-6-luna").AsBuilder().Use(Utils.ToolCallingMiddleware).Build();
 
 await Utils.RunChatLoopWithSession(agent);
 

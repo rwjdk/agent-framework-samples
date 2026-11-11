@@ -1,4 +1,6 @@
-﻿//YouTube video that cover this sample: https://youtu.be/AJZhHHnsFXY
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+//YouTube video that cover this sample: https://youtu.be/AJZhHHnsFXY
 // ReSharper disable UnreachableSwitchCaseDueToIntegerAnalysis
 
 
@@ -16,8 +18,8 @@ Secrets secrets = SecretsManager.GetSecrets();
 OpenAIClient azureOpenAiClient = ClientHelper.GetAzureOpenAIClient();
 OpenAIClient openAiClient = new(new ApiKeyCredential(secrets.OpenAiApiKey));
 
-ChatClientAgent azureOpenAiAgent = azureOpenAiClient.GetChatClient("gpt-4.1").AsAIAgent();
-ChatClientAgent openAiAgent = openAiClient.GetChatClient("gpt-4.1").AsAIAgent();
+ChatClientAgent azureOpenAiAgent = azureOpenAiClient.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent();
+ChatClientAgent openAiAgent = openAiClient.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent();
 
 Scenario scenario = Scenario.All3;
 

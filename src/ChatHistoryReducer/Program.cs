@@ -1,4 +1,6 @@
-﻿//Video related to this sample: https://youtu.be/a-7wyjpf5qQ
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+//Video related to this sample: https://youtu.be/a-7wyjpf5qQ
 
 
 using Microsoft.Agents.AI;
@@ -16,13 +18,13 @@ Console.Clear();
 Secrets secrets = SecretsManager.GetSecrets();
 
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
-ChatClient chatClient = client.GetChatClient("gpt-4.1");
+IChatClient chatClient = client.GetResponsesClient().AsIChatClient("gpt-6-luna");
 
 IChatReducer chatReducer = new MessageCountingChatReducer(targetCount: 4);
-IChatReducer chatReducer2 = new SummarizingChatReducer(chatClient.AsIChatClient(), targetCount: 1, threshold: 4);
+IChatReducer chatReducer2 = new SummarizingChatReducer(chatClient, targetCount: 1, threshold: 4);
 
 ChatClientAgent agent = client
-    .GetChatClient("gpt-4.1")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(new ChatClientAgentOptions
     {
         ChatOptions = new()

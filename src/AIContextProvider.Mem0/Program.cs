@@ -22,7 +22,7 @@ AIAgent agent = client
         {
             Instructions = """
                            You are a helpful assistant. Use relevant user memories when useful.
-                           When the user corrects an existing fact, use its supplied memory ID to update it instead of 
+                           When the user corrects an existing fact, use its supplied memory ID to update it instead of
                            adding a conflicting memory
                            """
         },
@@ -30,7 +30,7 @@ AIAgent agent = client
         [
             new Mem0AIContextProvider(mem0Client, userId: "user1", appId: "app1")
         ]
-    }, model: "gpt-5.6-luna")
+    }, model: "gpt-6-luna")
     .AsBuilder()
     .Use(ToolCallingMiddleware)
     .Build();

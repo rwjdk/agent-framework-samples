@@ -1,4 +1,6 @@
-﻿using AgentSkills;
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+using AgentSkills;
 
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
@@ -12,7 +14,7 @@ OpenAIClient client = ClientHelper.GetAzureOpenAIClient(showRawCall: false);
 
 string skillPath = "TestData\\AgentSkills";
 
-AIAgent agent = client.GetChatClient("gpt-4.1-mini").AsAIAgent(new ChatClientAgentOptions
+AIAgent agent = client.GetResponsesClient().AsIChatClient("gpt-6-luna").AsAIAgent(new ChatClientAgentOptions
 {
     AIContextProviders = [new AgentSkillsProvider(skillPath, options: new AgentSkillsProviderOptions
     {

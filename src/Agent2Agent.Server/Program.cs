@@ -1,4 +1,6 @@
-﻿//YouTube video that cover this sample: https://youtu.be/g72ks3rY9qQ
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+//YouTube video that cover this sample: https://youtu.be/g72ks3rY9qQ
 
 using A2A;
 using A2A.AspNetCore;
@@ -25,7 +27,7 @@ MethodInfo[] methods = typeof(FileSystemTools).GetMethods(BindingFlags.Public | 
 List<AITool> listOfTools = methods.Select(x => AIFunctionFactory.Create(x, target)).Cast<AITool>().ToList();
 
 AIAgent agent = client
-    .GetChatClient("gpt-4.1-mini")
+    .GetResponsesClient().AsIChatClient("gpt-6-luna")
     .AsAIAgent(
         name: "FileAgent",
         instructions: "You are a File Expert. When working with files you need to provide the full path; not just the filename",

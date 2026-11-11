@@ -1,83 +1,51 @@
-﻿//YouTube video that cover this sample: https://youtu.be/vy3o-XEBzY8
-
-using Azure;
-using Azure.AI.Agents.Persistent;
+﻿using Azure.AI.Projects;
 using Azure.Identity;
+
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
+using OpenAI;
+using OpenAI.Containers;
 using Shared;
+using Shared.Extensions;
+using System.ClientModel;
+using OpenAI.Responses;
 
-Console.Clear();
-
+#pragma warning disable OPENAI001
 Secrets secrets = SecretsManager.GetSecrets();
-PersistentAgentsClient client = new(secrets.MicrosoftFoundryEndpoint, new AzureCliCredential());
 
-Response<PersistentAgent>? aiFoundryAgent = null;
-ChatClientAgentSession? chatClientAgentSession = null;
-try
+AIProjectClient projectClient = new(new Uri(secrets.MicrosoftFoundryEndpoint), new AzureCliCredential());
+OpenAIClient client = projectClient.ProjectOpenAIClient;
+AIAgent agent = client
+    .GetResponsesClient()
+    .AsAIAgent(model: "gpt-6-luna", tools: [new HostedCodeInterpreterTool()]);
+
+string question = "Find Top 10 Countries in the world and make a Bar chart should each countries population in millions";
+AgentResponse response = await agent.RunAsync(question);
+foreach (ChatMessage message in response.Messages)
 {
-    aiFoundryAgent = await client.Administration.CreateAgentAsync(
-        "gpt-4.1",
-        "CodeGraphAgent",
-        "",
-        "You are a Graph-expert on US States",
-        new List<ToolDefinition>
-        {
-            new CodeInterpreterToolDefinition()
-        });
-
-    AIAgent agent = await client.GetAIAgentAsync(aiFoundryAgent.Value.Id);
-
-    AgentSession session = await agent.CreateSessionAsync();
-
-    AgentResponse response = await agent.RunAsync("Make a jpg image with graph listing population of the top 10 US States in year 2000", session);
-
-    string? fileId = null;
-    string? filename = null;
-    string? filePath = null;
-    string? textToReplace = null;
-    foreach (ChatMessage message in response.Messages)
+    foreach (AIContent content in message.Contents)
     {
-        foreach (AIContent content in message.Contents)
+        foreach (AIAnnotation annotation in content.Annotations ?? [])
         {
-            foreach (AIAnnotation annotation in content.Annotations ?? [])
+            if (annotation.RawRepresentation is ContainerFileCitationMessageAnnotation containerFileCitation)
             {
-                if (annotation.RawRepresentation is TextAnnotationUpdate citationAnnotation)
+                ContainerClient containerClient = client.GetContainerClient();
+                ClientResult<BinaryData> fileContent = await containerClient.DownloadContainerFileAsync(containerFileCitation.ContainerId, containerFileCitation.FileId);
+                string path = Path.Combine(Path.GetTempPath(), containerFileCitation.Filename);
+                await File.WriteAllBytesAsync(path, fileContent.Value.ToArray());
+                await Task.Factory.StartNew(() =>
                 {
-                    fileId = citationAnnotation.OutputFileId;
-                    textToReplace = citationAnnotation.TextToReplace;
-                    filename = Path.GetFileName(textToReplace);
-                }
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = path,
+                        UseShellExecute = true
+                    });
+                });
             }
         }
     }
-
-    if (fileId != null)
-    {
-        Response<BinaryData> fileContent = await client.Files.GetFileContentAsync(fileId);
-        filePath = Path.Combine(Path.GetTempPath(), filename!);
-        await File.WriteAllBytesAsync(filePath, fileContent.Value.ToArray());
-        await Task.Factory.StartNew(() =>
-        {
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-            {
-                FileName = filePath,
-                UseShellExecute = true
-            });
-        });
-    }
-
-    Console.WriteLine(textToReplace != null ? response.Text.Replace(textToReplace, filePath) : response.Text);
 }
-finally
-{
-    if (chatClientAgentSession != null)
-    {
-        await client.Threads.DeleteThreadAsync(chatClientAgentSession.ConversationId);
-    }
 
-    if (aiFoundryAgent != null)
-    {
-        await client.Administration.DeleteAgentAsync(aiFoundryAgent.Value.Id);
-    }
-}
+Console.Write(response);
+
+response.Usage.OutputAsInformation();

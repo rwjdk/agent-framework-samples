@@ -1,3 +1,5 @@
+#pragma warning disable OPENAI001
+using OpenAI.Responses;
 
 using AgentUserInteraction.Advanced.Server.AgUiSpecializedAgents;
 using AgentUserInteraction.Advanced.SharedModels;
@@ -12,24 +14,24 @@ using System.ClientModel;
 Secrets secrets = SecretsManager.GetSecrets();
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
-string model = "gpt-4.1-mini";
+string model = "gpt-6-luna";
 
 ChatClientAgent clientToolAgent = client
-    .GetChatClient(model)
+    .GetResponsesClient().AsIChatClient(model)
     .AsAIAgent(instructions: "You are a nice AI");
 
 ChatClientAgent weatherAgent = client
-    .GetChatClient(model)
+    .GetResponsesClient().AsIChatClient(model)
     .AsAIAgent(instructions: "You Report the Weather.",
         tools: [AIFunctionFactory.Create(GetWeather, name: "get_weather")]);
 
 ChatClientAgent weatherAgentStructured = client
-    .GetChatClient(model)
+    .GetResponsesClient().AsIChatClient(model)
     .AsAIAgent(instructions: "Always call tool 'get_weather' first. Then tell a story about the city but leave out the weather details",
         tools: [AIFunctionFactory.Create(GetWeather, name: "get_weather")]);
 
 ChatClientAgent movieStructuredOutputAgent = client
-    .GetChatClient(model)
+    .GetResponsesClient().AsIChatClient(model)
     .AsAIAgent(instructions: "You are a movie Expert");
 
 

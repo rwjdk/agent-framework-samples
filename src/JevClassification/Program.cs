@@ -1,3 +1,5 @@
+#pragma warning disable OPENAI001
+using Microsoft.Extensions.AI;
 using System.Diagnostics;
 using System.Text.Json;
 using JevClassification;
@@ -40,7 +42,7 @@ async Task AgentFrameworkOneByOne(List<UserMessage> userMessages)
     ChatClientAgent agent = openAIClient
         .GetResponsesClient()
         .AsAIAgent(
-            model: "gpt-5.6-sol",
+            model: "gpt-6-luna",
             instructions: """
                           Classify user message using only the categories in the response schema.
                           Use the full -100 to 100 sentiment scale and make the sentiment label agree with the score.
@@ -66,7 +68,7 @@ async Task AgentFrameworkBatched(List<UserMessage> userMessages)
     Stopwatch stopwatch = Stopwatch.StartNew();
     OpenAIClient openAIClient = ClientHelper.GetAzureOpenAIClient();
     ChatClientAgent agent = openAIClient
-        .GetChatClient("gpt-5.6-sol")
+        .GetResponsesClient().AsIChatClient("gpt-6-luna")
         .AsAIAgent(instructions: """
                                  Classify user messages using only the categories in the response schema.
                                  Return exactly one result per message in input order. Do not combine messages.
@@ -154,7 +156,7 @@ async Task Jev(List<UserMessage> userMessages)
 
             double score = sentiment.GetProperty("score").GetDouble();
             double normalizedSentiment = (score - 2) * 50;
-            
+
             JsonProperty strongestSentiment = sentiment
                 .GetProperty("probabilities")
                 .EnumerateObject()

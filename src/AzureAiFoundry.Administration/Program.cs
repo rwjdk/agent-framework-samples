@@ -1,79 +1,35 @@
-﻿//YouTube video that cover this sample: https://youtu.be/V2piYocabI8
-
-using Azure;
-using Azure.AI.Agents.Persistent;
+﻿using Azure.AI.Projects.Agents;
+using Microsoft.Agents.AI.Foundry;
+using Azure.AI.Projects;
 using Azure.Identity;
 using Microsoft.Agents.AI;
+using Microsoft.Extensions.AI;
+using OpenAI.Responses;
 using Shared;
 
-Secrets secrets = SecretsManager.GetSecrets();
-PersistentAgentsClient client = new(secrets.MicrosoftFoundryEndpoint, new AzureCliCredential());
+#pragma warning disable OPENAI001
 
-PersistentAgentsFiles files = client.Files; //Files CRUD
+AIProjectClient projectClient = new(new Uri(SecretsManager.GetSecrets().MicrosoftFoundryEndpoint), new AzureCliCredential());
 
-VectorStores vectorStores = client.VectorStores; //Vector Store CRUD + Add/Remove Files to/from them
-
-Threads threads = client.Threads; //Thread CRUD
-
-ThreadMessages messages = client.Messages; //Messages CRUD (associated with Threads)
-
-ThreadRuns runs = client.Runs; //The Invocation of asking the LLM (+ stats on it)
-
-PersistentAgentsAdministrationClient administration = client.Administration; //The Agents CRUD
-
-//Agents Details
-CancellationToken cancellationToken = new CancellationTokenSource().Token;
-
-Response<PersistentAgent> existingPersistentAgent = await administration.GetAgentAsync("asst_44Z3VVpGZXuD91HRKohhvC68");
-ChatClientAgent afAgentFromExisting = await client.GetAIAgentAsync(existingPersistentAgent.Value.Id);
-
-
-Response<PersistentAgent> newPersistentAgent = administration.CreateAgent(
-    model: "gpt-4.1-mini",
-    name: "NameOfClient",
-    description: "DescriptionOfClient",
-    instructions: "Instructions for LLM",
-    toolResources: new ToolResources
-    {
-        AzureAISearch = new AzureAISearchToolResource(indexConnectionId: "", indexName: "", topK: 1, filter: "", queryType: AzureAISearchQueryType.Vector),
-        CodeInterpreter = new CodeInterpreterToolResource
-        {
-            DataSources = { },
-            FileIds = { }
-        },
-        FileSearch = new FileSearchToolResource
-        {
-            VectorStoreIds = { },
-            VectorStores = { }
-        },
-        Mcp =
-        {
-            new MCPToolResource(serverLabel: ""),
-            new MCPToolResource(serverLabel: ""),
-        }
-    },
-    tools: new List<ToolDefinition>
-    {
-        new CodeInterpreterToolDefinition()
-    },
-    temperature: 1, //NB: Do not touch these, if you use a reason model
-    topP: 1, //NB: Do not touch these, if you use a reason model
-    responseFormat: BinaryData.Empty,
-    metadata: new Dictionary<string, string>
-    {
-    },
-    cancellationToken: cancellationToken);
-
-ChatClientAgent afAgentFromNew = await client.GetAIAgentAsync(newPersistentAgent.Value.Id);
-
-//Example:
-//await DeleteAllThreads(client);//WARNING: DELETE ALL THREADS
-
-async Task DeleteAllThreads(PersistentAgentsClient persistentAgentsClient)
+// Create a versioned agent definition; invocations use the Responses API.
+string agentName = "ResponsesSample-" + Guid.NewGuid().ToString("N");
+DeclarativeAgentDefinition definition = new("gpt-6-luna")
 {
-    await foreach (PersistentAgentThread agentThread in persistentAgentsClient.Threads.GetThreadsAsync(100))
-    {
-        Utils.Gray("Deleting thread: " + agentThread.Id);
-        await persistentAgentsClient.Threads.DeleteThreadAsync(agentThread.Id);
-    }
+    Instructions = "You are a helpful assistant"
+};
+definition.Tools.Add(new CodeInterpreterTool(new CodeInterpreterToolContainer(new AutomaticCodeInterpreterToolContainerConfiguration())));
+ProjectsAgentVersion version = projectClient.AgentAdministrationClient.CreateAgentVersion(
+    agentName, new ProjectsAgentVersionCreationOptions(definition)).Value;
+try
+{
+    FoundryAgent agent = projectClient.AsAIAgent(version);
+    Console.WriteLine(await agent.RunAsync("What is the capital of France?"));
+    ProjectsAgentRecord existing = projectClient.AgentAdministrationClient.GetAgent(agentName).Value;
+    FoundryAgent existingAgent = projectClient.AsAIAgent(existing);
+    Console.WriteLine(await existingAgent.RunAsync("What model family are you configured to use?"));
+}
+finally
+{
+    // Only remove the agent created by this sample.
+    projectClient.AgentAdministrationClient.DeleteAgent(agentName);
 }

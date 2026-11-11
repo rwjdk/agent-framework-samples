@@ -26,7 +26,7 @@ OpenAIFile file = await fileClient.UploadFileAsync("requestData.jsonl", new File
 BinaryContent createBatchPayload = BinaryContent.CreateJson(new CreateBatchRequest
 {
     InputFileId = file.Id,
-    Endpoint = "/v1/chat/completions",
+    Endpoint = "/v1/responses",
     CompletionWindow = "24h",
 });
 
@@ -77,7 +77,7 @@ class BatchResponse
 
     [JsonPropertyName("output_file_id")]
     public required string? OutputFileId { get; init; }
-    
+
     [JsonPropertyName("error_file_id")]
     public required string? ErrorFileId { get; init; }
 }

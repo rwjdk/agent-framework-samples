@@ -15,11 +15,11 @@ public static class Take1OpenAICodeInterpreter
         ChatClientAgent agent = OpenAIClient
             .GetResponsesClient()
             .AsAIAgent(
-                model: "gpt-5-mini",
+                model: "gpt-6-luna",
                 instructions: $"""
                                You are a Trello Expert with access to the Trello and the API
 
-                               Here is the credentials: 
+                               Here is the credentials:
                                - API Key: {trelloApiKey}
                                - Token: {trelloToken}
 

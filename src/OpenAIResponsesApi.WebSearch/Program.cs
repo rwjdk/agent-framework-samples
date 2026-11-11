@@ -1,4 +1,5 @@
-﻿using Microsoft.Agents.AI;
+﻿#pragma warning disable OPENAI001
+using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 using OpenAI;
 using OpenAI.Responses;
@@ -11,11 +12,11 @@ OpenAIClient client = new(secrets.OpenAiApiKey);
 //NB: Azure OpenAI is NOT SUPPORTED
 #pragma warning disable OPENAI001
 AIAgent agent = client
-    //.GetChatClient("gpt-4.1")
+    //.GetResponsesClient().AsIChatClient("gpt-6-luna")
     .GetResponsesClient()
 #pragma warning restore OPENAI001
     .AsAIAgent(
-        model: "gpt-4.1",
+        model: "gpt-6-luna",
         instructions: "You are a Space News AI Reporter",
         tools: [new HostedWebSearchTool()]
     );

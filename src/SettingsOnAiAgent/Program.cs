@@ -1,4 +1,6 @@
-﻿//YouTube video that cover this sample: https://youtu.be/6i1Rs0MkBDQ
+﻿#pragma warning disable OPENAI001
+using OpenAI.Responses;
+//YouTube video that cover this sample: https://youtu.be/6i1Rs0MkBDQ
 // ReSharper disable UnusedVariable
 
 #pragma warning disable OPENAI001
@@ -21,9 +23,9 @@ Secrets secrets = SecretsManager.GetSecrets();
 
 OpenAIClient client = ClientHelper.GetAzureOpenAIClient();
 
-ChatClientAgent noSettingAgent = client.GetChatClient("gpt-4.1").AsAIAgent();
+ChatClientAgent noSettingAgent = client.GetResponsesClient().AsAIAgent(model: "gpt-6-luna");
 
-ChatClientAgent agent = client.GetChatClient("gpt-4.1").AsAIAgent(
+ChatClientAgent agent = client.GetResponsesClient().AsAIAgent(model: "gpt-6-luna",
     instructions: "You are a cool surfer dude",
     tools: [ /*In a separate video*/ ]);
 
@@ -41,8 +43,7 @@ using TracerProvider tracerProvider = Sdk.CreateTracerProviderBuilder()
     .AddConsoleExporter()
     .Build();
 
-AIAgent agentWithAllSettings = client.GetChatClient("gpt-4.1").AsAIAgent
-    (
+AIAgent agentWithAllSettings = client.GetResponsesClient().AsAIAgent(model: "gpt-6-luna",
         //Optional system instructions that define the agent's behavior and personality.
         instructions: "Speak like a Pirate",
 
@@ -68,9 +69,9 @@ AIAgent agentWithAllSettings = client.GetChatClient("gpt-4.1").AsAIAgent
         {
             return new ConfigureOptionsChatClient(chatClient, options =>
             {
-                options.RawRepresentationFactory = _ => new ChatCompletionOptions
+                options.RawRepresentationFactory = _ => new CreateResponseOptions
                 {
-                    ReasoningEffortLevel = ChatReasoningEffortLevel.High,
+                    ReasoningOptions = new ResponseReasoningOptions { ReasoningEffortLevel = ResponseReasoningEffortLevel.High },
                 };
             });
         },
@@ -96,8 +97,8 @@ Console.WriteLine(response);
 
 #region Even more options via ChatClientAgentOptions
 
-ChatClientAgent advancedAgent = client.GetChatClient("gpt-4.1").AsAIAgent(
-    new ChatClientAgentOptions
+ChatClientAgent advancedAgent = client.GetResponsesClient().AsAIAgent(model: "gpt-6-luna",
+    options: new ChatClientAgentOptions
     {
         ChatOptions = new ChatOptions
         {
@@ -114,9 +115,9 @@ ChatClientAgent advancedAgent = client.GetChatClient("gpt-4.1").AsAIAgent(
     {
         return new ConfigureOptionsChatClient(chatClient, options =>
         {
-            options.RawRepresentationFactory = _ => new ChatCompletionOptions
+            options.RawRepresentationFactory = _ => new CreateResponseOptions
             {
-                ReasoningEffortLevel = ChatReasoningEffortLevel.Low,
+                ReasoningOptions = new ResponseReasoningOptions { ReasoningEffortLevel = ResponseReasoningEffortLevel.Low },
             };
         });
     },
