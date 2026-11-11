@@ -57,7 +57,11 @@
   <Folder Name="/DevUI/">
     <Project Path="src/DevUI/DevUI.csproj" />
   </Folder>
-  <Folder Name="/DurableAgentFramework (Azure Functions)/">
+  <Folder Name="/DurableAgentFramework/">
+    <Project Path="src/DurableAgentFramework.Console/DurableAgentFramework.ConsoleApp.csproj" />
+    <Project Path="src/DurableAgentFramework.Functions/DurableAgentFramework.Functions.csproj" />
+  </Folder>
+  <Folder Name="/DurableAgentFramework/Legacy/">
     <Project Path="src/FunctionApp.HelloAI/FunctionApp.HelloAI.csproj" Id="967397ed-0e3d-4a50-ac57-076a6b077b7f" />
   </Folder>
   <Folder Name="/Google Gemini Specific Features/">
@@ -76,6 +80,7 @@
   </Folder>
   <Folder Name="/Microsoft Foundry (AI Foundry)/">
     <Project Path="src/MicrosofFoundry.Agents.Basic/MicrosofFoundry.Agents.Basic.csproj" Id="05b4bf60-39b8-47ad-895f-d32de63038ff" />
+    <Project Path="src/MicrosoftFoundry.DecisionAPI/MicrosoftFoundry.DecisionAPI.csproj" Id="6922ce64-f4e5-4f33-b6ec-ae61a0f663d2" />
     <Project Path="src/MicrosoftFoundry.Toolbox/MicrosoftFoundry.Toolbox.csproj" />
   </Folder>
   <Folder Name="/Microsoft Foundry (AI Foundry)/Classic Agents (Legacy AI Foundry, do not use anymore)/">

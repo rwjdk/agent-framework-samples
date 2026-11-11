@@ -55,6 +55,9 @@
     <PackageVersion Include="Microsoft.Agents.AI.Hosting.A2A.AspNetCore" Version="1.28.0-preview.261106.1" />
     <PackageVersion Include="Microsoft.Agents.AI.Hosting.AGUI.AspNetCore" Version="1.28.0-preview.261106.1" />
     <PackageVersion Include="Microsoft.Agents.AI.Hosting.AzureFunctions" Version="1.16.0-preview.261029.1" />
+    <PackageVersion Include="Microsoft.Agents.AI.DurableTask" Version="1.16.0-preview.261029.1" />
+    <PackageVersion Include="Microsoft.DurableTask.Client.AzureManaged" Version="1.27.0" />
+    <PackageVersion Include="Microsoft.DurableTask.Worker.AzureManaged" Version="1.27.0" />
     <PackageVersion Include="Microsoft.Agents.AI.Hyperlight" Version="1.28.0-preview.261106.1" />
     <PackageVersion Include="Microsoft.Agents.AI.OpenAI" Version="1.28.0" />
     <PackageVersion Include="Microsoft.Agents.AI.Workflows" Version="1.28.0" />
