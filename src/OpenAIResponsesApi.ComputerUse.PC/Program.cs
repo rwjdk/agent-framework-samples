@@ -85,7 +85,7 @@ while (input.Count > 0 && turn < maxNumberOfTurnsForSafety)
                 }
 
                 ComputerCallOutputResponseItem output = new(computerCall.CallId,
-                    ComputerCallOutput.CreateScreenshotOutput(BinaryData.FromBytes(await computer.ScreenshotAsync()), "image/png"));
+                    ComputerCallOutput.CreateComputerScreenshotOutput(BinaryData.FromBytes(await computer.ScreenshotAsync()), "image/png"));
                 input.Add(new(ChatRole.User, [new AIContent { RawRepresentation = output }]));
                 break;
             }

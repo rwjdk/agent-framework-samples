@@ -3,43 +3,43 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="AgentFrameworkToolkit.AmazonBedrock" Version="1.28.0" />
-    <PackageVersion Include="AgentFrameworkToolkit.Anthropic" Version="1.28.0" />
-    <PackageVersion Include="AgentFrameworkToolkit.AzureOpenAI" Version="1.28.0" />
+    <PackageVersion Include="AgentFrameworkToolkit.AmazonBedrock" Version="1.28.2" />
+    <PackageVersion Include="AgentFrameworkToolkit.Anthropic" Version="1.28.2" />
+    <PackageVersion Include="AgentFrameworkToolkit.AzureOpenAI" Version="1.28.2" />
     <PackageVersion Include="AgentFrameworkToolkit.Cerebras" Version="1.28.0" />
-    <PackageVersion Include="AgentFrameworkToolkit.Codex" Version="1.28.0" />
-    <PackageVersion Include="AgentFrameworkToolkit.Cohere" Version="1.28.0" />
-    <PackageVersion Include="AgentFrameworkToolkit.Google" Version="1.28.0" />
-    <PackageVersion Include="AgentFrameworkToolkit.Groq" Version="1.28.0" />
-    <PackageVersion Include="AgentFrameworkToolkit.MicrosoftFoundry" Version="1.28.0" />
-    <PackageVersion Include="AgentFrameworkToolkit.Mistral" Version="1.28.0" />
-    <PackageVersion Include="AgentFrameworkToolkit.OpenAI" Version="1.28.0" />
-    <PackageVersion Include="AgentFrameworkToolkit.OpenRouter" Version="1.28.0" />
-    <PackageVersion Include="AgentFrameworkToolkit.XAI" Version="1.28.0" />
-    <PackageVersion Include="AgentFrameworkToolkit.Tools" Version="1.28.0" />
-    <PackageVersion Include="AgentFrameworkToolkit.Tools.ModelContextProtocol" Version="1.28.0" />
-    <PackageVersion Include="AgentSkillsDotNet" Version="1.28.0" />
+    <PackageVersion Include="AgentFrameworkToolkit.Codex" Version="1.28.2" />
+    <PackageVersion Include="AgentFrameworkToolkit.Cohere" Version="1.28.2" />
+    <PackageVersion Include="AgentFrameworkToolkit.Google" Version="1.28.2" />
+    <PackageVersion Include="AgentFrameworkToolkit.Groq" Version="1.28.2" />
+    <PackageVersion Include="AgentFrameworkToolkit.MicrosoftFoundry" Version="1.28.2" />
+    <PackageVersion Include="AgentFrameworkToolkit.Mistral" Version="1.28.2" />
+    <PackageVersion Include="AgentFrameworkToolkit.OpenAI" Version="1.28.2" />
+    <PackageVersion Include="AgentFrameworkToolkit.OpenRouter" Version="1.28.2" />
+    <PackageVersion Include="AgentFrameworkToolkit.XAI" Version="1.28.2" />
+    <PackageVersion Include="AgentFrameworkToolkit.Tools" Version="1.28.2" />
+    <PackageVersion Include="AgentFrameworkToolkit.Tools.ModelContextProtocol" Version="1.28.2" />
+    <PackageVersion Include="AgentSkillsDotNet" Version="1.28.2" />
     <PackageVersion Include="Anthropic.SDK" Version="5.9.0" />
-    <PackageVersion Include="Aspire.Hosting.AppHost" Version="13.5.3" />
-    <PackageVersion Include="AWS.Bedrock.MEAI" Version="1.0.0" />
+    <PackageVersion Include="Aspire.Hosting.AppHost" Version="17.0.0" />
+    <PackageVersion Include="AWS.Bedrock.MEAI" Version="1.1.3" />
     <PackageVersion Include="Azure.AI.Inference" Version="1.0.0-beta.5" />
     <PackageVersion Include="Azure.AI.OpenAI" Version="2.9.0-beta.1" />
     <PackageVersion Include="Azure.AI.Projects" Version="2.0.0-beta.2" />
     <PackageVersion Include="Azure.Identity" Version="1.21.0" />
-    <PackageVersion Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.9.0" />
-    <PackageVersion Include="CommunityToolkit.VectorData.AzureAISearch" Version="1.0.0" />
+    <PackageVersion Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.10.0" />
+    <PackageVersion Include="CommunityToolkit.VectorData.AzureAISearch" Version="1.0.1" />
     <PackageVersion Include="CommunityToolkit.VectorData.CosmosNoSql" Version="1.0.0" />
     <PackageVersion Include="CommunityToolkit.VectorData.InMemory" Version="1.0.1" />
     <PackageVersion Include="CommunityToolkit.VectorData.SqliteVec" Version="1.0.1-preview" />
-    <PackageVersion Include="CommunityToolkit.VectorData.SqlServer" Version="1.0.0" />
-    <PackageVersion Include="Google_GenerativeAI" Version="3.6.7" />
-    <PackageVersion Include="Google_GenerativeAI.Microsoft" Version="3.6.7" />
-    <PackageVersion Include="Google.GenAI" Version="1.22.0" />
+    <PackageVersion Include="CommunityToolkit.VectorData.SqlServer" Version="1.0.1" />
+    <PackageVersion Include="Google_GenerativeAI" Version="4.1.0" />
+    <PackageVersion Include="Google_GenerativeAI.Microsoft" Version="4.1.0" />
+    <PackageVersion Include="Google.GenAI" Version="2.2.0" />
     <PackageVersion Include="Hyperlight.HyperlightSandbox.Guest.Python" Version="0.4.0" />
     <PackageVersion Include="JetBrains.Annotations" Version="2026.2.0" />
     <PackageVersion Include="JevDotNet" Version="0.9.3" />
     <PackageVersion Include="Mem0" Version="1.0.0" />
-    <PackageVersion Include="MessagePack" Version="2.5.307" />
+    <PackageVersion Include="MessagePack" Version="3.1.12" />
     <PackageVersion Include="Microsoft.Agents.AI" Version="1.28.0" />
     <PackageVersion Include="Microsoft.Agents.AI.A2A" Version="1.28.0-preview.261106.1" />
     <PackageVersion Include="Microsoft.Agents.AI.AGUI" Version="1.13.0-preview.260703.1" />
@@ -54,7 +54,7 @@
     <PackageVersion Include="Microsoft.Agents.AI.Hosting.A2A" Version="1.28.0-preview.261106.1" />
     <PackageVersion Include="Microsoft.Agents.AI.Hosting.A2A.AspNetCore" Version="1.28.0-preview.261106.1" />
     <PackageVersion Include="Microsoft.Agents.AI.Hosting.AGUI.AspNetCore" Version="1.28.0-preview.261106.1" />
-    <PackageVersion Include="Microsoft.Agents.AI.Hosting.AzureFunctions" Version="1.16.0-preview.261029.1" />
+    <PackageVersion Include="Microsoft.Agents.AI.Hosting.AzureFunctions" Version="1.16.0" />
     <PackageVersion Include="Microsoft.Agents.AI.DurableTask" Version="1.16.0-preview.261029.1" />
     <PackageVersion Include="Microsoft.DurableTask.Client.AzureManaged" Version="1.27.0" />
     <PackageVersion Include="Microsoft.DurableTask.Worker.AzureManaged" Version="1.27.0" />
@@ -63,51 +63,52 @@
     <PackageVersion Include="Microsoft.Agents.AI.Workflows" Version="1.28.0" />
     <PackageVersion Include="Microsoft.AI.Foundry.Local" Version="1.0.0" />
     <PackageVersion Include="Microsoft.AI.Foundry.Local.WinML" Version="1.2.4" />
-    <PackageVersion Include="Microsoft.ApplicationInsights.WorkerService" Version="3.1.2" />
+    <PackageVersion Include="Microsoft.ApplicationInsights.WorkerService" Version="3.2.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="11.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="11.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="11.0.0" />
     <PackageVersion Include="Microsoft.Azure.Functions.Worker" Version="2.52.0" />
     <PackageVersion Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="2.51.0" />
-    <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.DurableTask" Version="1.19.2" />
-    <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.DurableTask.AzureManaged" Version="1.10.2" />
+    <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.DurableTask" Version="1.22.0" />
+    <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.DurableTask.AzureManaged" Version="1.12.0" />
     <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" Version="2.1.1" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="5.9.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="5.12.0" />
     <PackageVersion Include="Microsoft.Extensions.AI.AzureAIInference" Version="10.0.0-preview.1.25559.3" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="10.10.0" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="10.10.0" />
-    <PackageVersion Include="Microsoft.Extensions.VectorData.Abstractions" Version="10.10.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="11.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="11.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="11.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="11.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="11.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.VectorData.Abstractions" Version="11.0.1" />
     <PackageVersion Include="Microsoft.ML.OnnxRuntime.Gpu.Linux" Version="1.26.0" />
-    <PackageVersion Include="Microsoft.ML.OnnxRuntimeGenAI" Version="0.15.2" />
-    <PackageVersion Include="Microsoft.SemanticKernel.Agents.Core" Version="1.80.1" />
+    <PackageVersion Include="Microsoft.ML.OnnxRuntimeGenAI" Version="0.20.0" />
+    <PackageVersion Include="Microsoft.Mxc.Sdk" Version="1.1.0" />
+    <PackageVersion Include="Microsoft.SemanticKernel.Agents.Core" Version="1.82.0" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.AzureAISearch" Version="1.74.0-preview" />
-    <PackageVersion Include="Microsoft.SemanticKernel.Connectors.AzureOpenAI" Version="1.80.1" />
+    <PackageVersion Include="Microsoft.SemanticKernel.Connectors.AzureOpenAI" Version="1.82.0" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.CosmosNoSql" Version="1.74.0-preview" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.InMemory" Version="1.74.0-preview" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.SqliteVec" Version="1.74.0-preview" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.SqlServer" Version="1.74.1-preview" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.Sqlite" Version="1.74.1-preview" />
     <PackageVersion Include="Mistral.SDK" Version="2.3.1" />
-    <PackageVersion Include="ModelContextProtocol" Version="2.2.0" />
-    <PackageVersion Include="ModelContextProtocol.AspNetCore" Version="2.2.0" />
-    <PackageVersion Include="NAudio" Version="3.1.0" />
+    <PackageVersion Include="ModelContextProtocol" Version="2.4.0" />
+    <PackageVersion Include="ModelContextProtocol.AspNetCore" Version="2.4.0" />
+    <PackageVersion Include="NAudio" Version="3.3.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageVersion Include="OllamaSharp" Version="5.4.30" />
-    <PackageVersion Include="OpenAI" Version="2.14.0" />
-    <PackageVersion Include="Microsoft.Playwright" Version="1.64.1" />
-    <PackageVersion Include="OpenTelemetry" Version="1.18.0" />
-    <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.18.0" />
-    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.19.1" />
-    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.19.1" />
-    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.19.0" />
-    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.19.0" />
-    <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.19.0" />
+    <PackageVersion Include="OllamaSharp" Version="5.5.2" />
+    <PackageVersion Include="OpenAI" Version="2.15.0" />
+    <PackageVersion Include="Microsoft.Playwright" Version="1.65.1" />
+    <PackageVersion Include="OpenTelemetry" Version="1.21.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.21.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.21.0" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.21.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.21.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.21.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.21.0" />
     <PackageVersion Include="ToonNet" Version="1.0.4" />
-    <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="9.0.21" />
-    <PackageVersion Include="TrelloDotNet" Version="2.8.4" />
+    <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="11.0.0" />
+    <PackageVersion Include="TrelloDotNet" Version="2.8.5" />
   </ItemGroup>
 </Project>

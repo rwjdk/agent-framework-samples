@@ -1,0 +1,30 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/mxc/main/schemas/stable/mxc-config.schema.1.0.0.json",
+  "version": "1.0.0",
+  "containment": "processcontainer",
+  "process": {
+    "commandLine": "powershell.exe",
+    "cwd": "C:\\Folder1",
+    "inheritDefaultEnv": true,
+    "timeout": 10000
+  },
+  "filesystem": {
+    "readwritePaths": ["C:\\Folder1"],
+    "readonlyPaths": ["C:\\Windows", "C:\\Program Files\\WindowsPowerShell", "C:\\Program Files\\Git\\mingw64\\bin"],
+    "deniedPaths": ["C:\\", "D:\\", "E:\\", "F:\\", "G:\\", "X:\\"]
+  },
+  "network": {
+    "egress": {
+      "default": "deny",
+      "allow": [
+        {
+          "to": [{ "cidr": "194.108.117.16/32" }],
+          "ports": [{ "protocol": "tcp", "port": 22 }]
+        }
+      ]
+    }
+  },
+  "ui": {
+    "disable": false
+  }
+}

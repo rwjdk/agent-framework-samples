@@ -162,6 +162,7 @@
     <Project Path="src/UseToonToSaveTokens/UseToonToSaveTokens.csproj" Id="a84ca59e-b13d-4c0f-aaed-ff183d09d198" />
   </Folder>
   <Folder Name="/Tool Calling &amp; MCP/">
+    <Project Path="src/MXC/MXC.csproj" />
     <Project Path="src/ResponsesApi.ToolSearch/ToolSearch.csproj" Id="0fefbbe8-2ed9-41a9-a8c1-370b134f34b0" />
     <Project Path="src/ToolCalling.Advanced/ToolCalling.Advanced.csproj" Id="c8428d24-c838-4a61-ab71-ecffcde4b8d9" />
     <Project Path="src/ToolCalling.Basics/ToolCalling.Basics.csproj" Id="0157ef69-5a6c-4470-9a9d-43bca4ea9649" />
